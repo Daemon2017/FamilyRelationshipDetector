@@ -1,4 +1,4 @@
-﻿namespace RealtionshipDetector
+﻿namespace FamilyRelationshipDetector
 {
     partial class Form1
     {
@@ -512,9 +512,10 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(0, 280);
+            this.button12.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button12.Location = new System.Drawing.Point(0, 528);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(183, 274);
+            this.button12.Size = new System.Drawing.Size(183, 183);
             this.button12.TabIndex = 44;
             this.button12.Text = "Посчитать";
             this.button12.UseVisualStyleBackColor = true;
