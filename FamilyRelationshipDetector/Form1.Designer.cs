@@ -515,7 +515,7 @@
             this.button12.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.button12.Location = new System.Drawing.Point(0, 528);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(183, 183);
+            this.button12.Size = new System.Drawing.Size(200, 183);
             this.button12.TabIndex = 44;
             this.button12.Text = "Посчитать";
             this.button12.UseVisualStyleBackColor = true;
@@ -605,9 +605,9 @@
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(876, 0);
+            this.panel1.Location = new System.Drawing.Point(859, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(183, 711);
+            this.panel1.Size = new System.Drawing.Size(200, 711);
             this.panel1.TabIndex = 51;
             // 
             // button35
@@ -951,7 +951,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(876, 711);
+            this.panel2.Size = new System.Drawing.Size(859, 711);
             this.panel2.TabIndex = 78;
             // 
             // Form1
@@ -962,7 +962,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
-            this.Text = "FamilyRelationshipDetector";
+            this.Text = "FamilyRelationshipDetector v2018.3";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
