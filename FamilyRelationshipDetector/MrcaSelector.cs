@@ -4,7 +4,7 @@ namespace FamilyRelationshipDetector
 {
     public partial class Form1 : Form
     {
-        private int MrcaSelector(int x0, int x1, int y0, int y1)
+        private int MrcaSelector(int x0, int y0, int x1, int y1)
         {
             int yMRCA = 0; 
 

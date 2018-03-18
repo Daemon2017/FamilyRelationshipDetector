@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
@@ -15,9 +19,106 @@ namespace FamilyRelationshipDetector
             x1 = 0,
             y1 = 0;
 
+        private void button60_Click(object sender, EventArgs e)
+        {
+            int i0 = 0,
+                j0 = -3,
+                i1 = 5,
+                j1 = 3;
+
+            string[,,] relationships = new string[Math.Abs(i1 - i0) * Math.Abs(j1 - j0), 
+                                                  Math.Abs(j1 - j0) * Math.Abs(i1 - i0), 
+                                                  10];
+            
+            int i = 0,
+                j = 0;
+
+            for (int iStart = i0; 
+                iStart < i1; 
+                iStart++)
+            {
+                for (int jStart = j0; 
+                    jStart < j1; 
+                    jStart++)
+                {
+                    for (int iEnd = i0; 
+                        iEnd < i1; 
+                        iEnd++)
+                    {
+                        for (int jEnd = j0; 
+                            jEnd < j1; 
+                            jEnd++)
+                        {
+                            int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
+
+                            int jStartResult = jMRCA - jStart,
+                                jEndResult = jMRCA - jEnd;
+
+                            int k = 0;
+
+                            relationships[i, j, k] = RelationshipSelector(jStartResult, jEndResult);
+
+                            k++;
+
+                            if (iStart == iEnd)
+                            {
+                                if (!((iStart == 0 && jStart >= 0) ||
+                                    (iEnd == 0 && jEnd >= 0)))
+                                {
+                                    int j0New = jStart,
+                                        j1New = jEnd;
+
+                                    while (j0New < iStart && j1New < iEnd)
+                                    {
+                                        jMRCA = MrcaSelector(iStart, ++j0New, iEnd, ++j1New);
+
+                                        relationships[i, j, k] = RelationshipSelector(jMRCA - jStart, jMRCA - jEnd);
+
+                                        k++;
+                                    }
+                                }
+                            }
+
+                            j++;
+                        }
+                    }
+
+                    i++;
+                    j = 0;
+                }
+            }
+
+            using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
+            {
+                for (int x = 0; x < relationships.GetLength(0); x++)
+                {
+                    string content = "";
+                    for (int y = 0; y < relationships.GetLength(1); y++)
+                    {
+                        for (int z = 0; z < relationships.GetLength(2); z++)
+                        {
+                            if (relationships[x, y, z] != null)
+                            {
+                                if (z == 0)
+                                {
+                                    content += relationships[x, y, z];
+                                }
+                                else
+                                {
+                                    content += ";" + relationships[x, y, z];
+                                }
+                            }
+                        }
+                        content += ",";
+                    }
+                    outfile.WriteLine(content);
+                }
+            }
+        }
+
         private void button12_Click(object sender, EventArgs e)
         {
-            int yMRCA = MrcaSelector(x0, x1, y0, y1);            
+            int yMRCA = MrcaSelector(x0, y0, x1, y1);            
 
             int y0Result = yMRCA - y0,
                 y1Result = yMRCA - y1;
@@ -37,7 +138,7 @@ namespace FamilyRelationshipDetector
 
                     while (y0New < x0 && y1New < x1)
                     {
-                        yMRCA = MrcaSelector(x0, x1, ++y0New, ++y1New);
+                        yMRCA = MrcaSelector(x0, ++y0New, x1, ++y1New);
 
                         label10.Text += "\n" + RelationshipSelector(yMRCA - y0, yMRCA - y1);
                     }

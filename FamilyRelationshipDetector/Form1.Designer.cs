@@ -73,6 +73,7 @@
             this.button27 = new System.Windows.Forms.Button();
             this.button34 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button60 = new System.Windows.Forms.Button();
             this.button35 = new System.Windows.Forms.Button();
             this.button36 = new System.Windows.Forms.Button();
             this.button37 = new System.Windows.Forms.Button();
@@ -423,7 +424,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Location = new System.Drawing.Point(6, 117);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 13);
             this.label1.TabIndex = 34;
@@ -432,7 +433,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 19);
+            this.label2.Location = new System.Drawing.Point(6, 136);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(28, 13);
             this.label2.TabIndex = 35;
@@ -441,7 +442,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 55);
+            this.label3.Location = new System.Drawing.Point(6, 172);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 13);
             this.label3.TabIndex = 36;
@@ -450,7 +451,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 75);
+            this.label4.Location = new System.Drawing.Point(6, 192);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(28, 13);
             this.label4.TabIndex = 37;
@@ -459,7 +460,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 112);
+            this.label5.Location = new System.Drawing.Point(6, 229);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 13);
             this.label5.TabIndex = 38;
@@ -468,7 +469,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 168);
+            this.label6.Location = new System.Drawing.Point(6, 285);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(87, 13);
             this.label6.TabIndex = 39;
@@ -477,7 +478,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 131);
+            this.label7.Location = new System.Drawing.Point(6, 248);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(28, 13);
             this.label7.TabIndex = 40;
@@ -486,7 +487,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 187);
+            this.label8.Location = new System.Drawing.Point(6, 304);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(28, 13);
             this.label8.TabIndex = 41;
@@ -495,7 +496,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 224);
+            this.label9.Location = new System.Drawing.Point(6, 341);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(159, 13);
             this.label9.TabIndex = 42;
@@ -504,7 +505,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 243);
+            this.label10.Location = new System.Drawing.Point(6, 360);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(28, 13);
             this.label10.TabIndex = 43;
@@ -512,10 +513,10 @@
             // 
             // button12
             // 
-            this.button12.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button12.Location = new System.Drawing.Point(0, 528);
+            this.button12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button12.Location = new System.Drawing.Point(0, 0);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(200, 183);
+            this.button12.Size = new System.Drawing.Size(200, 100);
             this.button12.TabIndex = 44;
             this.button12.Text = "Посчитать";
             this.button12.UseVisualStyleBackColor = true;
@@ -593,6 +594,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button60);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label3);
@@ -609,6 +611,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 711);
             this.panel1.TabIndex = 51;
+            // 
+            // button60
+            // 
+            this.button60.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button60.Location = new System.Drawing.Point(0, 611);
+            this.button60.Name = "button60";
+            this.button60.Size = new System.Drawing.Size(200, 100);
+            this.button60.TabIndex = 45;
+            this.button60.Text = "Генерировать";
+            this.button60.UseVisualStyleBackColor = true;
+            this.button60.Click += new System.EventHandler(this.button60_Click);
             // 
             // button35
             // 
@@ -1045,6 +1058,7 @@
         private System.Windows.Forms.Button button58;
         private System.Windows.Forms.Button button59;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button button60;
     }
 }
 
