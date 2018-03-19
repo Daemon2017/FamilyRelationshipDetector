@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
@@ -23,7 +20,7 @@ namespace FamilyRelationshipDetector
         {
             int i0 = 0,
                 j0 = -3,
-                i1 = 5,
+                i1 = 4,
                 j1 = 3;
 
             string[,,] relationships = new string[Math.Abs(i1 - i0) * Math.Abs(j1 - j0), 
@@ -79,6 +76,13 @@ namespace FamilyRelationshipDetector
                                 }
                             }
 
+                            if (((iStart > 1) && (iEnd > 1)) ||
+                                ((jStart > 0) && (jEnd > 0)) ||
+                                ((jStart > 0) && (iEnd > 1) || (jEnd > 0) && (iStart > 1)))
+                            {
+                                relationships[i, j, k] = "0.";
+                            }
+
                             j++;
                         }
                     }
@@ -99,13 +103,15 @@ namespace FamilyRelationshipDetector
                         {
                             if (relationships[x, y, z] != null)
                             {
+                                string temp = relationships[x, y, z];
+
                                 if (z == 0)
                                 {
-                                    content += relationships[x, y, z];
+                                    content += temp.Substring(0, temp.IndexOf("."));
                                 }
                                 else
                                 {
-                                    content += ";" + relationships[x, y, z];
+                                    content += ";" + temp.Substring(0, temp.IndexOf("."));
                                 }
                             }
                         }

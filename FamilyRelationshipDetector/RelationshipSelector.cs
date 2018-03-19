@@ -6,13 +6,13 @@ namespace FamilyRelationshipDetector
     {
         private string RelationshipSelector(int y0Result, int y1Result)
         {
-            string relationship = "?";
+            string relationship = "?.";
 
             if (0 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = "?";
+                    relationship = "255.";
                 }
                 else if (1 == y1Result)
                 {
@@ -40,15 +40,15 @@ namespace FamilyRelationshipDetector
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = "[0;-6] 5*пра(внук)";
+                    relationship = button59.Text;
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[0;-7] 6*пра(внук)";
+                    relationship = "[0;-8] 6*пра(внук)";
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[0;-8] 7*пра(внук)";
+                    relationship = "[0;-9] 7*пра(внук)";
                 }
             }
             else if (1 == y0Result)
@@ -79,11 +79,11 @@ namespace FamilyRelationshipDetector
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = "[1;-5] 3*пра(внучатый племянник)";
+                    relationship = button55.Text;
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = "[1;-6] 4*пра(внучатый племянник)";
+                    relationship = button58.Text;
                 }
                 else if (8 == y1Result)
                 {
@@ -122,19 +122,19 @@ namespace FamilyRelationshipDetector
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = "[2;-4] 2-ный 2*пра(внучатый племянник)";
+                    relationship = button56.Text;
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = "[2;-5] 2-ный 3*пра(внучатый племянник)";
+                    relationship = "[2;-4] 2-ный 3*пра(внучатый племянник)";
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[2;-6] 2-ный 4*пра(внучатый племянник)";
+                    relationship = "[2;-5] 2-ный 4*пра(внучатый племянник)";
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[2;-7] 2-ный 5*пра(внучатый племянник)";
+                    relationship = "[2;-6] 2-ный 5*пра(внучатый племянник)";
                 }
             }
             else if (3 == y0Result)
