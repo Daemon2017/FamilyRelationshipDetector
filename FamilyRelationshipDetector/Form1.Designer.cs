@@ -102,6 +102,40 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.button62 = new System.Windows.Forms.Button();
             this.button61 = new System.Windows.Forms.Button();
+            this.button63 = new System.Windows.Forms.Button();
+            this.button64 = new System.Windows.Forms.Button();
+            this.button65 = new System.Windows.Forms.Button();
+            this.button66 = new System.Windows.Forms.Button();
+            this.button67 = new System.Windows.Forms.Button();
+            this.button68 = new System.Windows.Forms.Button();
+            this.button69 = new System.Windows.Forms.Button();
+            this.button70 = new System.Windows.Forms.Button();
+            this.button71 = new System.Windows.Forms.Button();
+            this.button72 = new System.Windows.Forms.Button();
+            this.button73 = new System.Windows.Forms.Button();
+            this.button74 = new System.Windows.Forms.Button();
+            this.button75 = new System.Windows.Forms.Button();
+            this.button76 = new System.Windows.Forms.Button();
+            this.button77 = new System.Windows.Forms.Button();
+            this.button78 = new System.Windows.Forms.Button();
+            this.button79 = new System.Windows.Forms.Button();
+            this.button80 = new System.Windows.Forms.Button();
+            this.button81 = new System.Windows.Forms.Button();
+            this.button82 = new System.Windows.Forms.Button();
+            this.button83 = new System.Windows.Forms.Button();
+            this.button84 = new System.Windows.Forms.Button();
+            this.button85 = new System.Windows.Forms.Button();
+            this.button86 = new System.Windows.Forms.Button();
+            this.button87 = new System.Windows.Forms.Button();
+            this.button88 = new System.Windows.Forms.Button();
+            this.button89 = new System.Windows.Forms.Button();
+            this.button90 = new System.Windows.Forms.Button();
+            this.button91 = new System.Windows.Forms.Button();
+            this.button92 = new System.Windows.Forms.Button();
+            this.button93 = new System.Windows.Forms.Button();
+            this.button94 = new System.Windows.Forms.Button();
+            this.button95 = new System.Windows.Forms.Button();
+            this.button96 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -609,7 +643,7 @@
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(984, 0);
+            this.panel1.Location = new System.Drawing.Point(1059, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 711);
             this.panel1.TabIndex = 51;
@@ -863,7 +897,7 @@
             this.button56.Name = "button56";
             this.button56.Size = new System.Drawing.Size(100, 50);
             this.button56.TabIndex = 74;
-            this.button56.Text = "41. [2;-3] 2-ный 2*пра(внучатый племянник)";
+            this.button56.Text = "41. [2;-4] 2-ный 2*пра(внучатый племянник)";
             this.button56.UseVisualStyleBackColor = false;
             // 
             // button57
@@ -904,6 +938,40 @@
             this.panel2.AutoScroll = true;
             this.panel2.AutoSize = true;
             this.panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.panel2.Controls.Add(this.button96);
+            this.panel2.Controls.Add(this.button95);
+            this.panel2.Controls.Add(this.button94);
+            this.panel2.Controls.Add(this.button93);
+            this.panel2.Controls.Add(this.button92);
+            this.panel2.Controls.Add(this.button91);
+            this.panel2.Controls.Add(this.button90);
+            this.panel2.Controls.Add(this.button89);
+            this.panel2.Controls.Add(this.button88);
+            this.panel2.Controls.Add(this.button87);
+            this.panel2.Controls.Add(this.button86);
+            this.panel2.Controls.Add(this.button85);
+            this.panel2.Controls.Add(this.button84);
+            this.panel2.Controls.Add(this.button83);
+            this.panel2.Controls.Add(this.button82);
+            this.panel2.Controls.Add(this.button81);
+            this.panel2.Controls.Add(this.button80);
+            this.panel2.Controls.Add(this.button79);
+            this.panel2.Controls.Add(this.button78);
+            this.panel2.Controls.Add(this.button77);
+            this.panel2.Controls.Add(this.button76);
+            this.panel2.Controls.Add(this.button75);
+            this.panel2.Controls.Add(this.button74);
+            this.panel2.Controls.Add(this.button73);
+            this.panel2.Controls.Add(this.button72);
+            this.panel2.Controls.Add(this.button71);
+            this.panel2.Controls.Add(this.button70);
+            this.panel2.Controls.Add(this.button69);
+            this.panel2.Controls.Add(this.button68);
+            this.panel2.Controls.Add(this.button67);
+            this.panel2.Controls.Add(this.button66);
+            this.panel2.Controls.Add(this.button65);
+            this.panel2.Controls.Add(this.button64);
+            this.panel2.Controls.Add(this.button63);
             this.panel2.Controls.Add(this.button62);
             this.panel2.Controls.Add(this.button61);
             this.panel2.Controls.Add(this.button59);
@@ -967,7 +1035,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(984, 711);
+            this.panel2.Size = new System.Drawing.Size(1059, 711);
             this.panel2.TabIndex = 78;
             // 
             // button62
@@ -990,11 +1058,351 @@
             this.button61.Text = "35. [0;7] 5*пра(дед)";
             this.button61.UseVisualStyleBackColor = false;
             // 
+            // button63
+            // 
+            this.button63.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.button63.Location = new System.Drawing.Point(745, 115);
+            this.button63.Name = "button63";
+            this.button63.Size = new System.Drawing.Size(100, 50);
+            this.button63.TabIndex = 80;
+            this.button63.Text = "46. [7;5] 3-ный 3*пра(дед)";
+            this.button63.UseVisualStyleBackColor = false;
+            // 
+            // button64
+            // 
+            this.button64.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.button64.Location = new System.Drawing.Point(745, 171);
+            this.button64.Name = "button64";
+            this.button64.Size = new System.Drawing.Size(100, 50);
+            this.button64.TabIndex = 81;
+            this.button64.Text = "57. [7;4] 4-ный 2*пра(дед)";
+            this.button64.UseVisualStyleBackColor = false;
+            // 
+            // button65
+            // 
+            this.button65.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button65.Location = new System.Drawing.Point(745, 283);
+            this.button65.Name = "button65";
+            this.button65.Size = new System.Drawing.Size(100, 50);
+            this.button65.TabIndex = 82;
+            this.button65.Text = "82. [7;2] 6-ный дед";
+            this.button65.UseVisualStyleBackColor = false;
+            // 
+            // button66
+            // 
+            this.button66.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button66.Location = new System.Drawing.Point(745, 339);
+            this.button66.Name = "button66";
+            this.button66.Size = new System.Drawing.Size(100, 50);
+            this.button66.TabIndex = 83;
+            this.button66.Text = "96. [7;1] 7-ный родитель";
+            this.button66.UseVisualStyleBackColor = false;
+            // 
+            // button67
+            // 
+            this.button67.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button67.Location = new System.Drawing.Point(851, 227);
+            this.button67.Name = "button67";
+            this.button67.Size = new System.Drawing.Size(100, 50);
+            this.button67.TabIndex = 84;
+            this.button67.Text = "95. [8;3] 6-ный пра(дед)";
+            this.button67.UseVisualStyleBackColor = false;
+            // 
+            // button68
+            // 
+            this.button68.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button68.Location = new System.Drawing.Point(851, 171);
+            this.button68.Name = "button68";
+            this.button68.Size = new System.Drawing.Size(100, 50);
+            this.button68.TabIndex = 85;
+            this.button68.Text = "81. [8;4] 5-ный 2*пра(дед)";
+            this.button68.UseVisualStyleBackColor = false;
+            // 
+            // button69
+            // 
+            this.button69.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.button69.Location = new System.Drawing.Point(851, 115);
+            this.button69.Name = "button69";
+            this.button69.Size = new System.Drawing.Size(100, 50);
+            this.button69.TabIndex = 86;
+            this.button69.Text = "68. [8;5] 4-ный 3*пра(дед)";
+            this.button69.UseVisualStyleBackColor = false;
+            // 
+            // button70
+            // 
+            this.button70.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.button70.Location = new System.Drawing.Point(851, 59);
+            this.button70.Name = "button70";
+            this.button70.Size = new System.Drawing.Size(100, 50);
+            this.button70.TabIndex = 87;
+            this.button70.Text = "56. [8;6] 3-ный 4*пра(дед)";
+            this.button70.UseVisualStyleBackColor = false;
+            // 
+            // button71
+            // 
+            this.button71.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.button71.Location = new System.Drawing.Point(851, 3);
+            this.button71.Name = "button71";
+            this.button71.Size = new System.Drawing.Size(100, 50);
+            this.button71.TabIndex = 88;
+            this.button71.Text = "45. [8;7] 2-ный 5*пра(дед)";
+            this.button71.UseVisualStyleBackColor = false;
+            // 
+            // button72
+            // 
+            this.button72.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button72.Location = new System.Drawing.Point(957, 115);
+            this.button72.Name = "button72";
+            this.button72.Size = new System.Drawing.Size(100, 50);
+            this.button72.TabIndex = 89;
+            this.button72.Text = "94. [9;5] 5-ный 3*пра(дед)";
+            this.button72.UseVisualStyleBackColor = false;
+            // 
+            // button73
+            // 
+            this.button73.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button73.Location = new System.Drawing.Point(957, 59);
+            this.button73.Name = "button73";
+            this.button73.Size = new System.Drawing.Size(100, 50);
+            this.button73.TabIndex = 90;
+            this.button73.Text = "80. [9;6] 4-ный 4*пра(дед)";
+            this.button73.UseVisualStyleBackColor = false;
+            // 
+            // button74
+            // 
+            this.button74.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.button74.Location = new System.Drawing.Point(957, 3);
+            this.button74.Name = "button74";
+            this.button74.Size = new System.Drawing.Size(100, 50);
+            this.button74.TabIndex = 91;
+            this.button74.Text = "67. [9;7] 3-ный 5*пра(дед)";
+            this.button74.UseVisualStyleBackColor = false;
+            // 
+            // button75
+            // 
+            this.button75.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button75.Location = new System.Drawing.Point(1063, 3);
+            this.button75.Name = "button75";
+            this.button75.Size = new System.Drawing.Size(100, 50);
+            this.button75.TabIndex = 92;
+            this.button75.Text = "93. [10;7] 4-ный 5*пра(дед)";
+            this.button75.UseVisualStyleBackColor = false;
+            // 
+            // button76
+            // 
+            this.button76.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button76.Location = new System.Drawing.Point(427, 619);
+            this.button76.Name = "button76";
+            this.button76.Size = new System.Drawing.Size(100, 50);
+            this.button76.TabIndex = 93;
+            this.button76.Text = "86. [4;-4] 4-ный 2*пра(внучатый племянник)";
+            this.button76.UseVisualStyleBackColor = false;
+            // 
+            // button77
+            // 
+            this.button77.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button77.Location = new System.Drawing.Point(427, 675);
+            this.button77.Name = "button77";
+            this.button77.Size = new System.Drawing.Size(100, 50);
+            this.button77.TabIndex = 94;
+            this.button77.Text = "99. [4;-5] 4-ный 3*пра(внучатый племянник)";
+            this.button77.UseVisualStyleBackColor = false;
+            // 
+            // button78
+            // 
+            this.button78.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.button78.Location = new System.Drawing.Point(321, 619);
+            this.button78.Name = "button78";
+            this.button78.Size = new System.Drawing.Size(100, 50);
+            this.button78.TabIndex = 95;
+            this.button78.Text = "61. [3;-4] 3-ный 2*пра(внучатый племянник)";
+            this.button78.UseVisualStyleBackColor = false;
+            // 
+            // button79
+            // 
+            this.button79.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.button79.Location = new System.Drawing.Point(321, 675);
+            this.button79.Name = "button79";
+            this.button79.Size = new System.Drawing.Size(100, 50);
+            this.button79.TabIndex = 96;
+            this.button79.Text = "73. [3;-5] 3-ный 3*пра(внучатый племянник)";
+            this.button79.UseVisualStyleBackColor = false;
+            // 
+            // button80
+            // 
+            this.button80.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button80.Location = new System.Drawing.Point(321, 731);
+            this.button80.Name = "button80";
+            this.button80.Size = new System.Drawing.Size(100, 50);
+            this.button80.TabIndex = 97;
+            this.button80.Text = "87. [3;-6] 3-ный 4*пра(внучатый племянник)";
+            this.button80.UseVisualStyleBackColor = false;
+            // 
+            // button81
+            // 
+            this.button81.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button81.Location = new System.Drawing.Point(321, 787);
+            this.button81.Name = "button81";
+            this.button81.Size = new System.Drawing.Size(100, 50);
+            this.button81.TabIndex = 98;
+            this.button81.Text = "100. [3;-7] 3-ный 5*пра(внучатый племянник)";
+            this.button81.UseVisualStyleBackColor = false;
+            // 
+            // button82
+            // 
+            this.button82.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.button82.Location = new System.Drawing.Point(215, 675);
+            this.button82.Name = "button82";
+            this.button82.Size = new System.Drawing.Size(100, 50);
+            this.button82.TabIndex = 99;
+            this.button82.Text = "51. [2;-5] 2-ный 3*пра(внучатый племянник)";
+            this.button82.UseVisualStyleBackColor = false;
+            // 
+            // button83
+            // 
+            this.button83.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.button83.Location = new System.Drawing.Point(215, 731);
+            this.button83.Name = "button83";
+            this.button83.Size = new System.Drawing.Size(100, 50);
+            this.button83.TabIndex = 100;
+            this.button83.Text = "62. [2;-6] 2-ный 4*пра(внучатый племянник)";
+            this.button83.UseVisualStyleBackColor = false;
+            // 
+            // button84
+            // 
+            this.button84.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.button84.Location = new System.Drawing.Point(215, 787);
+            this.button84.Name = "button84";
+            this.button84.Size = new System.Drawing.Size(100, 50);
+            this.button84.TabIndex = 101;
+            this.button84.Text = "74. [2;-7] 2-ный 5*пра(внучатый племянник)";
+            this.button84.UseVisualStyleBackColor = false;
+            // 
+            // button85
+            // 
+            this.button85.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.button85.Location = new System.Drawing.Point(109, 787);
+            this.button85.Name = "button85";
+            this.button85.Size = new System.Drawing.Size(100, 50);
+            this.button85.TabIndex = 102;
+            this.button85.Text = "52. [1;-7] 5*пра(внучатый племянник)";
+            this.button85.UseVisualStyleBackColor = false;
+            // 
+            // button86
+            // 
+            this.button86.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button86.Location = new System.Drawing.Point(215, 843);
+            this.button86.Name = "button86";
+            this.button86.Size = new System.Drawing.Size(100, 50);
+            this.button86.TabIndex = 103;
+            this.button86.Text = "88. [2;-8] 2-ный 6*пра(внучатый племянник)";
+            this.button86.UseVisualStyleBackColor = false;
+            // 
+            // button87
+            // 
+            this.button87.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button87.Location = new System.Drawing.Point(215, 899);
+            this.button87.Name = "button87";
+            this.button87.Size = new System.Drawing.Size(100, 50);
+            this.button87.TabIndex = 104;
+            this.button87.Text = "101. [2;-9] 2-ный 7*пра(внучатый племянник)";
+            this.button87.UseVisualStyleBackColor = false;
+            // 
+            // button88
+            // 
+            this.button88.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.button88.Location = new System.Drawing.Point(109, 843);
+            this.button88.Name = "button88";
+            this.button88.Size = new System.Drawing.Size(100, 50);
+            this.button88.TabIndex = 105;
+            this.button88.Text = "63. [1;-8] 6*пра(внучатый племянник)";
+            this.button88.UseVisualStyleBackColor = false;
+            // 
+            // button89
+            // 
+            this.button89.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.button89.Location = new System.Drawing.Point(109, 899);
+            this.button89.Name = "button89";
+            this.button89.Size = new System.Drawing.Size(100, 50);
+            this.button89.TabIndex = 106;
+            this.button89.Text = "75. [1;-9] 7*пра(внучатый племянник)";
+            this.button89.UseVisualStyleBackColor = false;
+            // 
+            // button90
+            // 
+            this.button90.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button90.Location = new System.Drawing.Point(109, 955);
+            this.button90.Name = "button90";
+            this.button90.Size = new System.Drawing.Size(100, 50);
+            this.button90.TabIndex = 107;
+            this.button90.Text = "89. [1;-10] 8*пра(внучатый племянник)";
+            this.button90.UseVisualStyleBackColor = false;
+            // 
+            // button91
+            // 
+            this.button91.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button91.Location = new System.Drawing.Point(109, 1011);
+            this.button91.Name = "button91";
+            this.button91.Size = new System.Drawing.Size(100, 50);
+            this.button91.TabIndex = 108;
+            this.button91.Text = "102. [1;-11] 9*пра(внучатый племянник)";
+            this.button91.UseVisualStyleBackColor = false;
+            // 
+            // button92
+            // 
+            this.button92.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.button92.Location = new System.Drawing.Point(3, 843);
+            this.button92.Name = "button92";
+            this.button92.Size = new System.Drawing.Size(100, 50);
+            this.button92.TabIndex = 109;
+            this.button92.Text = "53. [0;-8] 6*пра(внук)";
+            this.button92.UseVisualStyleBackColor = false;
+            // 
+            // button93
+            // 
+            this.button93.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.button93.Location = new System.Drawing.Point(3, 899);
+            this.button93.Name = "button93";
+            this.button93.Size = new System.Drawing.Size(100, 50);
+            this.button93.TabIndex = 110;
+            this.button93.Text = "64. [0;-9] 7*пра(внук)";
+            this.button93.UseVisualStyleBackColor = false;
+            // 
+            // button94
+            // 
+            this.button94.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.button94.Location = new System.Drawing.Point(3, 955);
+            this.button94.Name = "button94";
+            this.button94.Size = new System.Drawing.Size(100, 50);
+            this.button94.TabIndex = 111;
+            this.button94.Text = "76. [0;-10] 8*пра(внук)";
+            this.button94.UseVisualStyleBackColor = false;
+            // 
+            // button95
+            // 
+            this.button95.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.button95.Location = new System.Drawing.Point(3, 1011);
+            this.button95.Name = "button95";
+            this.button95.Size = new System.Drawing.Size(100, 50);
+            this.button95.TabIndex = 112;
+            this.button95.Text = "90. [0;-11] 9*пра(внук)";
+            this.button95.UseVisualStyleBackColor = false;
+            // 
+            // button96
+            // 
+            this.button96.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button96.Location = new System.Drawing.Point(3, 1067);
+            this.button96.Name = "button96";
+            this.button96.Size = new System.Drawing.Size(100, 50);
+            this.button96.TabIndex = 113;
+            this.button96.Text = "103. [0;-12] 10*пра(внук)";
+            this.button96.UseVisualStyleBackColor = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 711);
+            this.ClientSize = new System.Drawing.Size(1259, 711);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -1084,6 +1492,40 @@
         private System.Windows.Forms.Button button60;
         private System.Windows.Forms.Button button61;
         private System.Windows.Forms.Button button62;
+        private System.Windows.Forms.Button button64;
+        private System.Windows.Forms.Button button63;
+        private System.Windows.Forms.Button button65;
+        private System.Windows.Forms.Button button66;
+        private System.Windows.Forms.Button button67;
+        private System.Windows.Forms.Button button68;
+        private System.Windows.Forms.Button button69;
+        private System.Windows.Forms.Button button70;
+        private System.Windows.Forms.Button button71;
+        private System.Windows.Forms.Button button72;
+        private System.Windows.Forms.Button button73;
+        private System.Windows.Forms.Button button74;
+        private System.Windows.Forms.Button button75;
+        private System.Windows.Forms.Button button76;
+        private System.Windows.Forms.Button button77;
+        private System.Windows.Forms.Button button78;
+        private System.Windows.Forms.Button button79;
+        private System.Windows.Forms.Button button80;
+        private System.Windows.Forms.Button button81;
+        private System.Windows.Forms.Button button82;
+        private System.Windows.Forms.Button button83;
+        private System.Windows.Forms.Button button84;
+        private System.Windows.Forms.Button button85;
+        private System.Windows.Forms.Button button87;
+        private System.Windows.Forms.Button button86;
+        private System.Windows.Forms.Button button91;
+        private System.Windows.Forms.Button button90;
+        private System.Windows.Forms.Button button89;
+        private System.Windows.Forms.Button button88;
+        private System.Windows.Forms.Button button96;
+        private System.Windows.Forms.Button button95;
+        private System.Windows.Forms.Button button94;
+        private System.Windows.Forms.Button button93;
+        private System.Windows.Forms.Button button92;
     }
 }
 
