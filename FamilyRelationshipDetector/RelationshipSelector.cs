@@ -12,7 +12,7 @@ namespace FamilyRelationshipDetector
             {
                 if (0 == y1Result)
                 {
-                    relationship = "255.";
+                    relationship = null;
                 }
                 else if (1 == y1Result)
                 {
@@ -44,11 +44,11 @@ namespace FamilyRelationshipDetector
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[0;-8] 6*пра(внук)";
+                    relationship = button92.Text;
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[0;-9] 7*пра(внук)";
+                    relationship = button93.Text;
                 }
             }
             else if (1 == y0Result)
@@ -87,11 +87,11 @@ namespace FamilyRelationshipDetector
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[1;-7] 5*пра(внучатый племянник)";
+                    relationship = button85.Text;
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[1;-8] 6*пра(внучатый племянник)";
+                    relationship = button88.Text;
                 }
             }
             else if (2 == y0Result)
@@ -126,15 +126,15 @@ namespace FamilyRelationshipDetector
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = "[2;-4] 2-ный 3*пра(внучатый племянник)";
+                    relationship = button82.Text;
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[2;-5] 2-ный 4*пра(внучатый племянник)";
+                    relationship = button83.Text;
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[2;-6] 2-ный 5*пра(внучатый племянник)";
+                    relationship = button84.Text;
                 }
             }
             else if (3 == y0Result)
@@ -169,15 +169,15 @@ namespace FamilyRelationshipDetector
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = "[3;-4] 3-ный 2*пра(внучатый племянник)";
+                    relationship = button78.Text;
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[3;-5] 3-ный 3*пра(внучатый племянник)";
+                    relationship = button79.Text;
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[3;-6] 3-ный 4*пра(внучатый племянник)";
+                    relationship = button80.Text;
                 }
             }
             else if (4 == y0Result)
@@ -216,11 +216,11 @@ namespace FamilyRelationshipDetector
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[4;-4] 4-ный 2*пра(внучатый племянник)";
+                    relationship = button76.Text;
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[4;-5] 4-ный 3*пра(внучатый племянник)";
+                    relationship = button77.Text;
                 }
             }
             else if (5 == y0Result)

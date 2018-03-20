@@ -20,30 +20,30 @@ namespace FamilyRelationshipDetector
         {
             int i0 = 0,
                 j0 = -3,
-                i1 = 4,
+                i1 = 3,
                 j1 = 3;
 
-            string[,,] relationships = new string[Math.Abs(i1 - i0) * Math.Abs(j1 - j0), 
-                                                  Math.Abs(j1 - j0) * Math.Abs(i1 - i0), 
+            string[,,] relationships = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1), 
+                                                  (Math.Abs(j1 - j0) + 1) * (Math.Abs(i1 - i0) + 1), 
                                                   10];
             
             int i = 0,
                 j = 0;
 
             for (int iStart = i0; 
-                iStart < i1; 
+                iStart <= i1; 
                 iStart++)
             {
                 for (int jStart = j0; 
-                    jStart < j1; 
+                    jStart <= j1; 
                     jStart++)
                 {
                     for (int iEnd = i0; 
-                        iEnd < i1; 
+                        iEnd <= i1; 
                         iEnd++)
                     {
                         for (int jEnd = j0; 
-                            jEnd < j1; 
+                            jEnd <= j1; 
                             jEnd++)
                         {
                             int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
@@ -97,22 +97,16 @@ namespace FamilyRelationshipDetector
                 for (int x = 0; x < relationships.GetLength(0); x++)
                 {
                     string content = "";
+
                     for (int y = 0; y < relationships.GetLength(1); y++)
                     {
                         for (int z = 0; z < relationships.GetLength(2); z++)
                         {
-                            if (relationships[x, y, z] != null)
-                            {
-                                string temp = relationships[x, y, z];
+                            string temp = relationships[x, y, z];
 
-                                if (z == 0)
-                                {
-                                    content += temp.Substring(0, temp.IndexOf("."));
-                                }
-                                else
-                                {
-                                    content += ";" + temp.Substring(0, temp.IndexOf("."));
-                                }
+                            if (temp != null)
+                            {
+                                content += temp.Substring(0, temp.IndexOf(".")) + ";";
                             }
                         }
                         content += ",";
