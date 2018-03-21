@@ -20,30 +20,30 @@ namespace FamilyRelationshipDetector
         {
             int i0 = 0,
                 j0 = -3,
-                i1 = 3,
+                i1 = 5,
                 j1 = 3;
 
-            string[,,] relationships = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1), 
-                                                  (Math.Abs(j1 - j0) + 1) * (Math.Abs(i1 - i0) + 1), 
+            string[,,] relationships = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
+                                                  (Math.Abs(j1 - j0) + 1) * (Math.Abs(i1 - i0) + 1),
                                                   10];
-            
+
             int i = 0,
                 j = 0;
 
-            for (int iStart = i0; 
-                iStart <= i1; 
+            for (int iStart = i0;
+                iStart <= i1;
                 iStart++)
             {
-                for (int jStart = j0; 
-                    jStart <= j1; 
+                for (int jStart = j0;
+                    jStart <= j1;
                     jStart++)
                 {
-                    for (int iEnd = i0; 
-                        iEnd <= i1; 
+                    for (int iEnd = i0;
+                        iEnd <= i1;
                         iEnd++)
                     {
-                        for (int jEnd = j0; 
-                            jEnd <= j1; 
+                        for (int jEnd = j0;
+                            jEnd <= j1;
                             jEnd++)
                         {
                             int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
@@ -118,7 +118,7 @@ namespace FamilyRelationshipDetector
 
         private void button12_Click(object sender, EventArgs e)
         {
-            int yMRCA = MrcaSelector(x0, y0, x1, y1);            
+            int yMRCA = MrcaSelector(x0, y0, x1, y1);
 
             int y0Result = yMRCA - y0,
                 y1Result = yMRCA - y1;
