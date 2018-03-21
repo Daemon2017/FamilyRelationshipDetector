@@ -38,57 +38,63 @@ namespace FamilyRelationshipDetector
                     jStart <= j1;
                     jStart++)
                 {
-                    for (int iEnd = i0;
+                    if (!(jStart > 0 && (iStart > 0 && iStart <= jStart)))
+                    {
+                        for (int iEnd = i0;
                         iEnd <= i1;
                         iEnd++)
-                    {
-                        for (int jEnd = j0;
-                            jEnd <= j1;
-                            jEnd++)
                         {
-                            int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
-
-                            int jStartResult = jMRCA - jStart,
-                                jEndResult = jMRCA - jEnd;
-
-                            int k = 0;
-
-                            relationships[i, j, k] = RelationshipSelector(jStartResult, jEndResult);
-
-                            k++;
-
-                            if (iStart == iEnd)
+                            for (int jEnd = j0;
+                                jEnd <= j1;
+                                jEnd++)
                             {
-                                if (!((iStart == 0 && jStart >= 0) ||
-                                    (iEnd == 0 && jEnd >= 0)))
+                                if (!(jEnd > 0 && (iEnd > 0 && iEnd <= jEnd)))
                                 {
-                                    int j0New = jStart,
-                                        j1New = jEnd;
+                                    int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
 
-                                    while (j0New < iStart && j1New < iEnd)
+                                    int jStartResult = jMRCA - jStart,
+                                        jEndResult = jMRCA - jEnd;
+
+                                    int k = 0;
+
+                                    relationships[i, j, k] = RelationshipSelector(jStartResult, jEndResult);
+
+                                    k++;
+
+                                    if (iStart == iEnd)
                                     {
-                                        jMRCA = MrcaSelector(iStart, ++j0New, iEnd, ++j1New);
+                                        if (!((iStart == 0 && jStart >= 0) ||
+                                            (iEnd == 0 && jEnd >= 0)))
+                                        {
+                                            int j0New = jStart,
+                                                j1New = jEnd;
 
-                                        relationships[i, j, k] = RelationshipSelector(jMRCA - jStart, jMRCA - jEnd);
+                                            while (j0New < iStart && j1New < iEnd)
+                                            {
+                                                jMRCA = MrcaSelector(iStart, ++j0New, iEnd, ++j1New);
 
-                                        k++;
+                                                relationships[i, j, k] = RelationshipSelector(jMRCA - jStart, jMRCA - jEnd);
+
+                                                k++;
+                                            }
+                                        }
                                     }
+
+                                    if (((iStart > 1) && (iEnd > 1)) ||
+                                        ((jStart > 0) && (jEnd > 0)) ||
+                                        ((jStart > 0) && (iEnd > 1) || (jEnd > 0) && (iStart > 1)))
+                                    {
+                                        relationships[i, j, k] = "0.";
+                                    }
+
+                                    j++;
                                 }
                             }
-
-                            if (((iStart > 1) && (iEnd > 1)) ||
-                                ((jStart > 0) && (jEnd > 0)) ||
-                                ((jStart > 0) && (iEnd > 1) || (jEnd > 0) && (iStart > 1)))
-                            {
-                                relationships[i, j, k] = "0.";
-                            }
-
-                            j++;
                         }
-                    }
 
-                    i++;
-                    j = 0;
+                        i++;
+                        j = 0;
+                    }
                 }
             }
 
