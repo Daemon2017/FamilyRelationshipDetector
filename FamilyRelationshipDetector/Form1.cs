@@ -23,6 +23,9 @@ namespace FamilyRelationshipDetector
                 i1 = 5,
                 j1 = 3;
 
+            /*
+             * Построение матрицы возможных степеней родства
+             */
             string[,,] relationships = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
                                                   (Math.Abs(j1 - j0) + 1) * (Math.Abs(i1 - i0) + 1),
                                                   10];
@@ -38,6 +41,9 @@ namespace FamilyRelationshipDetector
                     jStart <= j1;
                     jStart++)
                 {
+                    /*
+                     * Исключение повторов степеней родства, занимающих более одной вертикали
+                     */
                     if (!(jStart > 0 && (iStart > 0 && iStart <= jStart)))
                     {
                         for (int iEnd = i0;
@@ -48,6 +54,9 @@ namespace FamilyRelationshipDetector
                                 jEnd <= j1;
                                 jEnd++)
                             {
+                                /*
+                                 * Исключение повторов степеней родства, занимающих более одной вертикали
+                                 */
                                 if (!(jEnd > 0 && (iEnd > 0 && iEnd <= jEnd)))
                                 {
                                     int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
@@ -57,10 +66,17 @@ namespace FamilyRelationshipDetector
 
                                     int k = 0;
 
+                                    /*
+                                     * Определение основной степени родства
+                                     */ 
                                     relationships[i, j, k] = RelationshipSelector(jStartResult, jEndResult);
 
                                     k++;
 
+                                    /*
+                                    * Обработка расклада, когда первичная и вторичная личность находятся в одной вертикали
+                                    * и между ними возможны различные степени родства
+                                    */
                                     if (iStart == iEnd)
                                     {
                                         if (!((iStart == 0 && jStart >= 0) ||
@@ -80,6 +96,9 @@ namespace FamilyRelationshipDetector
                                         }
                                     }
 
+                                    /*
+                                    * Обработка расклада, когда между первичной и вторичной личностями может не быть родства
+                                    */
                                     if (((iStart > 1) && (iEnd > 1)) ||
                                         ((jStart > 0) && (jEnd > 0)) ||
                                         ((jStart > 0) && (iEnd > 1) || (jEnd > 0) && (iStart > 1)))
@@ -115,8 +134,10 @@ namespace FamilyRelationshipDetector
                                 content += temp.Substring(0, temp.IndexOf(".")) + ";";
                             }
                         }
+
                         content += ",";
                     }
+
                     outfile.WriteLine(content);
                 }
             }
