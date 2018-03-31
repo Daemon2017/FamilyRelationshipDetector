@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,22 +13,90 @@ namespace FamilyRelationshipDetector
             InitializeComponent();
         }
 
-        /*
-        * TODO: кнопки должны отрисовываться после загрузки данных из файла следующего формата:
-        * Номер_родства; X; Y; Название_родства; Ширина_кнопки; Номер_кластера;
-        * 
-        * Например:
-        * 1; 0; 0;  Пробанд;   1; 0;
-        * 2; 1; 0;  Брат;      1; 1;
-        * 3; 0; 1;  Родитель;  2; 2;
-        * 7; 1; -1; Племянник; 1; 3;
-        * 5; 0; 2;  Дед;       3; 3;
-        */
-
         int x0 = 0,
             y0 = 0,
             x1 = 0,
             y1 = 0;
+
+        List<Relative> buttons = new List<Relative>();
+
+        string[,] relationshipMatrix;
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            int numberOfRows = File.ReadAllLines(@"InputMatrix.cfg").ToArray().Length;
+            string input = File.ReadAllText(@"InputMatrix.cfg");
+
+            relationshipMatrix = new string[numberOfRows, 6];
+            int i = 0,
+                j = 0;
+
+            foreach (var row in input.Split('\n'))
+            {
+                j = 0;
+
+                foreach (var col in row.Trim().Split(';'))
+                {
+                    relationshipMatrix[i, j] = col.Trim();
+                    j++;
+                }
+
+                i++;
+            }
+
+            int[] horizonatal = new int[numberOfRows];
+
+            for (int h = 0; h < numberOfRows; h++)
+            {
+                horizonatal[h] = Convert.ToInt16(relationshipMatrix[h, 2]);
+            }
+
+            int maxHorizontal = 0;
+            for (int x = 0; x < horizonatal.Length; x++)
+            {
+                if (horizonatal[x] > maxHorizontal)
+                {
+                    maxHorizontal = horizonatal[x];
+                }
+            }
+
+            for (int a = 0; a < numberOfRows; a++)
+            {
+                Relative newRelative = new Relative
+                {
+                    RelationNumber = Convert.ToInt16(relationshipMatrix[a, 0]),
+                    Vertical = Convert.ToInt16(relationshipMatrix[a, 1]),
+                    Horizontal = Convert.ToInt16(relationshipMatrix[a, 2]),
+                    RelationName = relationshipMatrix[a, 3],
+                    WidthMultiplier = Convert.ToInt16(relationshipMatrix[a, 4]),
+                    ClusterColor = relationshipMatrix[a, 5]
+                };
+                newRelative.Left = 100 * newRelative.Vertical;
+                newRelative.Top = (50 * 7) + (50 * -newRelative.Horizontal);
+                newRelative.Width = 100 * newRelative.WidthMultiplier;
+                newRelative.Height = 50;
+                newRelative.Text = newRelative.RelationNumber + ". [" + newRelative.Vertical + ";" + newRelative.Horizontal + "] " + newRelative.RelationName;
+                newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
+                buttons.Add(newRelative);
+                panel2.Controls.Add(newRelative);
+            }
+        }
+
+        private void RelativeButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                x0 = ((Relative)sender).Vertical;
+                y0 = ((Relative)sender).Horizontal;
+                label2.Text = ((Relative)sender).RelationName;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                x1 = ((Relative)sender).Vertical;
+                y1 = ((Relative)sender).Horizontal;
+                label4.Text = ((Relative)sender).RelationName;
+            }
+        }
 
         private void button60_Click(object sender, EventArgs e)
         {

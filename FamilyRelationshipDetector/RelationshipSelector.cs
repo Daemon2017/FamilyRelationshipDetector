@@ -4,6 +4,21 @@ namespace FamilyRelationshipDetector
 {
     public partial class Form1 : Form
     {
+        private string FindRelationship(int x, int y)
+        {
+            string relationship = "";
+
+            foreach (var Relative in buttons)
+            {
+                if (Relative.Vertical == x && Relative.Horizontal == y)
+                {
+                    relationship = Relative.RelationNumber + ". [" + Relative.Vertical + ";" + Relative.Horizontal + "] " + Relative.RelationName;
+                }
+            }
+
+            return relationship;
+        }
+
         private string RelationshipSelector(int y0Result, int y1Result)
         {
             string relationship = "?.";
@@ -16,426 +31,426 @@ namespace FamilyRelationshipDetector
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button28.Text;
+                    relationship = FindRelationship(0, -1);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button16.Text;
+                    relationship = FindRelationship(0, -2);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button35.Text;
+                    relationship = FindRelationship(0, -3);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button51.Text;
+                    relationship = FindRelationship(0, -4);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button54.Text;
+                    relationship = FindRelationship(0, -5);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button57.Text;
+                    relationship = FindRelationship(0, -6);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button59.Text;
+                    relationship = FindRelationship(0, -7);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button92.Text;
+                    relationship = FindRelationship(0, -8);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = button93.Text;
+                    relationship = FindRelationship(0, -9);
                 }
             }
             else if (1 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = button6.Text;
+                    relationship = FindRelationship(0, 1);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button7.Text;
+                    relationship = FindRelationship(1, 0);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button29.Text;
+                    relationship = FindRelationship(1, -1);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button20.Text;
+                    relationship = FindRelationship(1, -2);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button36.Text;
+                    relationship = FindRelationship(1, -3);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button53.Text;
+                    relationship = FindRelationship(1, -4);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button55.Text;
+                    relationship = FindRelationship(1, -5);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button58.Text;
+                    relationship = FindRelationship(1, -6);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button85.Text;
+                    relationship = FindRelationship(1, -7);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = button88.Text;
+                    relationship = FindRelationship(1, -8);
                 }
             }
             else if (2 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = button5.Text;
+                    relationship = FindRelationship(0, 2);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button8.Text;
+                    relationship = FindRelationship(2, 1);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button23.Text;
+                    relationship = FindRelationship(2, 0);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button30.Text;
+                    relationship = FindRelationship(2, -1);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button21.Text;
+                    relationship = FindRelationship(2, -2);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button37.Text;
+                    relationship = FindRelationship(2, -3);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button56.Text;
+                    relationship = FindRelationship(2, -4);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button82.Text;
+                    relationship = FindRelationship(2, -5);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button83.Text;
+                    relationship = FindRelationship(2, -6);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = button84.Text;
+                    relationship = FindRelationship(2, -7);
                 }
             }
             else if (3 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = button3.Text;
+                    relationship = FindRelationship(0, 3);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button9.Text;
+                    relationship = FindRelationship(3, 2);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button13.Text;
+                    relationship = FindRelationship(3, 1);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button24.Text;
+                    relationship = FindRelationship(3, 0);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button31.Text;
+                    relationship = FindRelationship(3, -1);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button22.Text;
+                    relationship = FindRelationship(3, -2);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button38.Text;
+                    relationship = FindRelationship(3, -3);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button78.Text;
+                    relationship = FindRelationship(3, -4);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button79.Text;
+                    relationship = FindRelationship(3, -5);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = button80.Text;
+                    relationship = FindRelationship(3, -6);
                 }
             }
             else if (4 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = button1.Text;
+                    relationship = FindRelationship(0, 4);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button10.Text;
+                    relationship = FindRelationship(4, 3);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button14.Text;
+                    relationship = FindRelationship(4, 2);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button17.Text;
+                    relationship = FindRelationship(4, 1);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button25.Text;
+                    relationship = FindRelationship(4, 0);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button32.Text;
+                    relationship = FindRelationship(4, -1);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button27.Text;
+                    relationship = FindRelationship(4, -2);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button39.Text;
+                    relationship = FindRelationship(4, -3);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button76.Text;
+                    relationship = FindRelationship(4, -4);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = button77.Text;
+                    relationship = FindRelationship(4, -5);
                 }
             }
             else if (5 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = button4.Text;
+                    relationship = FindRelationship(0, 5);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button11.Text;
+                    relationship = FindRelationship(5, 4);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button15.Text;
+                    relationship = FindRelationship(5, 3);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button18.Text;
+                    relationship = FindRelationship(5, 2);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button19.Text;
+                    relationship = FindRelationship(5, 1);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button26.Text;
+                    relationship = FindRelationship(5, 0);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button33.Text;
+                    relationship = FindRelationship(5, -1);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button34.Text;
+                    relationship = FindRelationship(5, -2);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button40.Text;
+                    relationship = FindRelationship(5, -3);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[5;-4] 5-ный 2*пра(внучатый племянник)";
+                    relationship = FindRelationship(5, -4);
                 }
             }
             else if (6 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = button41.Text;
+                    relationship = FindRelationship(0, 6);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button42.Text;
+                    relationship = FindRelationship(6, 5);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button43.Text;
+                    relationship = FindRelationship(6, 4);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button44.Text;
+                    relationship = FindRelationship(6, 3);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button45.Text;
+                    relationship = FindRelationship(6, 2);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button46.Text;
+                    relationship = FindRelationship(6, 1);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button47.Text;
+                    relationship = FindRelationship(6, 0);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button48.Text;
+                    relationship = FindRelationship(6, -1);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button49.Text;
+                    relationship = FindRelationship(6, -2);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = button50.Text;
+                    relationship = FindRelationship(6, -3);
                 }
             }
             else if (7 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = button61.Text;
+                    relationship = FindRelationship(0, 7);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button62.Text;
+                    relationship = FindRelationship(7, 6);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button63.Text;
+                    relationship = FindRelationship(7, 5);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button64.Text;
+                    relationship = FindRelationship(7, 4);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button52.Text;
+                    relationship = FindRelationship(7, 3);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button65.Text;
+                    relationship = FindRelationship(7, 2);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button66.Text;
+                    relationship = FindRelationship(7, 1);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button97.Text;
+                    relationship = FindRelationship(7, 0);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button98.Text;
+                    relationship = FindRelationship(7, -1);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[7;-2] 7-ный внучатый племянник";
+                    relationship = FindRelationship(7, -2);
                 }
             }
             else if (8 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = "[0;8] 6*пра(дед)";
+                    relationship = FindRelationship(0, 8);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = button71.Text;
+                    relationship = FindRelationship(8, 7);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = button70.Text;
+                    relationship = FindRelationship(8, 6);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = button69.Text;
+                    relationship = FindRelationship(8, 5);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = button68.Text;
+                    relationship = FindRelationship(8, 4);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = button67.Text;
+                    relationship = FindRelationship(8, 3);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = button99.Text;
+                    relationship = FindRelationship(8, 2);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = button100.Text;
+                    relationship = FindRelationship(8, 1);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = button101.Text;
+                    relationship = FindRelationship(8, 0);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[8;-1] 8-ный племянник";
+                    relationship = FindRelationship(8, -1);
                 }
             }
             else if (9 == y0Result)
             {
                 if (0 == y1Result)
                 {
-                    relationship = "[0;9] 7*пра(дед)";
+                    relationship = FindRelationship(0, 9);
                 }
                 else if (1 == y1Result)
                 {
-                    relationship = "[9;8] 2-ный 6*пра(дед)";
+                    relationship = FindRelationship(9, 8);
                 }
                 else if (2 == y1Result)
                 {
-                    relationship = "[9;7] 3-ный 5*пра(дед)";
+                    relationship = FindRelationship(9, 7);
                 }
                 else if (3 == y1Result)
                 {
-                    relationship = "[9;6] 4-ный 4*пра(дед)";
+                    relationship = FindRelationship(9, 6);
                 }
                 else if (4 == y1Result)
                 {
-                    relationship = "[9;5] 5-ный 3*пра(дед)";
+                    relationship = FindRelationship(9, 5);
                 }
                 else if (5 == y1Result)
                 {
-                    relationship = "[9;4] 6-ный 2*пра(дед)";
+                    relationship = FindRelationship(9, 4);
                 }
                 else if (6 == y1Result)
                 {
-                    relationship = "[9;3] 7-ный прадед";
+                    relationship = FindRelationship(9, 3);
                 }
                 else if (7 == y1Result)
                 {
-                    relationship = "[9;2] 8-ный дед";
+                    relationship = FindRelationship(9, 2);
                 }
                 else if (8 == y1Result)
                 {
-                    relationship = "[9;1] 9-ный родитель";
+                    relationship = FindRelationship(9, 1);
                 }
                 else if (9 == y1Result)
                 {
-                    relationship = "[9;0] 9-ный брат";
+                    relationship = FindRelationship(9, 0);
                 }
             }
 
