@@ -14,14 +14,14 @@ namespace FamilyRelationshipDetector
 
         /*
         * TODO: кнопки должны отрисовываться после загрузки данных из файла следующего формата:
-        * Номер_родства;X;Y;Название_родства;Ширина_кнопки;
+        * Номер_родства;X;Y;Название_родства;Ширина_кнопки;Номер_кластера;
         * 
         * Например:
-        * 1;0;0;Пробанд;1;
-        * 2;1;0;Брат;1;
-        * 7;1;-1;Племянник;1;
-        * 3;0;1;Родитель;2;
-        * 5;0;2;Дед;3;
+        * 1;0;0;Пробанд;1;0;
+        * 2;1;0;Брат;1;1;
+        * 3;0;1;Родитель;2;2;
+        * 7;1;-1;Племянник;1;3;
+        * 5;0;2;Дед;3;3;
         */
 
         int x0 = 0,
@@ -42,18 +42,6 @@ namespace FamilyRelationshipDetector
             string[,,] relationships = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
                                                   (Math.Abs(j1 - j0) + 1) * (Math.Abs(i1 - i0) + 1),
                                                   10];
-
-            /*
-             * Построение матрицы предковых степеней родства
-             */
-            string[,] ancestors = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
-                                             (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
-
-            /*
-             * Построение матрицы потомковых степеней родства
-             */
-            string[,] descendants = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
-                                               (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
 
             int i = 0,
                 j = 0;
@@ -79,54 +67,16 @@ namespace FamilyRelationshipDetector
                                 jEnd <= j1;
                                 jEnd++)
                             {
-                                int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
-
-                                int jStartResult = jMRCA - jStart,
-                                    jEndResult = jMRCA - jEnd;
-
-                                /*
-                                 * Определение степеней родства, приходящихся личности предковыми
-                                 */
-                                if (iStart == iEnd && jStart < jEnd)
-                                {
-                                    foreach (var button in panel2.Controls.OfType<Button>())
-                                    {
-                                        string temp = button.Text;
-                                        string iTemp = temp.Substring(temp.IndexOf("[") + 1, temp.IndexOf(";") - temp.IndexOf("[") - 1);
-                                        string jTemp = temp.Substring(temp.IndexOf(";") + 1, temp.IndexOf("]") - temp.IndexOf(";") - 1);
-                                        string numTemp = temp.Substring(0, temp.IndexOf("."));
-
-                                        if (iTemp.Equals(iEnd.ToString()) && jTemp.Equals(jEnd.ToString()))
-                                        {
-                                            ancestors[i, j] = numTemp;
-                                        }
-                                    }
-                                }
-
-                                /*
-                                 * Определение степеней родства, приходящихся личности потомковыми
-                                 */
-                                if (iStart == iEnd && jStart > jEnd)
-                                {
-                                    foreach (var button in panel2.Controls.OfType<Button>())
-                                    {
-                                        string temp = button.Text;
-                                        string iTemp = temp.Substring(temp.IndexOf("[") + 1, temp.IndexOf(";") - temp.IndexOf("[") - 1);
-                                        string jTemp = temp.Substring(temp.IndexOf(";") + 1, temp.IndexOf("]") - temp.IndexOf(";") - 1);
-                                        string numTemp = temp.Substring(0, temp.IndexOf("."));
-
-                                        if (iTemp.Equals(iEnd.ToString()) && jTemp.Equals(jEnd.ToString()))
-                                        {
-                                            descendants[i, j] = numTemp;
-                                        }
-                                    }
-                                }
-
                                 /*
                                  * Исключение повторов степеней родства, занимающих более одной вертикали
                                  */
                                 if (!(jEnd > 0 && (iEnd > 0 && iEnd <= jEnd)))
                                 {
+                                    int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
+
+                                    int jStartResult = jMRCA - jStart,
+                                        jEndResult = jMRCA - jEnd;
+
                                     int k = 0;
 
                                     /*
@@ -202,6 +152,86 @@ namespace FamilyRelationshipDetector
                     }
 
                     outfile.WriteLine(content);
+                }
+            }
+
+            /*
+             * Построение матрицы предковых степеней родства
+             */
+            string[,] ancestors = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
+                                             (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
+
+            /*
+             * Построение матрицы потомковых степеней родства
+             */
+            string[,] descendants = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
+                                               (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
+
+            i = 0;
+            j = 0;
+
+            for (int iStart = i0;
+                iStart <= i1;
+                iStart++)
+            {
+                for (int jStart = j0;
+                    jStart <= j1;
+                    jStart++)
+                {
+                    for (int iEnd = i0;
+                    iEnd <= i1;
+                    iEnd++)
+                    {
+                        for (int jEnd = j0;
+                            jEnd <= j1;
+                            jEnd++)
+                        {
+                            if (iStart == iEnd)
+                            {
+                                /*
+                                 * Определение степеней родства, приходящихся личности предковыми
+                                 */
+                                if (jStart < jEnd)
+                                {
+                                    foreach (var button in panel2.Controls.OfType<Button>())
+                                    {
+                                        string temp = button.Text;
+                                        string iTemp = temp.Substring(temp.IndexOf("[") + 1, temp.IndexOf(";") - temp.IndexOf("[") - 1);
+                                        string jTemp = temp.Substring(temp.IndexOf(";") + 1, temp.IndexOf("]") - temp.IndexOf(";") - 1);
+                                        string numTemp = temp.Substring(0, temp.IndexOf("."));
+
+                                        if (iTemp.Equals(iEnd.ToString()) && jTemp.Equals(jEnd.ToString()))
+                                        {
+                                            ancestors[i, j] = numTemp;
+                                        }
+                                    }
+                                }
+                                /*
+                                 * Определение степеней родства, приходящихся личности потомковыми
+                                 */
+                                else if (jStart > jEnd)
+                                {
+                                    foreach (var button in panel2.Controls.OfType<Button>())
+                                    {
+                                        string temp = button.Text;
+                                        string iTemp = temp.Substring(temp.IndexOf("[") + 1, temp.IndexOf(";") - temp.IndexOf("[") - 1);
+                                        string jTemp = temp.Substring(temp.IndexOf(";") + 1, temp.IndexOf("]") - temp.IndexOf(";") - 1);
+                                        string numTemp = temp.Substring(0, temp.IndexOf("."));
+
+                                        if (iTemp.Equals(iEnd.ToString()) && jTemp.Equals(jEnd.ToString()))
+                                        {
+                                            descendants[i, j] = numTemp;
+                                        }
+                                    }
+                                }
+                            }
+
+                            j++;
+                        }
+                    }
+
+                    i++;
+                    j = 0;
                 }
             }
 
