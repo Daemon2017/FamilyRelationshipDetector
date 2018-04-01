@@ -112,6 +112,18 @@ namespace FamilyRelationshipDetector
                                                   (Math.Abs(j1 - j0) + 1) * (Math.Abs(i1 - i0) + 1),
                                                   10];
 
+            /*
+             * Построение матрицы предковых степеней родства
+             */
+            string[,] ancestors = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
+                                             (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
+
+            /*
+             * Построение матрицы потомковых степеней родства
+             */
+            string[,] descendants = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
+                                               (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
+
             int i = 0,
                 j = 0;
 
@@ -141,6 +153,51 @@ namespace FamilyRelationshipDetector
                                  */
                                 if (!(jEnd > 0 && (iEnd > 0 && iEnd <= jEnd)))
                                 {
+                                    foreach (var Relative in relatives)
+                                    {
+                                        int iTemp = Relative.Vertical;
+                                        int jTemp = Relative.Horizontal;
+                                        string numTemp = Relative.RelationNumber.ToString();
+
+                                        if (iStart == iEnd)
+                                        {
+                                            /*
+                                             * Определение степеней родства, приходящихся личности предковыми
+                                             */
+                                            if (jStart < jEnd)
+                                            {
+                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                {
+                                                    ancestors[i, j] = numTemp;
+                                                }
+                                            }
+                                            /*
+                                             * Определение степеней родства, приходящихся личности потомковыми
+                                             */
+                                            else if (jStart > jEnd)
+                                            {
+                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                {
+                                                    descendants[i, j] = numTemp;
+                                                }
+                                            }
+                                        }
+                                        else if (0 == iEnd && jEnd >= iStart)
+                                        {
+                                            /*
+                                             * Определение степеней родства, приходящихся личности предковыми
+                                             */
+                                            if (jStart < jEnd)
+                                            {
+                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                {
+                                                    ancestors[i, j] = numTemp;
+                                                }
+                                            }
+                                        }
+                                    }
+
+
                                     int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
 
                                     int jStartResult = jMRCA - jStart,
@@ -221,96 +278,6 @@ namespace FamilyRelationshipDetector
                     }
 
                     outfile.WriteLine(content);
-                }
-            }
-
-            /*
-             * Построение матрицы предковых степеней родства
-             */
-            string[,] ancestors = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
-                                             (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
-
-            /*
-             * Построение матрицы потомковых степеней родства
-             */
-            string[,] descendants = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
-                                               (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
-
-            i = 0;
-            j = 0;
-
-            for (int iStart = i0;
-                iStart <= i1;
-                iStart++)
-            {
-                for (int jStart = j0;
-                    jStart <= j1;
-                    jStart++)
-                {
-                    /*
-                     * Исключение повторов степеней родства, занимающих более одной вертикали
-                     */
-                    if (!(jStart > 0 && (iStart > 0 && iStart <= jStart)))
-                    {
-                        for (int iEnd = i0;
-                    iEnd <= i1;
-                    iEnd++)
-                        {
-                            for (int jEnd = j0;
-                                jEnd <= j1;
-                                jEnd++)
-                            {
-                                foreach (var Relative in relatives)
-                                {
-                                    int iTemp = Relative.Vertical;
-                                    int jTemp = Relative.Horizontal;
-                                    string numTemp = Relative.RelationNumber.ToString();
-
-                                    if (iStart == iEnd)
-                                    {
-                                        /*
-                                         * Определение степеней родства, приходящихся личности предковыми
-                                         */
-                                        if (jStart < jEnd)
-                                        {
-                                            if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
-                                            {
-                                                ancestors[i, j] = numTemp;
-                                            }
-                                        }
-                                        /*
-                                         * Определение степеней родства, приходящихся личности потомковыми
-                                         */
-                                        else if (jStart > jEnd)
-                                        {
-                                            if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
-                                            {
-                                                descendants[i, j] = numTemp;
-                                            }
-                                        }
-                                    }
-                                    else if (0 == iEnd && jEnd >= iStart)
-                                    {
-                                        /*
-                                         * Определение степеней родства, приходящихся личности предковыми
-                                         */
-                                        if (jStart < jEnd)
-                                        {
-                                            if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
-                                            {
-                                                ancestors[i, j] = numTemp;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                j++;
-                            }
-                        }
-
-                        i++;
-                        j = 0;
-                    }
                 }
             }
 
