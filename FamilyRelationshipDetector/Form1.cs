@@ -101,9 +101,14 @@ namespace FamilyRelationshipDetector
         private void button60_Click(object sender, EventArgs e)
         {
             int i0 = 0,
-                j0 = -3,
-                i1 = 5,
-                j1 = 3;
+                j0 = 0,
+                i1 = 0,
+                j1 = 0;
+
+            i0 = Convert.ToInt16(textBox1.Text);
+            j0 = Convert.ToInt16(textBox2.Text);
+            i1 = Convert.ToInt16(textBox4.Text);
+            j1 = Convert.ToInt16(textBox3.Text);
 
             /*
              * Построение матрицы возможных степеней родства
@@ -182,11 +187,11 @@ namespace FamilyRelationshipDetector
                                                 }
                                             }
                                         }
+                                        /*
+                                         * Определение степеней родства, приходящихся личности предковыми
+                                         */
                                         else if (0 == iEnd && jEnd >= iStart)
                                         {
-                                            /*
-                                             * Определение степеней родства, приходящихся личности предковыми
-                                             */
                                             if (jStart < jEnd)
                                             {
                                                 if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
@@ -195,8 +200,20 @@ namespace FamilyRelationshipDetector
                                                 }
                                             }
                                         }
+                                        /*
+                                         * Определение степеней родства, приходящихся личности потомковыми
+                                         */
+                                        else if (0 == iStart && iEnd <= jStart)
+                                        {
+                                            if (jStart > jEnd)
+                                            {
+                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                {
+                                                    descendants[i, j] = numTemp;
+                                                }
+                                            }
+                                        }
                                     }
-
 
                                     int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
 
