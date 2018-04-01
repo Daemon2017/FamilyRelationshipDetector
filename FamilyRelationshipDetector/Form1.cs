@@ -255,39 +255,45 @@ namespace FamilyRelationshipDetector
                             jEnd <= j1;
                             jEnd++)
                         {
-                            if (iStart == iEnd)
+                            foreach (var Relative in relatives)
                             {
-                                /*
-                                 * Определение степеней родства, приходящихся личности предковыми
-                                 */
-                                if (jStart < jEnd)
-                                {
-                                    foreach (var Relative in relatives)
-                                    {
-                                        int iTemp = Relative.Vertical;
-                                        int jTemp = Relative.Horizontal;
-                                        string numTemp = Relative.RelationNumber.ToString();
+                                int iTemp = Relative.Vertical;
+                                int jTemp = Relative.Horizontal;
+                                string numTemp = Relative.RelationNumber.ToString();
 
+                                if (iStart == iEnd)
+                                {
+                                    /*
+                                     * Определение степеней родства, приходящихся личности предковыми
+                                     */
+                                    if (jStart < jEnd)
+                                    {
                                         if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
                                         {
                                             ancestors[i, j] = numTemp;
                                         }
                                     }
-                                }
-                                /*
-                                 * Определение степеней родства, приходящихся личности потомковыми
-                                 */
-                                else if (jStart > jEnd)
-                                {
-                                    foreach (var Relative in relatives)
+                                    /*
+                                     * Определение степеней родства, приходящихся личности потомковыми
+                                     */
+                                    else if (jStart > jEnd)
                                     {
-                                        int iTemp = Relative.Vertical;
-                                        int jTemp = Relative.Horizontal;
-                                        string numTemp = Relative.RelationNumber.ToString();
-
                                         if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
                                         {
                                             descendants[i, j] = numTemp;
+                                        }
+                                    }
+                                }
+                                else if (0 == iEnd && jEnd >= iStart)
+                                {
+                                    /*
+                                     * Определение степеней родства, приходящихся личности предковыми
+                                     */
+                                    if (jStart < jEnd)
+                                    {
+                                        if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                        {
+                                            ancestors[i, j] = numTemp;
                                         }
                                     }
                                 }
