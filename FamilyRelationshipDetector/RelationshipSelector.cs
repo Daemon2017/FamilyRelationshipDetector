@@ -8,7 +8,7 @@ namespace FamilyRelationshipDetector
         {
             string relationship = "";
 
-            foreach (var Relative in buttons)
+            foreach (var Relative in relatives)
             {
                 if (Relative.Vertical == x && Relative.Horizontal == y)
                 {

@@ -18,7 +18,7 @@ namespace FamilyRelationshipDetector
             x1 = 0,
             y1 = 0;
 
-        List<Relative> buttons = new List<Relative>();
+        List<Relative> relatives = new List<Relative>();
 
         string[,] relationshipMatrix;
 
@@ -77,7 +77,7 @@ namespace FamilyRelationshipDetector
                 newRelative.Height = 50;
                 newRelative.Text = newRelative.RelationNumber + ". [" + newRelative.Vertical + ";" + newRelative.Horizontal + "] " + newRelative.RelationName;
                 newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
-                buttons.Add(newRelative);
+                relatives.Add(newRelative);
                 panel2.Controls.Add(newRelative);
             }
         }
@@ -262,14 +262,13 @@ namespace FamilyRelationshipDetector
                                  */
                                 if (jStart < jEnd)
                                 {
-                                    foreach (var button in panel2.Controls.OfType<Button>())
+                                    foreach (var Relative in relatives)
                                     {
-                                        string temp = button.Text;
-                                        string iTemp = temp.Substring(temp.IndexOf("[") + 1, temp.IndexOf(";") - temp.IndexOf("[") - 1);
-                                        string jTemp = temp.Substring(temp.IndexOf(";") + 1, temp.IndexOf("]") - temp.IndexOf(";") - 1);
-                                        string numTemp = temp.Substring(0, temp.IndexOf("."));
+                                        int iTemp = Relative.Vertical;
+                                        int jTemp = Relative.Horizontal;
+                                        string numTemp = Relative.RelationNumber.ToString();
 
-                                        if (iTemp.Equals(iEnd.ToString()) && jTemp.Equals(jEnd.ToString()))
+                                        if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
                                         {
                                             ancestors[i, j] = numTemp;
                                         }
@@ -280,14 +279,13 @@ namespace FamilyRelationshipDetector
                                  */
                                 else if (jStart > jEnd)
                                 {
-                                    foreach (var button in panel2.Controls.OfType<Button>())
+                                    foreach (var Relative in relatives)
                                     {
-                                        string temp = button.Text;
-                                        string iTemp = temp.Substring(temp.IndexOf("[") + 1, temp.IndexOf(";") - temp.IndexOf("[") - 1);
-                                        string jTemp = temp.Substring(temp.IndexOf(";") + 1, temp.IndexOf("]") - temp.IndexOf(";") - 1);
-                                        string numTemp = temp.Substring(0, temp.IndexOf("."));
+                                        int iTemp = Relative.Vertical;
+                                        int jTemp = Relative.Horizontal;
+                                        string numTemp = Relative.RelationNumber.ToString();
 
-                                        if (iTemp.Equals(iEnd.ToString()) && jTemp.Equals(jEnd.ToString()))
+                                        if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
                                         {
                                             descendants[i, j] = numTemp;
                                         }
