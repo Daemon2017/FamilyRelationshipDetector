@@ -291,9 +291,17 @@ namespace FamilyRelationshipDetector
                             }
                         }
 
+                        if (content != "")
+                        {
+                            content = content.Remove(content.Length - 1);
+                        }
                         content += ",";
                     }
 
+                    if (content != "")
+                    {
+                        content = content.Remove(content.Length - 1);
+                    }
                     outfile.WriteLine(content);
                 }
             }
@@ -314,6 +322,10 @@ namespace FamilyRelationshipDetector
                         }
                     }
 
+                    if (content != "")
+                    {
+                        content = content.Remove(content.Length - 1);
+                    }
                     outfile.WriteLine(content);
                 }
             }
@@ -334,6 +346,10 @@ namespace FamilyRelationshipDetector
                         }
                     }
 
+                    if (content != "")
+                    {
+                        content = content.Remove(content.Length - 1);
+                    }
                     outfile.WriteLine(content);
                 }
             }
