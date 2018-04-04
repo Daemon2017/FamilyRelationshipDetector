@@ -20,14 +20,12 @@ namespace FamilyRelationshipDetector
 
         List<Relative> relatives = new List<Relative>();
 
-        string[,] relationshipMatrix;
-
         private void Form1_Load(object sender, EventArgs e)
         {
             int numberOfRows = File.ReadAllLines(@"InputMatrix.cfg").ToArray().Length;
             string input = File.ReadAllText(@"InputMatrix.cfg");
 
-            relationshipMatrix = new string[numberOfRows, 6];
+            string[,] relationshipMatrix = new string[numberOfRows, 6];
             int i = 0,
                 j = 0;
 
