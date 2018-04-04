@@ -60,20 +60,13 @@ namespace FamilyRelationshipDetector
 
             for (int a = 0; a < numberOfRows; a++)
             {
-                Relative newRelative = new Relative
-                {
-                    RelationNumber = Convert.ToInt16(relationshipMatrix[a, 0]),
-                    Vertical = Convert.ToInt16(relationshipMatrix[a, 1]),
-                    Horizontal = Convert.ToInt16(relationshipMatrix[a, 2]),
-                    RelationName = relationshipMatrix[a, 3],
-                    WidthMultiplier = Convert.ToInt16(relationshipMatrix[a, 4]),
-                    ClusterColor = relationshipMatrix[a, 5]
-                };
-                newRelative.Left = 100 * newRelative.Vertical;
-                newRelative.Top = (50 * 7) + (50 * -newRelative.Horizontal);
-                newRelative.Width = 100 * newRelative.WidthMultiplier;
-                newRelative.Height = 50;
-                newRelative.Text = newRelative.RelationNumber + ". [" + newRelative.Vertical + ";" + newRelative.Horizontal + "] " + newRelative.RelationName;
+                Relative newRelative = new Relative(Convert.ToInt16(relationshipMatrix[a, 0]), 
+                                                    Convert.ToInt16(relationshipMatrix[a, 1]), 
+                                                    Convert.ToInt16(relationshipMatrix[a, 2]),
+                                                    relationshipMatrix[a, 3], 
+                                                    Convert.ToInt16(relationshipMatrix[a, 4]), 
+                                                    relationshipMatrix[a, 5],
+                                                    maxHorizontal);
                 newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
                 relatives.Add(newRelative);
                 panel2.Controls.Add(newRelative);
