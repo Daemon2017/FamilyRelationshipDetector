@@ -101,184 +101,221 @@ namespace FamilyRelationshipDetector
             i1 = Convert.ToInt16(textBox4.Text);
             j1 = Convert.ToInt16(textBox3.Text);
 
-            /*
-             * Построение матрицы возможных степеней родства
-             */
-            string[,,] relationships = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
-                                                  (Math.Abs(j1 - j0) + 1) * (Math.Abs(i1 - i0) + 1),
-                                                  10];
-
-            /*
-             * Построение матрицы предковых степеней родства
-             */
-            string[,] ancestors = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
-                                             (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
-
-            /*
-             * Построение матрицы потомковых степеней родства
-             */
-            string[,] descendants = new string[(Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1),
-                                               (Math.Abs(i1 - i0) + 1) * (Math.Abs(j1 - j0) + 1)];
-
-            int i = 0,
-                j = 0;
-
-            for (int iStart = i0;
-                iStart <= i1;
-                iStart++)
+            if (i1 >= i0 && j1 >= j0)
             {
-                for (int jStart = j0;
-                    jStart <= j1;
-                    jStart++)
-                {
-                    /*
-                     * Исключение повторов степеней родства, занимающих более одной вертикали
-                     */
-                    if (!(jStart > 0 && (iStart > 0 && iStart <= jStart)))
-                    {
-                        for (int iEnd = i0;
-                        iEnd <= i1;
-                        iEnd++)
-                        {
-                            for (int jEnd = j0;
-                                jEnd <= j1;
-                                jEnd++)
-                            {
-                                /*
-                                 * Исключение повторов степеней родства, занимающих более одной вертикали
-                                 */
-                                if (!(jEnd > 0 && (iEnd > 0 && iEnd <= jEnd)))
-                                {
-                                    foreach (var Relative in relatives)
-                                    {
-                                        int iTemp = Relative.Vertical;
-                                        int jTemp = Relative.Horizontal;
-                                        string numTemp = Relative.RelationNumber.ToString();
+                int quantityOfCells = -26 + i0 * -4 + j0 * -6 + i1 * 7 + j1 * 3;
 
-                                        if (iStart == iEnd)
+                /*
+                 * Построение матрицы возможных степеней родства
+                 */
+                string[,,] relationships = new string[quantityOfCells,
+                                                      quantityOfCells,
+                                                      10];
+
+                /*
+                 * Построение матрицы предковых степеней родства
+                 */
+                string[,] ancestors = new string[quantityOfCells,
+                                                 quantityOfCells];
+
+                /*
+                 * Построение матрицы потомковых степеней родства
+                 */
+                string[,] descendants = new string[quantityOfCells,
+                                                   quantityOfCells];
+
+                int i = 0,
+                    j = 0;
+
+                for (int iStart = i0;
+                    iStart <= i1;
+                    iStart++)
+                {
+                    for (int jStart = j0;
+                        jStart <= j1;
+                        jStart++)
+                    {
+                        /*
+                         * Исключение повторов степеней родства, занимающих более одной вертикали
+                         */
+                        if (!(jStart > 0 && (iStart > 0 && iStart <= jStart)))
+                        {
+                            for (int iEnd = i0;
+                            iEnd <= i1;
+                            iEnd++)
+                            {
+                                for (int jEnd = j0;
+                                    jEnd <= j1;
+                                    jEnd++)
+                                {
+                                    /*
+                                     * Исключение повторов степеней родства, занимающих более одной вертикали
+                                     */
+                                    if (!(jEnd > 0 && (iEnd > 0 && iEnd <= jEnd)))
+                                    {
+                                        foreach (var Relative in relatives)
                                         {
+                                            int iTemp = Relative.Vertical;
+                                            int jTemp = Relative.Horizontal;
+                                            string numTemp = Relative.RelationNumber.ToString();
+
+                                            if (iStart == iEnd)
+                                            {
+                                                /*
+                                                 * Определение степеней родства, приходящихся личности предковыми
+                                                 */
+                                                if (jStart < jEnd)
+                                                {
+                                                    if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                    {
+                                                        ancestors[i, j] = numTemp;
+                                                    }
+                                                }
+                                                /*
+                                                 * Определение степеней родства, приходящихся личности потомковыми
+                                                 */
+                                                else if (jStart > jEnd)
+                                                {
+                                                    if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                    {
+                                                        descendants[i, j] = numTemp;
+                                                    }
+                                                }
+                                            }
                                             /*
                                              * Определение степеней родства, приходящихся личности предковыми
                                              */
-                                            if (jStart < jEnd)
+                                            else if (0 == iEnd && jEnd >= iStart)
                                             {
-                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                if (jStart < jEnd)
                                                 {
-                                                    ancestors[i, j] = numTemp;
+                                                    if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                    {
+                                                        ancestors[i, j] = numTemp;
+                                                    }
                                                 }
                                             }
                                             /*
                                              * Определение степеней родства, приходящихся личности потомковыми
                                              */
-                                            else if (jStart > jEnd)
+                                            else if (0 == iStart && iEnd <= jStart)
                                             {
-                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                if (jStart > jEnd)
                                                 {
-                                                    descendants[i, j] = numTemp;
+                                                    if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                    {
+                                                        descendants[i, j] = numTemp;
+                                                    }
                                                 }
                                             }
                                         }
+
+                                        int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
+
+                                        int jStartResult = jMRCA - jStart,
+                                            jEndResult = jMRCA - jEnd;
+
+                                        int k = 0;
+
                                         /*
-                                         * Определение степеней родства, приходящихся личности предковыми
+                                         * Определение основной степени родства
                                          */
-                                        else if (0 == iEnd && jEnd >= iStart)
-                                        {
-                                            if (jStart < jEnd)
-                                            {
-                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
-                                                {
-                                                    ancestors[i, j] = numTemp;
-                                                }
-                                            }
-                                        }
+                                        relationships[i, j, k] = RelationshipSelector(jStartResult, jEndResult);
+
+                                        k++;
+
                                         /*
-                                         * Определение степеней родства, приходящихся личности потомковыми
+                                         * Обработка расклада, когда первичная и вторичная личность находятся в одной вертикали
+                                         * и между ними возможны различные степени родства
                                          */
-                                        else if (0 == iStart && iEnd <= jStart)
+                                        if (iStart == iEnd)
                                         {
-                                            if (jStart > jEnd)
+                                            if (!((iStart == 0 && jStart >= 0) ||
+                                                (iEnd == 0 && jEnd >= 0)))
                                             {
-                                                if (iTemp.Equals(iEnd) && jTemp.Equals(jEnd))
+                                                int j0New = jStart,
+                                                    j1New = jEnd;
+
+                                                while (j0New < iStart && j1New < iEnd)
                                                 {
-                                                    descendants[i, j] = numTemp;
+                                                    jMRCA = MrcaSelector(iStart, ++j0New, iEnd, ++j1New);
+
+                                                    relationships[i, j, k] = RelationshipSelector(jMRCA - jStart, jMRCA - jEnd);
+
+                                                    k++;
                                                 }
                                             }
                                         }
-                                    }
 
-                                    int jMRCA = MrcaSelector(iStart, jStart, iEnd, jEnd);
-
-                                    int jStartResult = jMRCA - jStart,
-                                        jEndResult = jMRCA - jEnd;
-
-                                    int k = 0;
-
-                                    /*
-                                     * Определение основной степени родства
-                                     */
-                                    relationships[i, j, k] = RelationshipSelector(jStartResult, jEndResult);
-
-                                    k++;
-
-                                    /*
-                                     * Обработка расклада, когда первичная и вторичная личность находятся в одной вертикали
-                                     * и между ними возможны различные степени родства
-                                     */
-                                    if (iStart == iEnd)
-                                    {
-                                        if (!((iStart == 0 && jStart >= 0) ||
-                                            (iEnd == 0 && jEnd >= 0)))
+                                        /*
+                                         * Обработка расклада, когда между первичной и вторичной личностями может не быть родства
+                                         */
+                                        if (((iStart > 1) && (iEnd > 1)) ||
+                                            ((jStart > 0) && (jEnd > 0)) ||
+                                            ((jStart > 0) && (iEnd > 1) || (jEnd > 0) && (iStart > 1)))
                                         {
-                                            int j0New = jStart,
-                                                j1New = jEnd;
-
-                                            while (j0New < iStart && j1New < iEnd)
-                                            {
-                                                jMRCA = MrcaSelector(iStart, ++j0New, iEnd, ++j1New);
-
-                                                relationships[i, j, k] = RelationshipSelector(jMRCA - jStart, jMRCA - jEnd);
-
-                                                k++;
-                                            }
+                                            relationships[i, j, k] = "0.";
                                         }
-                                    }
 
-                                    /*
-                                     * Обработка расклада, когда между первичной и вторичной личностями может не быть родства
-                                     */
-                                    if (((iStart > 1) && (iEnd > 1)) ||
-                                        ((jStart > 0) && (jEnd > 0)) ||
-                                        ((jStart > 0) && (iEnd > 1) || (jEnd > 0) && (iStart > 1)))
-                                    {
-                                        relationships[i, j, k] = "0.";
+                                        j++;
                                     }
-
-                                    j++;
                                 }
                             }
-                        }
 
-                        i++;
-                        j = 0;
+                            i++;
+                            j = 0;
+                        }
                     }
                 }
-            }
 
-            using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
-            {
-                for (int x = 0; x < relationships.GetLength(0); x++)
+                using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
                 {
-                    string content = "";
-
-                    for (int y = 0; y < relationships.GetLength(1); y++)
+                    for (int x = 0; x < relationships.GetLength(0); x++)
                     {
-                        for (int z = 0; z < relationships.GetLength(2); z++)
+                        string content = "";
+
+                        for (int y = 0; y < relationships.GetLength(1); y++)
                         {
-                            string temp = relationships[x, y, z];
+                            for (int z = 0; z < relationships.GetLength(2); z++)
+                            {
+                                string temp = relationships[x, y, z];
+
+                                if (temp != null)
+                                {
+                                    content += temp.Substring(0, temp.IndexOf(".")) + ";";
+                                }
+                            }
+
+                            if (content != "")
+                            {
+                                content = content.Remove(content.Length - 1);
+                            }
+
+                            content += ",";
+                        }
+
+                        if (content != "")
+                        {
+                            content = content.Remove(content.Length - 1);
+                        }
+
+                        outfile.WriteLine(content);
+                    }
+                }
+
+                using (StreamWriter outfile = new StreamWriter(@"ancestors.csv"))
+                {
+                    for (int x = 0; x < ancestors.GetLength(0); x++)
+                    {
+                        string content = "";
+
+                        for (int y = 0; y < ancestors.GetLength(1); y++)
+                        {
+                            string temp = ancestors[x, y];
 
                             if (temp != null)
                             {
-                                content += temp.Substring(0, temp.IndexOf(".")) + ";";
+                                content += temp + ",";
                             }
                         }
 
@@ -287,66 +324,43 @@ namespace FamilyRelationshipDetector
                             content = content.Remove(content.Length - 1);
                         }
 
-                        content += ",";
+                        outfile.WriteLine(content);
                     }
+                }
 
-                    if (content != "")
+                using (StreamWriter outfile = new StreamWriter(@"descendants.csv"))
+                {
+                    for (int x = 0; x < descendants.GetLength(0); x++)
                     {
-                        content = content.Remove(content.Length - 1);
-                    }
+                        string content = "";
 
-                    outfile.WriteLine(content);
+                        for (int y = 0; y < descendants.GetLength(1); y++)
+                        {
+                            string temp = descendants[x, y];
+
+                            if (temp != null)
+                            {
+                                content += temp + ",";
+                            }
+                        }
+
+                        if (content != "")
+                        {
+                            content = content.Remove(content.Length - 1);
+                        }
+
+                        outfile.WriteLine(content);
+                    }
                 }
             }
-
-            using (StreamWriter outfile = new StreamWriter(@"ancestors.csv"))
+            else
             {
-                for (int x = 0; x < ancestors.GetLength(0); x++)
-                {
-                    string content = "";
+                string caption = "Ошибка начальных/конечных значений";
+                string message = "Конечные значения X и Y должны превышать их начальные значения!";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
 
-                    for (int y = 0; y < ancestors.GetLength(1); y++)
-                    {
-                        string temp = ancestors[x, y];
-
-                        if (temp != null)
-                        {
-                            content += temp + ",";
-                        }
-                    }
-
-                    if (content != "")
-                    {
-                        content = content.Remove(content.Length - 1);
-                    }
-
-                    outfile.WriteLine(content);
-                }
-            }
-
-            using (StreamWriter outfile = new StreamWriter(@"descendants.csv"))
-            {
-                for (int x = 0; x < descendants.GetLength(0); x++)
-                {
-                    string content = "";
-
-                    for (int y = 0; y < descendants.GetLength(1); y++)
-                    {
-                        string temp = descendants[x, y];
-
-                        if (temp != null)
-                        {
-                            content += temp + ",";
-                        }
-                    }
-
-                    if (content != "")
-                    {
-                        content = content.Remove(content.Length - 1);
-                    }
-
-                    outfile.WriteLine(content);
-                }
+                result = MessageBox.Show(message, caption, buttons);
             }
         }
 
