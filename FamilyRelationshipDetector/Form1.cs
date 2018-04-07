@@ -60,11 +60,11 @@ namespace FamilyRelationshipDetector
 
             for (int a = 0; a < numberOfRows; a++)
             {
-                Relative newRelative = new Relative(Convert.ToInt16(relationshipMatrix[a, 0]), 
-                                                    Convert.ToInt16(relationshipMatrix[a, 1]), 
+                Relative newRelative = new Relative(Convert.ToInt16(relationshipMatrix[a, 0]),
+                                                    Convert.ToInt16(relationshipMatrix[a, 1]),
                                                     Convert.ToInt16(relationshipMatrix[a, 2]),
-                                                    relationshipMatrix[a, 3], 
-                                                    Convert.ToInt16(relationshipMatrix[a, 4]), 
+                                                    relationshipMatrix[a, 3],
+                                                    Convert.ToInt16(relationshipMatrix[a, 4]),
                                                     relationshipMatrix[a, 5],
                                                     maxHorizontal);
                 newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
@@ -286,6 +286,7 @@ namespace FamilyRelationshipDetector
                         {
                             content = content.Remove(content.Length - 1);
                         }
+
                         content += ",";
                     }
 
@@ -293,6 +294,7 @@ namespace FamilyRelationshipDetector
                     {
                         content = content.Remove(content.Length - 1);
                     }
+
                     outfile.WriteLine(content);
                 }
             }
@@ -317,6 +319,7 @@ namespace FamilyRelationshipDetector
                     {
                         content = content.Remove(content.Length - 1);
                     }
+
                     outfile.WriteLine(content);
                 }
             }
@@ -341,6 +344,7 @@ namespace FamilyRelationshipDetector
                     {
                         content = content.Remove(content.Length - 1);
                     }
+
                     outfile.WriteLine(content);
                 }
             }
