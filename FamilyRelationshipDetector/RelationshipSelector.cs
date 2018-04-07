@@ -27,7 +27,7 @@ namespace FamilyRelationshipDetector
             {
                 if (0 == y1Result)
                 {
-                    relationship = null;
+                    relationship = FindRelationship(0, 0);
                 }
                 else if (1 == y1Result)
                 {
