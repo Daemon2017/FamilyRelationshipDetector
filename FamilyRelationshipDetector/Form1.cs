@@ -113,11 +113,6 @@ namespace FamilyRelationshipDetector
                                                       10];
 
                 /*
-                 * Построение указателя к матрице возможных степеней родства
-                 */
-                string[] relationshipsHelper = new string[quantityOfCells];
-
-                /*
                  * Построение матрицы предковых степеней родства
                  */
                 string[,] ancestors = new string[quantityOfCells,
@@ -145,14 +140,6 @@ namespace FamilyRelationshipDetector
                          */
                         if (!(jStart > 0 && (iStart > 0 && iStart <= jStart)))
                         {
-                            foreach (var Relative in relatives)
-                            {
-                                if (Relative.Horizontal == jStart && Relative.Vertical == iStart)
-                                {
-                                    relationshipsHelper[i] = Relative.RelationNumber.ToString();
-                                }
-                            }
-
                             for (int iEnd = i0;
                             iEnd <= i1;
                             iEnd++)
@@ -311,16 +298,6 @@ namespace FamilyRelationshipDetector
                         {
                             content = content.Remove(content.Length - 1);
                         }
-
-                        outfile.WriteLine(content);
-                    }
-                }
-
-                using (StreamWriter outfile = new StreamWriter(@"relationshipsHelper.csv"))
-                {
-                    for (int x = 0; x < relationshipsHelper.GetLength(0); x++)
-                    {
-                        string content = relationshipsHelper[x];
 
                         outfile.WriteLine(content);
                     }
