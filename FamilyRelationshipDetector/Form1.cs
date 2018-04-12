@@ -110,7 +110,7 @@ namespace FamilyRelationshipDetector
                  */
                 string[,,] relationships = new string[quantityOfCells,
                                                       quantityOfCells,
-                                                      10];
+                                                      100];
 
                 /*
                  * Построение матрицы предковых степеней родства
@@ -280,7 +280,7 @@ namespace FamilyRelationshipDetector
                             {
                                 string temp = relationships[x, y, z];
 
-                                if (temp != null)
+                                if (temp != null && temp != "")
                                 {
                                     content += temp.Substring(0, temp.IndexOf(".")) + ";";
                                 }

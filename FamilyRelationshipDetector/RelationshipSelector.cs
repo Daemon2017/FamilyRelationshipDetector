@@ -21,7 +21,7 @@ namespace FamilyRelationshipDetector
 
         private string RelationshipSelector(int y0Result, int y1Result)
         {
-            string relationship = "?.";
+            string relationship = "";
 
             if (0 == y0Result)
             {
