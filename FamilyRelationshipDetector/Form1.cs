@@ -65,7 +65,7 @@ namespace FamilyRelationshipDetector
                                                     Convert.ToInt16(relationshipMatrix[a, 2]),
                                                     relationshipMatrix[a, 3],
                                                     Convert.ToInt16(relationshipMatrix[a, 4]),
-                                                    relationshipMatrix[a, 5],
+                                                    Convert.ToInt16(relationshipMatrix[a, 5]),
                                                     maxHorizontal);
                 newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
                 relatives.Add(newRelative);
