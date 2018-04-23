@@ -4,59 +4,62 @@ namespace FamilyRelationshipDetector
 {
     public partial class Form1 : Form
     {
-        private int MrcaSelector(int x0, int y0, int x1, int y1)
+        private int MrcaSelector(int startX, int startY, int endX, int endY)
         {
-            int yMRCA = 0;
+            int numberOfGenerationOfMrca = 0;
 
-            if (x0 > x1)
+            /*
+             * Определение количества поколений до БОП.
+             */
+            if (startX > endX)
             {
-                if (0 == x1)
+                if (0 == endX)
                 {
-                    if ((0 < x0) && (x0 < y1))
+                    if ((0 < startX) && (startX < endY))
                     {
-                        yMRCA = y1;
+                        numberOfGenerationOfMrca = endY;
                     }
                     else
                     {
-                        yMRCA = x0;
+                        numberOfGenerationOfMrca = startX;
                     }
                 }
                 else
                 {
-                    yMRCA = x0;
+                    numberOfGenerationOfMrca = startX;
                 }
             }
-            else if (x0 == x1)
+            else if (startX == endX)
             {
-                if (y0 >= y1)
+                if (startY >= endY)
                 {
-                    yMRCA = y0;
+                    numberOfGenerationOfMrca = startY;
                 }
                 else
                 {
-                    yMRCA = y1;
+                    numberOfGenerationOfMrca = endY;
                 }
             }
-            else if (x0 < x1)
+            else if (startX < endX)
             {
-                if (0 == x0)
+                if (0 == startX)
                 {
-                    if ((0 < x1) && (x1 < y0))
+                    if ((0 < endX) && (endX < startY))
                     {
-                        yMRCA = y0;
+                        numberOfGenerationOfMrca = startY;
                     }
                     else
                     {
-                        yMRCA = x1;
+                        numberOfGenerationOfMrca = endX;
                     }
                 }
                 else
                 {
-                    yMRCA = x1;
+                    numberOfGenerationOfMrca = endX;
                 }
             }
 
-            return yMRCA;
+            return numberOfGenerationOfMrca;
         }
     }
 }

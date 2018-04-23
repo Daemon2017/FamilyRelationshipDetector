@@ -6,26 +6,26 @@ namespace FamilyRelationshipDetector
     class Relative : Button
     {
         public int RelationNumber { get; set; }
-        public int Vertical { get; set; }
-        public int Horizontal { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
         public string RelationName { get; set; }
         public int WidthMultiplier { get; set; }
         public int ClusterColor { get; set; }
 
-        public Relative(int RelationNumber, int Vertical, int Horizontal, string RelationName, int WidthMultiplier, int ClusterColor, int maxHorizontal)
+        public Relative(int RelationNumber, int X, int Y, string RelationName, int WidthMultiplier, int ClusterColor, int maxHorizontal)
         {
             this.RelationNumber = RelationNumber;
-            this.Vertical = Vertical;
-            this.Horizontal = Horizontal;
+            this.X = X;
+            this.Y = Y;
             this.RelationName = RelationName;
             this.WidthMultiplier = WidthMultiplier;
             this.ClusterColor = ClusterColor;
 
-            Left = 100 * Vertical;
-            Top = (50 * maxHorizontal) + (50 * -Horizontal);
+            Left = 100 * X;
+            Top = (50 * maxHorizontal) + (50 * -Y);
             Width = 100 * WidthMultiplier;
             Height = 50;
-            Text = RelationNumber + ". [" + Vertical + ";" + Horizontal + "] " + RelationName;
+            Text = RelationNumber + ". [" + X + ";" + Y + "] " + RelationName;
 
             switch(ClusterColor)
             {

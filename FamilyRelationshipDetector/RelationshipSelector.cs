@@ -4,35 +4,42 @@ namespace FamilyRelationshipDetector
 {
     public partial class Form1 : Form
     {
-        private string FindRelationship(int x, int y)
+        private string FindTypeOfRelationship(int X, int Y)
         {
-            string relationship = "";
+            string foundRelationship = "";
 
+            /*
+             * Поиск степени родства, имеющей соответствующие координаты по X и Y.
+             */
             foreach (var Relative in relatives)
             {
-                if (Relative.Vertical == x && Relative.Horizontal == y)
+                if (Relative.X == X && 
+                    Relative.Y == Y)
                 {
-                    relationship = Relative.RelationNumber + ". [" + Relative.Vertical + ";" + Relative.Horizontal + "] " + Relative.RelationName;
+                    foundRelationship = Relative.RelationNumber + ". [" + Relative.X + ";" + Relative.Y + "] " + Relative.RelationName;
                 }
             }
 
-            return relationship;
+            return foundRelationship;
         }
 
-        private string RelationshipSelector(int y0Result, int y1Result)
+        private string DetectRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson)
         {
-            string relationship = "";
+            string typeOfRelationship = "";
 
-            if(0 == y1Result)
+            /*
+             * Определение степени родства между парой персон по данным о расстоянии от каждого из них до БОП.
+             */
+            if (0 == distanceBetweenMrcaAndFirstPerson)
             {
-                relationship = FindRelationship(0, y0Result);
+                typeOfRelationship = FindTypeOfRelationship(0, distanceBetweenMrcaAndNullPerson);
             }
             else
             {
-                relationship = FindRelationship(y0Result, y0Result + (-1) * y1Result);
-            }           
+                typeOfRelationship = FindTypeOfRelationship(distanceBetweenMrcaAndNullPerson, distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson);
+            }
 
-            return relationship;
+            return typeOfRelationship;
         }
     }
 }
