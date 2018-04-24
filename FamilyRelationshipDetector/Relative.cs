@@ -10,16 +10,16 @@ namespace FamilyRelationshipDetector
         public int Y { get; set; }
         public string RelationName { get; set; }
         public int WidthMultiplier { get; set; }
-        public int ClusterColor { get; set; }
+        public int ClusterNumber { get; set; }
 
-        public Relative(int RelationNumber, int X, int Y, string RelationName, int WidthMultiplier, int ClusterColor, int maxHorizontal)
+        public Relative(int RelationNumber, int X, int Y, string RelationName, int WidthMultiplier, int ClusterNumber, int maxHorizontal)
         {
             this.RelationNumber = RelationNumber;
             this.X = X;
             this.Y = Y;
             this.RelationName = RelationName;
             this.WidthMultiplier = WidthMultiplier;
-            this.ClusterColor = ClusterColor;
+            this.ClusterNumber = ClusterNumber;
 
             Left = 100 * X;
             Top = (50 * maxHorizontal) + (50 * -Y);
@@ -27,7 +27,7 @@ namespace FamilyRelationshipDetector
             Height = 50;
             Text = RelationNumber + ". [" + X + ";" + Y + "] " + RelationName;
 
-            switch(ClusterColor)
+            switch(ClusterNumber)
             {
                 case 0:
                     BackColor = Color.LightBlue;

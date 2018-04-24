@@ -152,7 +152,7 @@
             this.button12.TabIndex = 44;
             this.button12.Text = "Посчитать";
             this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
+            this.button12.Click += new System.EventHandler(this.Calculate);
             // 
             // panel1
             // 
@@ -259,7 +259,7 @@
             this.button60.TabIndex = 45;
             this.button60.Text = "Генерировать";
             this.button60.UseVisualStyleBackColor = true;
-            this.button60.Click += new System.EventHandler(this.button60_Click);
+            this.button60.Click += new System.EventHandler(this.Generate);
             // 
             // panel2
             // 

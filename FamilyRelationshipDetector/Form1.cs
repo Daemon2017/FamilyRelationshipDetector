@@ -50,7 +50,9 @@ namespace FamilyRelationshipDetector
             /*
              * Выявление всех возможных горизонталей.
              */
-            for (int i = 0; i < numberOfRows; i++)
+            for (int i = 0;
+                i < numberOfRows;
+                i++)
             {
                 horizonatal[i] = Convert.ToInt16(relationshipMatrix[i, 2]);
             }
@@ -60,7 +62,9 @@ namespace FamilyRelationshipDetector
             /*
              * Поиск наибольшей горизонтали.
              */
-            for (int i = 0; i < horizonatal.Length; i++)
+            for (int i = 0;
+                i < horizonatal.Length;
+                i++)
             {
                 if (horizonatal[i] > maxHorizontal)
                 {
@@ -68,7 +72,9 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            for (int i = 0; i < numberOfRows; i++)
+            for (int i = 0;
+                i < numberOfRows;
+                i++)
             {
                 Relative newRelative = new Relative(Convert.ToInt16(relationshipMatrix[i, 0]),
                                                     Convert.ToInt16(relationshipMatrix[i, 1]),
@@ -99,7 +105,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void button60_Click(object sender, EventArgs e)
+        private void Generate(object sender, EventArgs e)
         {
             int minX = 0,
                 minY = 0,
@@ -137,6 +143,11 @@ namespace FamilyRelationshipDetector
                 string[,] descendants = new string[quantityOfCells,
                                                    quantityOfCells];
 
+                /*
+                 * Построение матрицы количества общих сантиморган.
+                 */
+                string[] centimorgans = new string[quantityOfCells];
+
                 int i = 0,
                     j = 0;
 
@@ -162,14 +173,13 @@ namespace FamilyRelationshipDetector
                                     endY++)
                                 {
                                     /*
-                                     * Исключение повторов степеней родства, занимающих более одной вертикали.
+                                     * Исключение повторов степеней родства, 
+                                     * занимающих более одной вертикали.
                                      */
                                     if (!(endY > 0 && (endX > 0 && endX <= endY)))
                                     {
                                         foreach (var Relative in relatives)
                                         {
-                                            int tempX = Relative.X;
-                                            int tempY = Relative.Y;
                                             string numTemp = Relative.RelationNumber.ToString();
 
                                             if (startX == endX)
@@ -179,7 +189,7 @@ namespace FamilyRelationshipDetector
                                                  */
                                                 if (startY < endY)
                                                 {
-                                                    if (tempX.Equals(endX) && tempY.Equals(endY))
+                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
                                                         ancestors[i, j] = numTemp;
                                                     }
@@ -189,7 +199,7 @@ namespace FamilyRelationshipDetector
                                                  */
                                                 else if (startY > endY)
                                                 {
-                                                    if (tempX.Equals(endX) && tempY.Equals(endY))
+                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
                                                         descendants[i, j] = numTemp;
                                                     }
@@ -202,7 +212,7 @@ namespace FamilyRelationshipDetector
                                             {
                                                 if (startY < endY)
                                                 {
-                                                    if (tempX.Equals(endX) && tempY.Equals(endY))
+                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
                                                         ancestors[i, j] = numTemp;
                                                     }
@@ -215,7 +225,7 @@ namespace FamilyRelationshipDetector
                                             {
                                                 if (startY > endY)
                                                 {
-                                                    if (tempX.Equals(endX) && tempY.Equals(endY))
+                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
                                                         descendants[i, j] = numTemp;
                                                     }
@@ -275,6 +285,28 @@ namespace FamilyRelationshipDetector
                                 }
                             }
 
+                            /*
+                             * Определение ожидаемого количества общих сантиморган с каждой из степеней родства.
+                             */
+                            foreach (var Relative in relatives)
+                            {
+                                if (Relative.X.Equals(startX) && Relative.Y.Equals(startY))
+                                {
+                                    if (0 == Relative.ClusterNumber)
+                                    {
+                                        centimorgans[i] = "3400";
+                                    }
+                                    else if (1 == Relative.ClusterNumber)
+                                    {
+                                        centimorgans[i] = "2550";
+                                    }
+                                    else
+                                    {
+                                        centimorgans[i] = (3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString();
+                                    }
+                                }
+                            }
+
                             i++;
                             j = 0;
                         }
@@ -283,13 +315,19 @@ namespace FamilyRelationshipDetector
 
                 using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
                 {
-                    for (int nullPerson = 0; nullPerson < relationships.GetLength(0); nullPerson++)
+                    for (int nullPerson = 0;
+                        nullPerson < relationships.GetLength(0);
+                        nullPerson++)
                     {
                         string content = "";
 
-                        for (int firstPerson = 0; firstPerson < relationships.GetLength(1); firstPerson++)
+                        for (int firstPerson = 0;
+                            firstPerson < relationships.GetLength(1);
+                            firstPerson++)
                         {
-                            for (int relationship = 0; relationship < relationships.GetLength(2); relationship++)
+                            for (int relationship = 0;
+                                relationship < relationships.GetLength(2);
+                                relationship++)
                             {
                                 string temp = relationships[nullPerson, firstPerson, relationship];
 
@@ -318,11 +356,15 @@ namespace FamilyRelationshipDetector
 
                 using (StreamWriter outfile = new StreamWriter(@"ancestors.csv"))
                 {
-                    for (int relationship = 0; relationship < ancestors.GetLength(0); relationship++)
+                    for (int relationship = 0;
+                        relationship < ancestors.GetLength(0);
+                        relationship++)
                     {
                         string content = "";
 
-                        for (int ancestor = 0; ancestor < ancestors.GetLength(1); ancestor++)
+                        for (int ancestor = 0;
+                            ancestor < ancestors.GetLength(1);
+                            ancestor++)
                         {
                             string temp = ancestors[relationship, ancestor];
 
@@ -343,11 +385,15 @@ namespace FamilyRelationshipDetector
 
                 using (StreamWriter outfile = new StreamWriter(@"descendants.csv"))
                 {
-                    for (int relationship = 0; relationship < descendants.GetLength(0); relationship++)
+                    for (int relationship = 0;
+                        relationship < descendants.GetLength(0);
+                        relationship++)
                     {
                         string content = "";
 
-                        for (int descendant = 0; descendant < descendants.GetLength(1); descendant++)
+                        for (int descendant = 0;
+                            descendant < descendants.GetLength(1);
+                            descendant++)
                         {
                             string temp = descendants[relationship, descendant];
 
@@ -365,6 +411,16 @@ namespace FamilyRelationshipDetector
                         outfile.WriteLine(content);
                     }
                 }
+
+                using (StreamWriter outfile = new StreamWriter(@"centimorgans.csv"))
+                {
+                    for (int relationship = 0;
+                        relationship < centimorgans.GetLength(0);
+                        relationship++)
+                    {
+                        outfile.WriteLine(centimorgans[relationship].Replace(",", "."));
+                    }
+                }
             }
             else
             {
@@ -377,7 +433,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private void Calculate(object sender, EventArgs e)
         {
             int yMRCA = MrcaSelector(nullPersonsX, nullPersonsY, firstPersonsX, firstPersonsY);
 
