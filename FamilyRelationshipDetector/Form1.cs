@@ -148,8 +148,8 @@ namespace FamilyRelationshipDetector
                  */
                 string[] centimorgans = new string[quantityOfCells];
 
-                int i = 0,
-                    j = 0;
+                int person = 0,
+                    relative = 0;
 
                 for (int startX = minX;
                     startX <= maxX;
@@ -191,7 +191,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        ancestors[i, j] = numTemp;
+                                                        ancestors[person, relative] = numTemp;
                                                     }
                                                 }
                                                 /*
@@ -201,7 +201,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        descendants[i, j] = numTemp;
+                                                        descendants[person, relative] = numTemp;
                                                     }
                                                 }
                                             }
@@ -214,7 +214,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        ancestors[i, j] = numTemp;
+                                                        ancestors[person, relative] = numTemp;
                                                     }
                                                 }
                                             }
@@ -227,7 +227,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        descendants[i, j] = numTemp;
+                                                        descendants[person, relative] = numTemp;
                                                     }
                                                 }
                                             }
@@ -238,14 +238,14 @@ namespace FamilyRelationshipDetector
                                         int jStartResult = numberOfGenerationOfMrca - startY,
                                             jEndResult = numberOfGenerationOfMrca - endY;
 
-                                        int k = 0;
+                                        int relationship = 0;
 
                                         /*
                                          * Определение основной степени родства.
                                          */
-                                        relationships[i, j, k] = DetectRelationship(jStartResult, jEndResult);
+                                        relationships[person, relative, relationship] = DetectRelationship(jStartResult, jEndResult);
 
-                                        k++;
+                                        relationship++;
 
                                         /*
                                          * Обработка расклада, когда первичная и вторичная личность находятся в одной вертикали.
@@ -263,9 +263,9 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     numberOfGenerationOfMrca = MrcaSelector(startX, ++j0New, endX, ++j1New);
 
-                                                    relationships[i, j, k] = DetectRelationship(numberOfGenerationOfMrca - startY, numberOfGenerationOfMrca - endY);
+                                                    relationships[person, relative, relationship] = DetectRelationship(numberOfGenerationOfMrca - startY, numberOfGenerationOfMrca - endY);
 
-                                                    k++;
+                                                    relationship++;
                                                 }
                                             }
                                         }
@@ -277,10 +277,10 @@ namespace FamilyRelationshipDetector
                                             ((startY > 0) && (endY > 0)) ||
                                             ((startY > 0) && (endX > 1) || (endY > 0) && (startX > 1)))
                                         {
-                                            relationships[i, j, k] = "0.";
+                                            relationships[person, relative, relationship] = "0.";
                                         }
 
-                                        j++;
+                                        relative++;
                                     }
                                 }
                             }
@@ -294,21 +294,21 @@ namespace FamilyRelationshipDetector
                                 {
                                     if (0 == Relative.ClusterNumber)
                                     {
-                                        centimorgans[i] = "3400";
+                                        centimorgans[person] = "3400";
                                     }
                                     else if (1 == Relative.ClusterNumber)
                                     {
-                                        centimorgans[i] = "2550";
+                                        centimorgans[person] = "2550";
                                     }
                                     else
                                     {
-                                        centimorgans[i] = (3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString();
+                                        centimorgans[person] = (3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString();
                                     }
                                 }
                             }
 
-                            i++;
-                            j = 0;
+                            person++;
+                            relative = 0;
                         }
                     }
                 }
