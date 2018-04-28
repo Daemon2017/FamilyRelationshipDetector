@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
@@ -19,75 +17,6 @@ namespace FamilyRelationshipDetector
             firstPersonsY = 0;
 
         List<Relative> relatives = new List<Relative>();
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            int numberOfRows = File.ReadAllLines(@"InputMatrix.cfg").ToArray().Length;
-            string input = File.ReadAllText(@"InputMatrix.cfg");
-
-            string[,] relationshipMatrix = new string[numberOfRows, 6];
-            int numberOfRelative = 0,
-                numberOfParameter = 0;
-
-            /*
-             * Заполнение матрицы из файла.
-             */
-            foreach (var row in input.Split('\n'))
-            {
-                numberOfParameter = 0;
-
-                foreach (var column in row.Trim().Split(';'))
-                {
-                    relationshipMatrix[numberOfRelative, numberOfParameter] = column.Trim();
-                    numberOfParameter++;
-                }
-
-                numberOfRelative++;
-            }
-
-            int[] horizonatal = new int[numberOfRows];
-
-            /*
-             * Выявление всех возможных горизонталей.
-             */
-            for (int i = 0;
-                i < numberOfRows;
-                i++)
-            {
-                horizonatal[i] = Convert.ToInt16(relationshipMatrix[i, 2]);
-            }
-
-            int maxHorizontal = 0;
-
-            /*
-             * Поиск наибольшей горизонтали.
-             */
-            for (int i = 0;
-                i < horizonatal.Length;
-                i++)
-            {
-                if (horizonatal[i] > maxHorizontal)
-                {
-                    maxHorizontal = horizonatal[i];
-                }
-            }
-
-            for (int i = 0;
-                i < numberOfRows;
-                i++)
-            {
-                Relative newRelative = new Relative(Convert.ToInt16(relationshipMatrix[i, 0]),
-                                                    Convert.ToInt16(relationshipMatrix[i, 1]),
-                                                    Convert.ToInt16(relationshipMatrix[i, 2]),
-                                                    relationshipMatrix[i, 3],
-                                                    Convert.ToInt16(relationshipMatrix[i, 4]),
-                                                    Convert.ToInt16(relationshipMatrix[i, 5]),
-                                                    maxHorizontal);
-                newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
-                relatives.Add(newRelative);
-                panel2.Controls.Add(newRelative);
-            }
-        }
 
         private void RelativeButton_MouseDown(object sender, MouseEventArgs e)
         {
@@ -160,7 +89,8 @@ namespace FamilyRelationshipDetector
                         startY++)
                     {
                         /*
-                         * Исключение повторов степеней родства, занимающих более одной вертикали.
+                         * Исключение повторов степеней родства, 
+                         * занимающих более одной вертикали.
                          */
                         if (!(startY > 0 && (startX > 0 && startX <= startY)))
                         {
@@ -185,7 +115,8 @@ namespace FamilyRelationshipDetector
                                             if (startX == endX)
                                             {
                                                 /*
-                                                 * Определение степеней родства, приходящихся личности предковыми.
+                                                 * Определение степеней родства, 
+                                                 * приходящихся личности предковыми.
                                                  */
                                                 if (startY < endY)
                                                 {
@@ -195,7 +126,8 @@ namespace FamilyRelationshipDetector
                                                     }
                                                 }
                                                 /*
-                                                 * Определение степеней родства, приходящихся личности потомковыми.
+                                                 * Определение степеней родства, 
+                                                 * приходящихся личности потомковыми.
                                                  */
                                                 else if (startY > endY)
                                                 {
@@ -206,7 +138,8 @@ namespace FamilyRelationshipDetector
                                                 }
                                             }
                                             /*
-                                             * Определение степеней родства, приходящихся личности предковыми.
+                                             * Определение степеней родства, 
+                                             * приходящихся личности предковыми.
                                              */
                                             else if (0 == endX && endY >= startX)
                                             {
@@ -219,7 +152,8 @@ namespace FamilyRelationshipDetector
                                                 }
                                             }
                                             /*
-                                             * Определение степеней родства, приходящихся личности потомковыми.
+                                             * Определение степеней родства, 
+                                             * приходящихся личности потомковыми.
                                              */
                                             else if (0 == startX && endX <= startY)
                                             {
@@ -233,7 +167,10 @@ namespace FamilyRelationshipDetector
                                             }
                                         }
 
-                                        int numberOfGenerationOfMrca = MrcaSelector(startX, startY, endX, endY);
+                                        int numberOfGenerationOfMrca = MrcaSelector(startX, 
+                                                                                    startY, 
+                                                                                    endX, 
+                                                                                    endY);
 
                                         int jStartResult = numberOfGenerationOfMrca - startY,
                                             jEndResult = numberOfGenerationOfMrca - endY;
@@ -243,7 +180,8 @@ namespace FamilyRelationshipDetector
                                         /*
                                          * Определение основной степени родства.
                                          */
-                                        relationships[person, relative, relationship] = DetectRelationship(jStartResult, jEndResult);
+                                        relationships[person, relative, relationship] = DetectRelationship(jStartResult, 
+                                                                                                           jEndResult);
 
                                         relationship++;
 
@@ -261,9 +199,13 @@ namespace FamilyRelationshipDetector
 
                                                 while (j0New < startX && j1New < endX)
                                                 {
-                                                    numberOfGenerationOfMrca = MrcaSelector(startX, ++j0New, endX, ++j1New);
+                                                    numberOfGenerationOfMrca = MrcaSelector(startX, 
+                                                                                            ++j0New, 
+                                                                                            endX, 
+                                                                                            ++j1New);
 
-                                                    relationships[person, relative, relationship] = DetectRelationship(numberOfGenerationOfMrca - startY, numberOfGenerationOfMrca - endY);
+                                                    relationships[person, relative, relationship] = DetectRelationship(numberOfGenerationOfMrca - startY, 
+                                                                                                                       numberOfGenerationOfMrca - endY);
 
                                                     relationship++;
                                                 }
@@ -313,129 +255,26 @@ namespace FamilyRelationshipDetector
                     }
                 }
 
-                using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
-                {
-                    for (int nullPerson = 0;
-                        nullPerson < relationships.GetLength(0);
-                        nullPerson++)
-                    {
-                        string content = "";
+                SaveToFile("relationships.csv", relationships);
+                SaveToFile("centimorgans.csv", centimorgans);
 
-                        for (int firstPerson = 0;
-                            firstPerson < relationships.GetLength(1);
-                            firstPerson++)
-                        {
-                            for (int relationship = 0;
-                                relationship < relationships.GetLength(2);
-                                relationship++)
-                            {
-                                string temp = relationships[nullPerson, firstPerson, relationship];
-
-                                if (temp != null && temp != "")
-                                {
-                                    content += temp.Substring(0, temp.IndexOf(".")) + ";";
-                                }
-                            }
-
-                            if (content != "")
-                            {
-                                content = content.Remove(content.Length - 1);
-                            }
-
-                            content += ",";
-                        }
-
-                        if (content != "")
-                        {
-                            content = content.Remove(content.Length - 1);
-                        }
-
-                        outfile.WriteLine(content);
-                    }
-                }
-
-                using (StreamWriter outfile = new StreamWriter(@"ancestors.csv"))
-                {
-                    for (int relationship = 0;
-                        relationship < ancestors.GetLength(0);
-                        relationship++)
-                    {
-                        string content = "";
-
-                        for (int ancestor = 0;
-                            ancestor < ancestors.GetLength(1);
-                            ancestor++)
-                        {
-                            string temp = ancestors[relationship, ancestor];
-
-                            if (temp != null)
-                            {
-                                content += temp + ",";
-                            }
-                        }
-
-                        if (content != "")
-                        {
-                            content = content.Remove(content.Length - 1);
-                        }
-
-                        outfile.WriteLine(content);
-                    }
-                }
-
-                using (StreamWriter outfile = new StreamWriter(@"descendants.csv"))
-                {
-                    for (int relationship = 0;
-                        relationship < descendants.GetLength(0);
-                        relationship++)
-                    {
-                        string content = "";
-
-                        for (int descendant = 0;
-                            descendant < descendants.GetLength(1);
-                            descendant++)
-                        {
-                            string temp = descendants[relationship, descendant];
-
-                            if (temp != null)
-                            {
-                                content += temp + ",";
-                            }
-                        }
-
-                        if (content != "")
-                        {
-                            content = content.Remove(content.Length - 1);
-                        }
-
-                        outfile.WriteLine(content);
-                    }
-                }
-
-                using (StreamWriter outfile = new StreamWriter(@"centimorgans.csv"))
-                {
-                    for (int relationship = 0;
-                        relationship < centimorgans.GetLength(0);
-                        relationship++)
-                    {
-                        outfile.WriteLine(centimorgans[relationship].Replace(",", "."));
-                    }
-                }
+                SaveToFile("descendants.csv", descendants);
+                SaveToFile("ancestors.csv", ancestors);
             }
             else
             {
-                string caption = "Ошибка начальных/конечных значений";
-                string message = "Конечные значения X и Y должны превышать их начальные значения!";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-
-                result = MessageBox.Show(message, caption, buttons);
+                DialogResult result = MessageBox.Show("Конечные значения X и Y должны превышать их начальные значения!",
+                                                      "Ошибка начальных/конечных значений",
+                                                      MessageBoxButtons.OK);
             }
         }
 
         private void Calculate(object sender, EventArgs e)
         {
-            int yMRCA = MrcaSelector(nullPersonsX, nullPersonsY, firstPersonsX, firstPersonsY);
+            int yMRCA = MrcaSelector(nullPersonsX,
+                                     nullPersonsY,
+                                     firstPersonsX,
+                                     firstPersonsY);
 
             int y0Result = yMRCA - nullPersonsY,
                 y1Result = yMRCA - firstPersonsY;
@@ -443,7 +282,8 @@ namespace FamilyRelationshipDetector
             label7.Text = y0Result.ToString();
             label8.Text = y1Result.ToString();
 
-            label10.Text = DetectRelationship(y0Result, y1Result);
+            label10.Text = DetectRelationship(y0Result,
+                                              y1Result);
 
             if (nullPersonsX == firstPersonsX)
             {
@@ -455,7 +295,10 @@ namespace FamilyRelationshipDetector
 
                     while (y0New < nullPersonsX && y1New < firstPersonsX)
                     {
-                        yMRCA = MrcaSelector(nullPersonsX, ++y0New, firstPersonsX, ++y1New);
+                        yMRCA = MrcaSelector(nullPersonsX,
+                                             ++y0New,
+                                             firstPersonsX,
+                                             ++y1New);
 
                         label10.Text += "\n" + DetectRelationship(yMRCA - nullPersonsY, yMRCA - firstPersonsY);
                     }
