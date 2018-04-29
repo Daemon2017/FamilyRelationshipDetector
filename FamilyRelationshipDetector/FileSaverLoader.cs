@@ -89,7 +89,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void SaveToFile(string outputFileName, string[,] dataArray)
+        private void SaveToFile(string outputFileName, string[][] dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(outputFileName))
             {
@@ -100,10 +100,10 @@ namespace FamilyRelationshipDetector
                     string content = "";
 
                     for (int column = 0;
-                        column < dataArray.GetLength(1);
+                        column < dataArray[line].GetLength(0);
                         column++)
                     {
-                        string temp = dataArray[line, column];
+                        string temp = dataArray[line][column];
 
                         if (temp != null)
                         {
@@ -121,7 +121,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void SaveToFile(string outputFileName, string[,,] dataArray)
+        private void SaveToFile(string outputFileName, string[,][] dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
             {
@@ -136,10 +136,10 @@ namespace FamilyRelationshipDetector
                         column++)
                     {
                         for (int cell = 0;
-                            cell < dataArray.GetLength(2);
+                            cell < dataArray[line, column].GetLength(0);
                             cell++)
                         {
-                            string temp = dataArray[line, column, cell];
+                            string temp = dataArray[line, column][cell];
 
                             if (temp != null && temp != "")
                             {

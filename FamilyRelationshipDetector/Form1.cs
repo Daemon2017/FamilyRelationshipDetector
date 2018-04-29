@@ -56,26 +56,22 @@ namespace FamilyRelationshipDetector
                 /*
                  * Построение матрицы возможных степеней родства.
                  */
-                string[,,] relationships = new string[quantityOfCells,
-                                                      quantityOfCells,
-                                                      100];
+                string[,][] relationshipsMatrix = new string[quantityOfCells, quantityOfCells][];
 
                 /*
                  * Построение матрицы предковых степеней родства.
                  */
-                string[,] ancestors = new string[quantityOfCells,
-                                                 quantityOfCells];
+                string[][] ancestorsMatrix = new string[quantityOfCells][];
 
                 /*
                  * Построение матрицы потомковых степеней родства.
                  */
-                string[,] descendants = new string[quantityOfCells,
-                                                   quantityOfCells];
+                string[][] descendantsMatrix = new string[quantityOfCells][];
 
                 /*
                  * Построение матрицы количества общих сантиморган.
                  */
-                string[] centimorgans = new string[quantityOfCells];
+                string[] centimorgansMatrix = new string[quantityOfCells];
 
                 int person = 0,
                     relative = 0;
@@ -94,6 +90,9 @@ namespace FamilyRelationshipDetector
                          */
                         if (!(startY > 0 && (startX > 0 && startX <= startY)))
                         {
+                            ancestorsMatrix[person] = new string[quantityOfCells];
+                            descendantsMatrix[person] = new string[quantityOfCells];
+
                             for (int endX = minX;
                             endX <= maxX;
                             endX++)
@@ -122,7 +121,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        ancestors[person, relative] = numTemp;
+                                                        ancestorsMatrix[person][relative] = numTemp;
                                                     }
                                                 }
                                                 /*
@@ -133,7 +132,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        descendants[person, relative] = numTemp;
+                                                        descendantsMatrix[person][relative] = numTemp;
                                                     }
                                                 }
                                             }
@@ -147,7 +146,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        ancestors[person, relative] = numTemp;
+                                                        ancestorsMatrix[person][relative] = numTemp;
                                                     }
                                                 }
                                             }
@@ -161,26 +160,27 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        descendants[person, relative] = numTemp;
+                                                        descendantsMatrix[person][relative] = numTemp;
                                                     }
                                                 }
                                             }
                                         }
 
-                                        int numberOfGenerationOfMrca = MrcaSelector(startX, 
-                                                                                    startY, 
-                                                                                    endX, 
+                                        int numberOfGenerationOfMrca = MrcaSelector(startX,
+                                                                                    startY,
+                                                                                    endX,
                                                                                     endY);
 
                                         int jStartResult = numberOfGenerationOfMrca - startY,
                                             jEndResult = numberOfGenerationOfMrca - endY;
 
                                         int relationship = 0;
+                                        relationshipsMatrix[person, relative] = new string[100];
 
                                         /*
                                          * Определение основной степени родства.
                                          */
-                                        relationships[person, relative, relationship] = DetectRelationship(jStartResult, 
+                                        relationshipsMatrix[person, relative][relationship] = DetectRelationship(jStartResult,
                                                                                                            jEndResult);
 
                                         relationship++;
@@ -199,12 +199,12 @@ namespace FamilyRelationshipDetector
 
                                                 while (j0New < startX && j1New < endX)
                                                 {
-                                                    numberOfGenerationOfMrca = MrcaSelector(startX, 
-                                                                                            ++j0New, 
-                                                                                            endX, 
+                                                    numberOfGenerationOfMrca = MrcaSelector(startX,
+                                                                                            ++j0New,
+                                                                                            endX,
                                                                                             ++j1New);
 
-                                                    relationships[person, relative, relationship] = DetectRelationship(numberOfGenerationOfMrca - startY, 
+                                                    relationshipsMatrix[person, relative][relationship] = DetectRelationship(numberOfGenerationOfMrca - startY,
                                                                                                                        numberOfGenerationOfMrca - endY);
 
                                                     relationship++;
@@ -219,7 +219,7 @@ namespace FamilyRelationshipDetector
                                             ((startY > 0) && (endY > 0)) ||
                                             ((startY > 0) && (endX > 1) || (endY > 0) && (startX > 1)))
                                         {
-                                            relationships[person, relative, relationship] = "0.";
+                                            relationshipsMatrix[person, relative][relationship] = "0.";
                                         }
 
                                         relative++;
@@ -236,15 +236,15 @@ namespace FamilyRelationshipDetector
                                 {
                                     if (0 == Relative.ClusterNumber)
                                     {
-                                        centimorgans[person] = "3400";
+                                        centimorgansMatrix[person] = "3400";
                                     }
                                     else if (1 == Relative.ClusterNumber)
                                     {
-                                        centimorgans[person] = "2550";
+                                        centimorgansMatrix[person] = "2550";
                                     }
                                     else
                                     {
-                                        centimorgans[person] = (3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString();
+                                        centimorgansMatrix[person] = (3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString();
                                     }
                                 }
                             }
@@ -255,11 +255,11 @@ namespace FamilyRelationshipDetector
                     }
                 }
 
-                SaveToFile("relationships.csv", relationships);
-                SaveToFile("centimorgans.csv", centimorgans);
+                SaveToFile("relationships.csv", relationshipsMatrix);
+                SaveToFile("centimorgans.csv", centimorgansMatrix);
 
-                SaveToFile("descendants.csv", descendants);
-                SaveToFile("ancestors.csv", ancestors);
+                SaveToFile("descendants.csv", descendantsMatrix);
+                SaveToFile("ancestors.csv", ancestorsMatrix);
             }
             else
             {
