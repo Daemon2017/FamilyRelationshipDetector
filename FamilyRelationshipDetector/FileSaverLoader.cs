@@ -90,7 +90,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void SaveToFile(string outputFileName, string[][] dataArray)
+        private void SaveToFile(string outputFileName, List<string>[] dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(outputFileName))
             {
@@ -100,15 +100,11 @@ namespace FamilyRelationshipDetector
                 {
                     string content = "";
 
-                    for (int column = 0;
-                        column < dataArray[line].GetLength(0);
-                        column++)
+                    foreach(var column in dataArray[line])
                     {
-                        string temp = dataArray[line][column];
-
-                        if (temp != null)
+                        if (column != null)
                         {
-                            content += temp + ",";
+                            content += column + ",";
                         }
                     }
 

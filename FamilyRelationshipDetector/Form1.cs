@@ -61,12 +61,12 @@ namespace FamilyRelationshipDetector
                 /*
                  * Построение матрицы предковых степеней родства.
                  */
-                string[][] ancestorsMatrix = new string[quantityOfCells][];
+                List<string>[] ancestorsMatrix = new List<string>[quantityOfCells];
 
                 /*
                  * Построение матрицы потомковых степеней родства.
                  */
-                string[][] descendantsMatrix = new string[quantityOfCells][];
+                List<string>[] descendantsMatrix = new List<string>[quantityOfCells];
 
                 /*
                  * Построение матрицы количества общих сантиморган.
@@ -90,8 +90,8 @@ namespace FamilyRelationshipDetector
                          */
                         if (!(startY > 0 && (startX > 0 && startX <= startY)))
                         {
-                            ancestorsMatrix[person] = new string[quantityOfCells];
-                            descendantsMatrix[person] = new string[quantityOfCells];
+                            ancestorsMatrix[person] = new List<string>();
+                            descendantsMatrix[person] = new List<string>();
 
                             for (int endX = minX;
                             endX <= maxX;
@@ -121,7 +121,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        ancestorsMatrix[person][relative] = numTemp;
+                                                        ancestorsMatrix[person].Add(numTemp);
                                                     }
                                                 }
                                                 /*
@@ -132,7 +132,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        descendantsMatrix[person][relative] = numTemp;
+                                                        descendantsMatrix[person].Add(numTemp);
                                                     }
                                                 }
                                             }
@@ -146,7 +146,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        ancestorsMatrix[person][relative] = numTemp;
+                                                        ancestorsMatrix[person].Add(numTemp);
                                                     }
                                                 }
                                             }
@@ -160,7 +160,7 @@ namespace FamilyRelationshipDetector
                                                 {
                                                     if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
                                                     {
-                                                        descendantsMatrix[person][relative] = numTemp;
+                                                        descendantsMatrix[person].Add(numTemp);
                                                     }
                                                 }
                                             }
