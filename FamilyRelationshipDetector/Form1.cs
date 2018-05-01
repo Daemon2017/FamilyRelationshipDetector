@@ -174,7 +174,6 @@ namespace FamilyRelationshipDetector
                                         int jStartResult = numberOfGenerationOfMrca - startY,
                                             jEndResult = numberOfGenerationOfMrca - endY;
 
-                                        int relationship = 0;
                                         /*
                                          * Определение основной степени родства.
                                          */
@@ -182,8 +181,6 @@ namespace FamilyRelationshipDetector
                                         {
                                             DetectRelationship(jStartResult, jEndResult)
                                         };
-
-                                        relationship++;
 
                                         /*
                                          * Обработка расклада, когда первичная и вторичная личность находятся в одной вертикали.
@@ -206,8 +203,6 @@ namespace FamilyRelationshipDetector
 
                                                     relationshipsMatrix[person, relative].Add(DetectRelationship(numberOfGenerationOfMrca - startY, 
                                                                                                                  numberOfGenerationOfMrca - endY));
-
-                                                    relationship++;
                                                 }
                                             }
                                         }
