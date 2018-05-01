@@ -56,7 +56,7 @@ namespace FamilyRelationshipDetector
                 /*
                  * Построение матрицы возможных степеней родства.
                  */
-                string[,][] relationshipsMatrix = new string[quantityOfCells, quantityOfCells][];
+                List<string>[,] relationshipsMatrix = new List<string>[quantityOfCells, quantityOfCells];
 
                 /*
                  * Построение матрицы предковых степеней родства.
@@ -175,13 +175,13 @@ namespace FamilyRelationshipDetector
                                             jEndResult = numberOfGenerationOfMrca - endY;
 
                                         int relationship = 0;
-                                        relationshipsMatrix[person, relative] = new string[100];
-
                                         /*
                                          * Определение основной степени родства.
                                          */
-                                        relationshipsMatrix[person, relative][relationship] = DetectRelationship(jStartResult,
-                                                                                                           jEndResult);
+                                        relationshipsMatrix[person, relative] = new List<string>
+                                        {
+                                            DetectRelationship(jStartResult, jEndResult)
+                                        };
 
                                         relationship++;
 
@@ -204,8 +204,7 @@ namespace FamilyRelationshipDetector
                                                                                             endX,
                                                                                             ++j1New);
 
-                                                    relationshipsMatrix[person, relative][relationship] = DetectRelationship(numberOfGenerationOfMrca - startY,
-                                                                                                                       numberOfGenerationOfMrca - endY);
+                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(numberOfGenerationOfMrca - startY, numberOfGenerationOfMrca - endY));
 
                                                     relationship++;
                                                 }
@@ -219,7 +218,7 @@ namespace FamilyRelationshipDetector
                                             ((startY > 0) && (endY > 0)) ||
                                             ((startY > 0) && (endX > 1) || (endY > 0) && (startX > 1)))
                                         {
-                                            relationshipsMatrix[person, relative][relationship] = "0.";
+                                            relationshipsMatrix[person, relative].Add("0.");
                                         }
 
                                         relative++;

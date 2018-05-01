@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -121,7 +122,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void SaveToFile(string outputFileName, string[,][] dataArray)
+        private void SaveToFile(string outputFileName, List<string>[,] dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
             {
@@ -135,15 +136,11 @@ namespace FamilyRelationshipDetector
                         column < dataArray.GetLength(1);
                         column++)
                     {
-                        for (int cell = 0;
-                            cell < dataArray[line, column].GetLength(0);
-                            cell++)
+                        foreach(var cell in dataArray[line, column])
                         {
-                            string temp = dataArray[line, column][cell];
-
-                            if (temp != null && temp != "")
+                            if (cell != null && cell != "")
                             {
-                                content += temp.Substring(0, temp.IndexOf(".")) + ";";
+                                content += cell.Substring(0, cell.IndexOf(".")) + ";";
                             }
                         }
 
