@@ -77,15 +77,13 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void SaveToFile(string outputFileName, string[] dataArray)
+        private void SaveToFile(string outputFileName, List<string> dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(@"centimorgans.csv"))
             {
-                for (int line = 0;
-                    line < dataArray.GetLength(0);
-                    line++)
+                foreach (var line in dataArray)
                 {
-                    outfile.WriteLine(dataArray[line].Replace(",", "."));
+                    outfile.WriteLine(line.Replace(",", "."));
                 }
             }
         }
@@ -100,7 +98,7 @@ namespace FamilyRelationshipDetector
                 {
                     string content = "";
 
-                    foreach(var column in dataArray[line])
+                    foreach (var column in dataArray[line])
                     {
                         if (column != null)
                         {
@@ -132,7 +130,7 @@ namespace FamilyRelationshipDetector
                         column < dataArray.GetLength(1);
                         column++)
                     {
-                        foreach(var cell in dataArray[line, column])
+                        foreach (var cell in dataArray[line, column])
                         {
                             if (cell != null && cell != "")
                             {

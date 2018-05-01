@@ -71,7 +71,7 @@ namespace FamilyRelationshipDetector
                 /*
                  * Построение матрицы количества общих сантиморган.
                  */
-                string[] centimorgansMatrix = new string[quantityOfCells];
+                List<string> centimorgansMatrix = new List<string>();
 
                 int person = 0,
                     relative = 0;
@@ -204,7 +204,8 @@ namespace FamilyRelationshipDetector
                                                                                             endX,
                                                                                             ++j1New);
 
-                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(numberOfGenerationOfMrca - startY, numberOfGenerationOfMrca - endY));
+                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(numberOfGenerationOfMrca - startY, 
+                                                                                                                 numberOfGenerationOfMrca - endY));
 
                                                     relationship++;
                                                 }
@@ -235,15 +236,15 @@ namespace FamilyRelationshipDetector
                                 {
                                     if (0 == Relative.ClusterNumber)
                                     {
-                                        centimorgansMatrix[person] = "3400";
+                                        centimorgansMatrix.Add("3400");
                                     }
                                     else if (1 == Relative.ClusterNumber)
                                     {
-                                        centimorgansMatrix[person] = "2550";
+                                        centimorgansMatrix.Add("2550");
                                     }
                                     else
                                     {
-                                        centimorgansMatrix[person] = (3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString();
+                                        centimorgansMatrix.Add((3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString());
                                     }
                                 }
                             }
