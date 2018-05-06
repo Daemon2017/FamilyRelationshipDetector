@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
@@ -8,6 +9,8 @@ namespace FamilyRelationshipDetector
     {
         public Form1()
         {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+
             InitializeComponent();
         }
 
@@ -235,19 +238,7 @@ namespace FamilyRelationshipDetector
                                 if (Relative.X.Equals(startX) && Relative.Y.Equals(startY))
                                 {
                                     clustersMatrix.Add(Relative.ClusterNumber.ToString());
-
-                                    if (0 == Relative.ClusterNumber)
-                                    {
-                                        centimorgansMatrix.Add("3400");
-                                    }
-                                    else if (1 == Relative.ClusterNumber)
-                                    {
-                                        centimorgansMatrix.Add("2550");
-                                    }
-                                    else
-                                    {
-                                        centimorgansMatrix.Add((3400 / Math.Pow(2, Relative.ClusterNumber - 1)).ToString());
-                                    }
+                                    centimorgansMatrix.Add(Relative.CommonCM.ToString());
                                 }
                             }
 

@@ -13,7 +13,7 @@ namespace FamilyRelationshipDetector
             int numberOfRows = File.ReadAllLines(@"InputMatrix.cfg").ToArray().Length;
             string input = File.ReadAllText(@"InputMatrix.cfg");
 
-            string[,] relationshipMatrix = new string[numberOfRows, 6];
+            string[,] relativesMatrix = new string[numberOfRows, 7];
             int numberOfRelative = 0,
                 numberOfParameter = 0;
 
@@ -24,9 +24,9 @@ namespace FamilyRelationshipDetector
             {
                 numberOfParameter = 0;
 
-                foreach (var column in row.Trim().Split(';'))
+                foreach (var column in row.Trim().Split(','))
                 {
-                    relationshipMatrix[numberOfRelative, numberOfParameter] = column.Trim();
+                    relativesMatrix[numberOfRelative, numberOfParameter] = column.Trim();
                     numberOfParameter++;
                 }
 
@@ -42,7 +42,7 @@ namespace FamilyRelationshipDetector
                 i < numberOfRows;
                 i++)
             {
-                horizonatal[i] = Convert.ToInt16(relationshipMatrix[i, 2]);
+                horizonatal[i] = Convert.ToInt16(relativesMatrix[i, 2]);
             }
 
             int maxHorizontal = 0;
@@ -64,12 +64,13 @@ namespace FamilyRelationshipDetector
                 i < numberOfRows;
                 i++)
             {
-                Relative newRelative = new Relative(Convert.ToInt16(relationshipMatrix[i, 0]),
-                                                    Convert.ToInt16(relationshipMatrix[i, 1]),
-                                                    Convert.ToInt16(relationshipMatrix[i, 2]),
-                                                    relationshipMatrix[i, 3],
-                                                    Convert.ToInt16(relationshipMatrix[i, 4]),
-                                                    Convert.ToInt16(relationshipMatrix[i, 5]),
+                Relative newRelative = new Relative(Convert.ToInt16(relativesMatrix[i, 0]),
+                                                    Convert.ToInt16(relativesMatrix[i, 1]),
+                                                    Convert.ToInt16(relativesMatrix[i, 2]),
+                                                    relativesMatrix[i, 3],
+                                                    Convert.ToInt16(relativesMatrix[i, 4]),
+                                                    Convert.ToInt16(relativesMatrix[i, 5]),
+                                                    Convert.ToDouble(relativesMatrix[i, 6]),
                                                     maxHorizontal);
                 newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
                 relatives.Add(newRelative);
@@ -83,7 +84,7 @@ namespace FamilyRelationshipDetector
             {
                 foreach (var line in dataArray)
                 {
-                    outfile.WriteLine(line.Replace(",", "."));
+                    outfile.WriteLine(line);
                 }
             }
         }

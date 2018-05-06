@@ -11,8 +11,9 @@ namespace FamilyRelationshipDetector
         public string RelationName { get; set; }
         public int WidthMultiplier { get; set; }
         public int ClusterNumber { get; set; }
+        public double CommonCM { get; set; }
 
-        public Relative(int RelationNumber, int X, int Y, string RelationName, int WidthMultiplier, int ClusterNumber, int maxHorizontal)
+        public Relative(int RelationNumber, int X, int Y, string RelationName, int WidthMultiplier, int ClusterNumber, double CommonCM, int maxHorizontal)
         {
             this.RelationNumber = RelationNumber;
             this.X = X;
@@ -20,6 +21,7 @@ namespace FamilyRelationshipDetector
             this.RelationName = RelationName;
             this.WidthMultiplier = WidthMultiplier;
             this.ClusterNumber = ClusterNumber;
+            this.CommonCM = CommonCM;
 
             Left = 100 * X;
             Top = (50 * maxHorizontal) + (50 * -Y);
