@@ -73,6 +73,11 @@ namespace FamilyRelationshipDetector
                  */
                 List<string> centimorgansMatrix = new List<string>();
 
+                /*
+                 * Построение матрицы принадлежности к кластерам.
+                 */
+                List<string> clustersMatrix = new List<string>();
+
                 int person = 0,
                     relative = 0;
 
@@ -223,12 +228,14 @@ namespace FamilyRelationshipDetector
                             }
 
                             /*
-                             * Определение ожидаемого количества общих сантиморган с каждой из степеней родства.
+                             * Определение кластера и ожидаемого количества общих сантиморган с каждой из степеней родства.
                              */
                             foreach (var Relative in relatives)
                             {
                                 if (Relative.X.Equals(startX) && Relative.Y.Equals(startY))
                                 {
+                                    clustersMatrix.Add(Relative.ClusterNumber.ToString());
+
                                     if (0 == Relative.ClusterNumber)
                                     {
                                         centimorgansMatrix.Add("3400");
@@ -252,6 +259,7 @@ namespace FamilyRelationshipDetector
 
                 SaveToFile("relationships.csv", relationshipsMatrix);
                 SaveToFile("centimorgans.csv", centimorgansMatrix);
+                SaveToFile("clusters.csv", clustersMatrix);
 
                 SaveToFile("descendants.csv", descendantsMatrix);
                 SaveToFile("ancestors.csv", ancestorsMatrix);

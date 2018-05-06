@@ -79,7 +79,7 @@ namespace FamilyRelationshipDetector
 
         private void SaveToFile(string outputFileName, List<string> dataArray)
         {
-            using (StreamWriter outfile = new StreamWriter(@"centimorgans.csv"))
+            using (StreamWriter outfile = new StreamWriter(outputFileName))
             {
                 foreach (var line in dataArray)
                 {
@@ -118,7 +118,7 @@ namespace FamilyRelationshipDetector
 
         private void SaveToFile(string outputFileName, List<string>[,] dataArray)
         {
-            using (StreamWriter outfile = new StreamWriter(@"relationships.csv"))
+            using (StreamWriter outfile = new StreamWriter(outputFileName))
             {
                 for (int line = 0;
                     line < dataArray.GetLength(0);
