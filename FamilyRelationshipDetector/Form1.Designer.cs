@@ -280,7 +280,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
-            this.Text = "FamilyRelationshipDetector v2018.3";
+            this.Text = "FamilyRelationshipDetector v2018.6";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.LoadFromFile);
             this.panel1.ResumeLayout(false);

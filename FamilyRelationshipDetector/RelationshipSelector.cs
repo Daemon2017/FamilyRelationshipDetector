@@ -13,7 +13,7 @@ namespace FamilyRelationshipDetector
              */
             foreach (var Relative in relatives)
             {
-                if (Relative.X == X && 
+                if (Relative.X == X &&
                     Relative.Y == Y)
                 {
                     foundRelationship = Relative.RelationNumber + ". [" + Relative.X + ";" + Relative.Y + "] " + Relative.RelationName;

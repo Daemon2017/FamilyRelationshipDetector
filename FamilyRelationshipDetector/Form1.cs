@@ -62,24 +62,9 @@ namespace FamilyRelationshipDetector
                 List<string>[,] relationshipsMatrix = new List<string>[quantityOfCells, quantityOfCells];
 
                 /*
-                 * Построение матрицы предковых степеней родства.
-                 */
-                List<string>[] ancestorsMatrix = new List<string>[quantityOfCells];
-
-                /*
-                 * Построение матрицы потомковых степеней родства.
-                 */
-                List<string>[] descendantsMatrix = new List<string>[quantityOfCells];
-
-                /*
                  * Построение матрицы количества общих сантиморган.
                  */
                 List<string> centimorgansMatrix = new List<string>();
-
-                /*
-                 * Построение матрицы принадлежности к кластерам.
-                 */
-                List<string> clustersMatrix = new List<string>();
 
                 int person = 0,
                     relative = 0;
@@ -98,9 +83,6 @@ namespace FamilyRelationshipDetector
                          */
                         if (!(startY > 0 && (startX > 0 && startX <= startY)))
                         {
-                            ancestorsMatrix[person] = new List<string>();
-                            descendantsMatrix[person] = new List<string>();
-
                             for (int endX = minX;
                             endX <= maxX;
                             endX++)
@@ -115,65 +97,6 @@ namespace FamilyRelationshipDetector
                                      */
                                     if (!(endY > 0 && (endX > 0 && endX <= endY)))
                                     {
-                                        foreach (var Relative in relatives)
-                                        {
-                                            string numTemp = Relative.RelationNumber.ToString();
-
-                                            if (startX == endX)
-                                            {
-                                                /*
-                                                 * Определение степеней родства, 
-                                                 * приходящихся личности предковыми.
-                                                 */
-                                                if (startY < endY)
-                                                {
-                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
-                                                    {
-                                                        ancestorsMatrix[person].Add(numTemp);
-                                                    }
-                                                }
-                                                /*
-                                                 * Определение степеней родства, 
-                                                 * приходящихся личности потомковыми.
-                                                 */
-                                                else if (startY > endY)
-                                                {
-                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
-                                                    {
-                                                        descendantsMatrix[person].Add(numTemp);
-                                                    }
-                                                }
-                                            }
-                                            /*
-                                             * Определение степеней родства, 
-                                             * приходящихся личности предковыми.
-                                             */
-                                            else if (0 == endX && endY >= startX)
-                                            {
-                                                if (startY < endY)
-                                                {
-                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
-                                                    {
-                                                        ancestorsMatrix[person].Add(numTemp);
-                                                    }
-                                                }
-                                            }
-                                            /*
-                                             * Определение степеней родства, 
-                                             * приходящихся личности потомковыми.
-                                             */
-                                            else if (0 == startX && endX <= startY)
-                                            {
-                                                if (startY > endY)
-                                                {
-                                                    if (Relative.X.Equals(endX) && Relative.Y.Equals(endY))
-                                                    {
-                                                        descendantsMatrix[person].Add(numTemp);
-                                                    }
-                                                }
-                                            }
-                                        }
-
                                         int numberOfGenerationOfMrca = MrcaSelector(startX,
                                                                                     startY,
                                                                                     endX,
@@ -209,7 +132,7 @@ namespace FamilyRelationshipDetector
                                                                                             endX,
                                                                                             ++j1New);
 
-                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(numberOfGenerationOfMrca - startY, 
+                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(numberOfGenerationOfMrca - startY,
                                                                                                                  numberOfGenerationOfMrca - endY));
                                                 }
                                             }
@@ -231,13 +154,12 @@ namespace FamilyRelationshipDetector
                             }
 
                             /*
-                             * Определение кластера и ожидаемого количества общих сантиморган с каждой из степеней родства.
+                             * Определение ожидаемого количества общих сантиморган с каждой из степеней родства.
                              */
                             foreach (var Relative in relatives)
                             {
                                 if (Relative.X.Equals(startX) && Relative.Y.Equals(startY))
                                 {
-                                    clustersMatrix.Add(Relative.ClusterNumber.ToString());
                                     centimorgansMatrix.Add(Relative.CommonCM.ToString());
                                 }
                             }
@@ -250,10 +172,6 @@ namespace FamilyRelationshipDetector
 
                 SaveToFile("relationships.csv", relationshipsMatrix);
                 SaveToFile("centimorgans.csv", centimorgansMatrix);
-                SaveToFile("clusters.csv", clustersMatrix);
-
-                SaveToFile("descendants.csv", descendantsMatrix);
-                SaveToFile("ancestors.csv", ancestorsMatrix);
             }
             else
             {
