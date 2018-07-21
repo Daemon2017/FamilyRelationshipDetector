@@ -78,6 +78,17 @@ namespace FamilyRelationshipDetector
             }
         }
 
+        private void SaveToFile(string outputFileName, List<List<string>> dataArray)
+        {
+            using (StreamWriter outfile = new StreamWriter(outputFileName))
+            {
+                foreach (var line in dataArray)
+                {
+                    outfile.WriteLine(line[0] + "," + line[1]);
+                }
+            }
+        }
+
         private void SaveToFile(string outputFileName, List<string> dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(outputFileName))

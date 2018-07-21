@@ -172,6 +172,25 @@ namespace FamilyRelationshipDetector
 
                 SaveToFile("relationships.csv", relationshipsMatrix);
                 SaveToFile("centimorgans.csv", centimorgansMatrix);
+
+                /*
+                 * Построение матрицы максимального числа предков каждого вида.
+                 */
+                List<List<string>> maxCountMatrix = new List<List<string>>();
+
+                foreach (var Relative in relatives)
+                {
+                    if (Relative.X.Equals(0) && Relative.Y > 0)
+                    {
+                        maxCountMatrix.Add(new List<string>
+                        {
+                            Relative.RelationNumber.ToString(),
+                            Math.Pow(2, Relative.Y).ToString()
+                        });
+                    }
+                }
+
+                SaveToFile("maxCount.csv", maxCountMatrix);
             }
             else
             {
