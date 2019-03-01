@@ -1,22 +1,21 @@
-﻿using System.Windows.Forms;
-
-namespace FamilyRelationshipDetector
+﻿namespace FamilyRelationshipDetector
 {
-    public partial class Form1 : Form
+    public partial class Form1
     {
-        private string FindTypeOfRelationship(int X, int Y)
+        private string FindTypeOfRelationship(int x, int y)
         {
             string foundRelationship = "";
 
             /*
              * Поиск степени родства, имеющей соответствующие координаты по X и Y.
              */
-            foreach (var Relative in relatives)
+            foreach (var relative in _relatives)
             {
-                if (Relative.X == X &&
-                    Relative.Y == Y)
+                if (relative.X == x &&
+                    relative.Y == y)
                 {
-                    foundRelationship = Relative.RelationNumber + ". [" + Relative.X + ";" + Relative.Y + "] " + Relative.RelationName;
+                    foundRelationship = relative.RelationNumber + ". [" + relative.X + ";" + relative.Y + "] " +
+                                        relative.RelationName;
                 }
             }
 
@@ -25,7 +24,7 @@ namespace FamilyRelationshipDetector
 
         private string DetectRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson)
         {
-            string typeOfRelationship = "";
+            string typeOfRelationship;
 
             /*
              * Определение степени родства между парой персон по данным о расстоянии от каждого из них до БОП.
@@ -36,7 +35,8 @@ namespace FamilyRelationshipDetector
             }
             else
             {
-                typeOfRelationship = FindTypeOfRelationship(distanceBetweenMrcaAndNullPerson, distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson);
+                typeOfRelationship = FindTypeOfRelationship(distanceBetweenMrcaAndNullPerson,
+                    distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson);
             }
 
             return typeOfRelationship;

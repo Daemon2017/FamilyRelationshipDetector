@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
 {
-    public partial class Form1 : Form
+    public partial class Form1
     {
         private void LoadFromFile(object sender, EventArgs e)
         {
@@ -14,15 +13,14 @@ namespace FamilyRelationshipDetector
             string input = File.ReadAllText(@"InputMatrix.cfg");
 
             string[,] relativesMatrix = new string[numberOfRows, 7];
-            int numberOfRelative = 0,
-                numberOfParameter = 0;
+            int numberOfRelative = 0;
 
             /*
              * Заполнение матрицы из файла.
              */
             foreach (var row in input.Split('\n'))
             {
-                numberOfParameter = 0;
+                var numberOfParameter = 0;
 
                 foreach (var column in row.Trim().Split(','))
                 {
@@ -45,35 +43,25 @@ namespace FamilyRelationshipDetector
                 horizonatal[i] = Convert.ToInt16(relativesMatrix[i, 2]);
             }
 
-            int maxHorizontal = 0;
-
             /*
              * Поиск наибольшей горизонтали.
              */
-            for (int i = 0;
-                i < horizonatal.Length;
-                i++)
-            {
-                if (horizonatal[i] > maxHorizontal)
-                {
-                    maxHorizontal = horizonatal[i];
-                }
-            }
+            int maxHorizontal = horizonatal.Concat(new[] {0}).Max();
 
             for (int i = 0;
                 i < numberOfRows;
                 i++)
             {
                 Relative newRelative = new Relative(Convert.ToInt16(relativesMatrix[i, 0]),
-                                                    Convert.ToInt16(relativesMatrix[i, 1]),
-                                                    Convert.ToInt16(relativesMatrix[i, 2]),
-                                                    relativesMatrix[i, 3],
-                                                    Convert.ToInt16(relativesMatrix[i, 4]),
-                                                    Convert.ToInt16(relativesMatrix[i, 5]),
-                                                    Convert.ToDouble(relativesMatrix[i, 6]),
-                                                    maxHorizontal);
-                newRelative.MouseDown += new MouseEventHandler(RelativeButton_MouseDown);
-                relatives.Add(newRelative);
+                    Convert.ToInt16(relativesMatrix[i, 1]),
+                    Convert.ToInt16(relativesMatrix[i, 2]),
+                    relativesMatrix[i, 3],
+                    Convert.ToInt16(relativesMatrix[i, 4]),
+                    Convert.ToInt16(relativesMatrix[i, 5]),
+                    Convert.ToDouble(relativesMatrix[i, 6]),
+                    maxHorizontal);
+                newRelative.MouseDown += RelativeButton_MouseDown;
+                _relatives.Add(newRelative);
                 panel2.Controls.Add(newRelative);
             }
         }
@@ -116,9 +104,9 @@ namespace FamilyRelationshipDetector
                     {
                         foreach (var cell in dataArray[line, column])
                         {
-                            if (cell != null && cell != "")
+                            if (!string.IsNullOrEmpty(cell))
                             {
-                                content += cell.Substring(0, cell.IndexOf(".")) + ";";
+                                content += cell.Substring(0, cell.IndexOf(".", StringComparison.Ordinal)) + ";";
                             }
                         }
 

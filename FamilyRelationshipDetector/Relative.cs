@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
 {
-    class Relative : Button
+    internal class Relative : Button
     {
         public int RelationNumber { get; set; }
         public int X { get; set; }
@@ -11,25 +11,26 @@ namespace FamilyRelationshipDetector
         public string RelationName { get; set; }
         public int WidthMultiplier { get; set; }
         public int ClusterNumber { get; set; }
-        public double CommonCM { get; set; }
+        public double CommonCm { get; set; }
 
-        public Relative(int RelationNumber, int X, int Y, string RelationName, int WidthMultiplier, int ClusterNumber, double CommonCM, int maxHorizontal)
+        public Relative(int relationNumber, int x, int y, string relationName, int widthMultiplier, int clusterNumber,
+            double commonCm, int maxHorizontal)
         {
-            this.RelationNumber = RelationNumber;
-            this.X = X;
-            this.Y = Y;
-            this.RelationName = RelationName;
-            this.WidthMultiplier = WidthMultiplier;
-            this.ClusterNumber = ClusterNumber;
-            this.CommonCM = CommonCM;
+            RelationNumber = relationNumber;
+            X = x;
+            Y = y;
+            RelationName = relationName;
+            WidthMultiplier = widthMultiplier;
+            ClusterNumber = clusterNumber;
+            CommonCm = commonCm;
 
-            Left = 100 * X;
-            Top = (50 * maxHorizontal) + (50 * -Y);
-            Width = 100 * WidthMultiplier;
+            Left = 100 * x;
+            Top = 50 * maxHorizontal + 50 * -y;
+            Width = 100 * widthMultiplier;
             Height = 50;
-            Text = RelationNumber + ". [" + X + ";" + Y + "] " + RelationName;
+            Text = relationNumber + ". [" + x + ";" + y + "] " + relationName;
 
-            switch(ClusterNumber)
+            switch (clusterNumber)
             {
                 case 0:
                     BackColor = Color.LightBlue;

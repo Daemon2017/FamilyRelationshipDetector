@@ -14,40 +14,35 @@ namespace FamilyRelationshipDetector
             InitializeComponent();
         }
 
-        int nullPersonsX = 0,
-            nullPersonsY = 0,
-            firstPersonsX = 0,
-            firstPersonsY = 0;
+        private int _nullPersonsX,
+            _nullPersonsY,
+            _firstPersonsX,
+            _firstPersonsY;
 
-        List<Relative> relatives = new List<Relative>();
+        private readonly List<Relative> _relatives = new List<Relative>();
 
         private void RelativeButton_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                nullPersonsX = ((Relative)sender).X;
-                nullPersonsY = ((Relative)sender).Y;
-                label2.Text = ((Relative)sender).RelationName;
+                _nullPersonsX = ((Relative) sender).X;
+                _nullPersonsY = ((Relative) sender).Y;
+                label2.Text = ((Relative) sender).RelationName;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                firstPersonsX = ((Relative)sender).X;
-                firstPersonsY = ((Relative)sender).Y;
-                label4.Text = ((Relative)sender).RelationName;
+                _firstPersonsX = ((Relative) sender).X;
+                _firstPersonsY = ((Relative) sender).Y;
+                label4.Text = ((Relative) sender).RelationName;
             }
         }
 
         private void Generate(object sender, EventArgs e)
         {
-            int minX = 0,
-                minY = 0,
-                maxX = 0,
-                maxY = 0;
-
-            minX = Convert.ToInt16(textBox1.Text);
-            minY = Convert.ToInt16(textBox2.Text);
-            maxX = Convert.ToInt16(textBox4.Text);
-            maxY = Convert.ToInt16(textBox3.Text);
+            int minX = Convert.ToInt16(textBox1.Text);
+            int minY = Convert.ToInt16(textBox2.Text);
+            int maxX = Convert.ToInt16(textBox4.Text);
+            int maxY = Convert.ToInt16(textBox3.Text);
 
             if (maxX >= minX && maxY >= minY)
             {
@@ -84,8 +79,8 @@ namespace FamilyRelationshipDetector
                         if (!(startY > 0 && (startX > 0 && startX <= startY)))
                         {
                             for (int endX = minX;
-                            endX <= maxX;
-                            endX++)
+                                endX <= maxX;
+                                endX++)
                             {
                                 for (int endY = minY;
                                     endY <= maxY;
@@ -98,9 +93,9 @@ namespace FamilyRelationshipDetector
                                     if (!(endY > 0 && (endX > 0 && endX <= endY)))
                                     {
                                         int numberOfGenerationOfMrca = MrcaSelector(startX,
-                                                                                    startY,
-                                                                                    endX,
-                                                                                    endY);
+                                            startY,
+                                            endX,
+                                            endY);
 
                                         int jStartResult = numberOfGenerationOfMrca - startY,
                                             jEndResult = numberOfGenerationOfMrca - endY;
@@ -120,7 +115,7 @@ namespace FamilyRelationshipDetector
                                         if (startX == endX)
                                         {
                                             if (!((startX == 0 && startY >= 0) ||
-                                                (endX == 0 && endY >= 0)))
+                                                  (endX == 0 && endY >= 0)))
                                             {
                                                 int j0New = startY,
                                                     j1New = endY;
@@ -128,12 +123,13 @@ namespace FamilyRelationshipDetector
                                                 while (j0New < startX && j1New < endX)
                                                 {
                                                     numberOfGenerationOfMrca = MrcaSelector(startX,
-                                                                                            ++j0New,
-                                                                                            endX,
-                                                                                            ++j1New);
+                                                        ++j0New,
+                                                        endX,
+                                                        ++j1New);
 
-                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(numberOfGenerationOfMrca - startY,
-                                                                                                                 numberOfGenerationOfMrca - endY));
+                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(
+                                                        numberOfGenerationOfMrca - startY,
+                                                        numberOfGenerationOfMrca - endY));
                                                 }
                                             }
                                         }
@@ -156,11 +152,11 @@ namespace FamilyRelationshipDetector
                             /*
                              * Определение ожидаемого количества общих сантиморган с каждой из степеней родства.
                              */
-                            foreach (var Relative in relatives)
+                            foreach (var rel in _relatives)
                             {
-                                if (Relative.X.Equals(startX) && Relative.Y.Equals(startY))
+                                if (rel.X.Equals(startX) && rel.Y.Equals(startY))
                                 {
-                                    centimorgansMatrix.Add(Relative.CommonCM.ToString());
+                                    centimorgansMatrix.Add(rel.CommonCm.ToString());
                                 }
                             }
 
@@ -178,14 +174,14 @@ namespace FamilyRelationshipDetector
                  */
                 List<List<string>> maxCountMatrix = new List<List<string>>();
 
-                foreach (var Relative in relatives)
+                foreach (var rel in _relatives)
                 {
-                    if (Relative.X.Equals(0) && Relative.Y > 0)
+                    if (rel.X.Equals(0) && rel.Y > 0)
                     {
                         maxCountMatrix.Add(new List<string>
                         {
-                            Relative.RelationNumber.ToString(),
-                            Math.Pow(2, Relative.Y).ToString()
+                            rel.RelationNumber.ToString(),
+                            Math.Pow(2, rel.Y).ToString()
                         });
                     }
                 }
@@ -194,51 +190,52 @@ namespace FamilyRelationshipDetector
             }
             else
             {
-                DialogResult result = MessageBox.Show("Конечные значения X и Y должны превышать их начальные значения!",
-                                                      "Ошибка начальных/конечных значений",
-                                                      MessageBoxButtons.OK);
+                MessageBox.Show("Конечные значения X и Y должны превышать их начальные значения!",
+                    "Ошибка начальных/конечных значений",
+                    MessageBoxButtons.OK);
             }
         }
 
         private void Calculate(object sender, EventArgs e)
         {
-            int yMRCA = MrcaSelector(nullPersonsX,
-                                     nullPersonsY,
-                                     firstPersonsX,
-                                     firstPersonsY);
+            int yMrca = MrcaSelector(_nullPersonsX,
+                _nullPersonsY,
+                _firstPersonsX,
+                _firstPersonsY);
 
-            int y0Result = yMRCA - nullPersonsY,
-                y1Result = yMRCA - firstPersonsY;
+            int y0Result = yMrca - _nullPersonsY,
+                y1Result = yMrca - _firstPersonsY;
 
             label7.Text = y0Result.ToString();
             label8.Text = y1Result.ToString();
 
             label10.Text = DetectRelationship(y0Result,
-                                              y1Result);
+                y1Result);
 
-            if (nullPersonsX == firstPersonsX)
+            if (_nullPersonsX == _firstPersonsX)
             {
-                if (!((nullPersonsX == 0 && nullPersonsY >= 0) ||
-                    (firstPersonsX == 0 && firstPersonsY >= 0)))
+                if (!((_nullPersonsX == 0 && _nullPersonsY >= 0) ||
+                      (_firstPersonsX == 0 && _firstPersonsY >= 0)))
                 {
-                    int y0New = nullPersonsY,
-                        y1New = firstPersonsY;
+                    int y0New = _nullPersonsY,
+                        y1New = _firstPersonsY;
 
-                    while (y0New < nullPersonsX && y1New < firstPersonsX)
+                    while (y0New < _nullPersonsX && y1New < _firstPersonsX)
                     {
-                        yMRCA = MrcaSelector(nullPersonsX,
-                                             ++y0New,
-                                             firstPersonsX,
-                                             ++y1New);
+                        yMrca = MrcaSelector(_nullPersonsX,
+                            ++y0New,
+                            _firstPersonsX,
+                            ++y1New);
 
-                        label10.Text += "\n" + DetectRelationship(yMRCA - nullPersonsY, yMRCA - firstPersonsY);
+                        label10.Text += "\n" + DetectRelationship(yMrca - _nullPersonsY,
+                                            yMrca - _firstPersonsY);
                     }
                 }
             }
 
-            if (((nullPersonsX > 1) && (firstPersonsX > 1)) ||
-                ((nullPersonsY > 0) && (firstPersonsY > 0)) ||
-                ((nullPersonsY > 0) && (firstPersonsX > 1) || (firstPersonsY > 0) && (nullPersonsX > 1)))
+            if (((_nullPersonsX > 1) && (_firstPersonsX > 1)) ||
+                ((_nullPersonsY > 0) && (_firstPersonsY > 0)) ||
+                ((_nullPersonsY > 0) && (_firstPersonsX > 1) || (_firstPersonsY > 0) && (_nullPersonsX > 1)))
             {
                 label10.Text += "\nРодства нет.";
             }

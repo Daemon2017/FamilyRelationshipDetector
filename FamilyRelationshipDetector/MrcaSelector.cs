@@ -1,8 +1,6 @@
-﻿using System.Windows.Forms;
-
-namespace FamilyRelationshipDetector
+﻿namespace FamilyRelationshipDetector
 {
-    public partial class Form1 : Form
+    public partial class Form1
     {
         private int MrcaSelector(int startX, int startY, int endX, int endY)
         {
@@ -15,7 +13,7 @@ namespace FamilyRelationshipDetector
             {
                 if (0 == endX)
                 {
-                    if ((0 < startX) && (startX < endY))
+                    if (0 < startX && startX < endY)
                     {
                         numberOfGenerationOfMrca = endY;
                     }
@@ -31,20 +29,13 @@ namespace FamilyRelationshipDetector
             }
             else if (startX == endX)
             {
-                if (startY >= endY)
-                {
-                    numberOfGenerationOfMrca = startY;
-                }
-                else
-                {
-                    numberOfGenerationOfMrca = endY;
-                }
+                numberOfGenerationOfMrca = startY >= endY ? startY : endY;
             }
             else if (startX < endX)
             {
                 if (0 == startX)
                 {
-                    if ((0 < endX) && (endX < startY))
+                    if (0 < endX && endX < startY)
                     {
                         numberOfGenerationOfMrca = startY;
                     }
