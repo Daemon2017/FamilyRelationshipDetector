@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
 {
-    internal class Relative : Button
+    public class Relative : Button
     {
         public int RelationNumber { get; set; }
         public int X { get; set; }

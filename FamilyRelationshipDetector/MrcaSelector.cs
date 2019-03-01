@@ -1,8 +1,8 @@
 ﻿namespace FamilyRelationshipDetector
 {
-    public partial class Form1
+    public class MrcaSelector
     {
-        private int MrcaSelector(int startX, int startY, int endX, int endY)
+        public int SelectMrca(int startX, int startY, int endX, int endY)
         {
             int numberOfGenerationOfMrca = 0;
 

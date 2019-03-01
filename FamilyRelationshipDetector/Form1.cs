@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
@@ -14,12 +16,76 @@ namespace FamilyRelationshipDetector
             InitializeComponent();
         }
 
+        private readonly FileSaver _fileSaver = new FileSaver();
+        private readonly RelationshipSelector _relationshipSelector = new RelationshipSelector();
+        private readonly MrcaSelector _mrcaSelector = new MrcaSelector();
+
         private int _nullPersonsX,
             _nullPersonsY,
             _firstPersonsX,
             _firstPersonsY;
 
         private readonly List<Relative> _relatives = new List<Relative>();
+
+        public void LoadFromFile(object sender, EventArgs e)
+        {
+            int numberOfRows = File.ReadAllLines(@"InputMatrix.cfg").ToArray().Length;
+            string input = File.ReadAllText(@"InputMatrix.cfg");
+
+            string[,] relativesMatrix = new string[numberOfRows, 7];
+            int numberOfRelative = 0;
+
+            /*
+             * Заполнение матрицы из файла.
+             */
+            foreach (var row in input.Split('\n'))
+            {
+                var numberOfParameter = 0;
+
+                foreach (var column in row.Trim().Split(','))
+                {
+                    relativesMatrix[numberOfRelative, numberOfParameter] = column.Trim();
+                    numberOfParameter++;
+                }
+
+                numberOfRelative++;
+            }
+
+            int[] horizonatal = new int[numberOfRows];
+
+            /*
+             * Выявление всех возможных горизонталей.
+             */
+            for (int i = 0;
+                i < numberOfRows;
+                i++)
+            {
+                horizonatal[i] = Convert.ToInt16(relativesMatrix[i, 2]);
+            }
+
+            /*
+             * Поиск наибольшей горизонтали.
+             */
+            int maxHorizontal = horizonatal.Concat(new[] {0}).Max();
+
+            for (int i = 0;
+                i < numberOfRows;
+                i++)
+            {
+                Relative newRelative = new Relative(Convert.ToInt16(relativesMatrix[i, 0]),
+                    Convert.ToInt16(relativesMatrix[i, 1]),
+                    Convert.ToInt16(relativesMatrix[i, 2]),
+                    relativesMatrix[i, 3],
+                    Convert.ToInt16(relativesMatrix[i, 4]),
+                    Convert.ToInt16(relativesMatrix[i, 5]),
+                    Convert.ToDouble(relativesMatrix[i, 6]),
+                    maxHorizontal);
+                newRelative.MouseDown += RelativeButton_MouseDown;
+                _relatives.Add(newRelative);
+                panel2.Controls.Add(newRelative);
+            }
+        }
+
 
         private void RelativeButton_MouseDown(object sender, MouseEventArgs e)
         {
@@ -92,7 +158,7 @@ namespace FamilyRelationshipDetector
                                      */
                                     if (!(endY > 0 && (endX > 0 && endX <= endY)))
                                     {
-                                        int numberOfGenerationOfMrca = MrcaSelector(startX,
+                                        int numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(startX,
                                             startY,
                                             endX,
                                             endY);
@@ -105,7 +171,8 @@ namespace FamilyRelationshipDetector
                                          */
                                         relationshipsMatrix[person, relative] = new List<string>
                                         {
-                                            DetectRelationship(jStartResult, jEndResult)
+                                            _relationshipSelector.DetectRelationship(jStartResult, jEndResult,
+                                                _relatives)
                                         };
 
                                         /*
@@ -122,14 +189,16 @@ namespace FamilyRelationshipDetector
 
                                                 while (j0New < startX && j1New < endX)
                                                 {
-                                                    numberOfGenerationOfMrca = MrcaSelector(startX,
+                                                    numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(startX,
                                                         ++j0New,
                                                         endX,
                                                         ++j1New);
 
-                                                    relationshipsMatrix[person, relative].Add(DetectRelationship(
-                                                        numberOfGenerationOfMrca - startY,
-                                                        numberOfGenerationOfMrca - endY));
+                                                    relationshipsMatrix[person, relative].Add(
+                                                        _relationshipSelector.DetectRelationship(
+                                                            numberOfGenerationOfMrca - startY,
+                                                            numberOfGenerationOfMrca - endY,
+                                                            _relatives));
                                                 }
                                             }
                                         }
@@ -166,8 +235,8 @@ namespace FamilyRelationshipDetector
                     }
                 }
 
-                SaveToFile("relationships.csv", relationshipsMatrix);
-                SaveToFile("centimorgans.csv", centimorgansMatrix);
+                _fileSaver.SaveToFile("relationships.csv", relationshipsMatrix);
+                _fileSaver.SaveToFile("centimorgans.csv", centimorgansMatrix);
 
                 /*
                  * Построение матрицы максимального числа предков каждого вида.
@@ -186,7 +255,7 @@ namespace FamilyRelationshipDetector
                     }
                 }
 
-                SaveToFile("maxCount.csv", maxCountMatrix);
+                _fileSaver.SaveToFile("maxCount.csv", maxCountMatrix);
             }
             else
             {
@@ -198,7 +267,7 @@ namespace FamilyRelationshipDetector
 
         private void Calculate(object sender, EventArgs e)
         {
-            int yMrca = MrcaSelector(_nullPersonsX,
+            int yMrca = _mrcaSelector.SelectMrca(_nullPersonsX,
                 _nullPersonsY,
                 _firstPersonsX,
                 _firstPersonsY);
@@ -209,8 +278,8 @@ namespace FamilyRelationshipDetector
             label7.Text = y0Result.ToString();
             label8.Text = y1Result.ToString();
 
-            label10.Text = DetectRelationship(y0Result,
-                y1Result);
+            label10.Text = _relationshipSelector.DetectRelationship(y0Result,
+                y1Result, _relatives);
 
             if (_nullPersonsX == _firstPersonsX)
             {
@@ -222,13 +291,14 @@ namespace FamilyRelationshipDetector
 
                     while (y0New < _nullPersonsX && y1New < _firstPersonsX)
                     {
-                        yMrca = MrcaSelector(_nullPersonsX,
+                        yMrca = _mrcaSelector.SelectMrca(_nullPersonsX,
                             ++y0New,
                             _firstPersonsX,
                             ++y1New);
 
-                        label10.Text += "\n" + DetectRelationship(yMrca - _nullPersonsY,
-                                            yMrca - _firstPersonsY);
+                        label10.Text += "\n" + _relationshipSelector.DetectRelationship(yMrca - _nullPersonsY,
+                                            yMrca - _firstPersonsY,
+                                            _relatives);
                     }
                 }
             }

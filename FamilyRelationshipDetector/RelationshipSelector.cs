@@ -1,15 +1,17 @@
-﻿namespace FamilyRelationshipDetector
+﻿using System.Collections.Generic;
+
+namespace FamilyRelationshipDetector
 {
-    public partial class Form1
+    public class RelationshipSelector
     {
-        private string FindTypeOfRelationship(int x, int y)
+        public string FindTypeOfRelationship(int x, int y, List<Relative> relatives)
         {
             string foundRelationship = "";
 
             /*
              * Поиск степени родства, имеющей соответствующие координаты по X и Y.
              */
-            foreach (var relative in _relatives)
+            foreach (var relative in relatives)
             {
                 if (relative.X == x &&
                     relative.Y == y)
@@ -22,7 +24,8 @@
             return foundRelationship;
         }
 
-        private string DetectRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson)
+        public string DetectRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson,
+            List<Relative> relatives)
         {
             string typeOfRelationship;
 
@@ -31,12 +34,13 @@
              */
             if (0 == distanceBetweenMrcaAndFirstPerson)
             {
-                typeOfRelationship = FindTypeOfRelationship(0, distanceBetweenMrcaAndNullPerson);
+                typeOfRelationship = FindTypeOfRelationship(0, distanceBetweenMrcaAndNullPerson, relatives);
             }
             else
             {
                 typeOfRelationship = FindTypeOfRelationship(distanceBetweenMrcaAndNullPerson,
-                    distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson);
+                    distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson,
+                    relatives);
             }
 
             return typeOfRelationship;
