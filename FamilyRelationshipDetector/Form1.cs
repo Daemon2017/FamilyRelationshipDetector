@@ -109,159 +109,18 @@ namespace FamilyRelationshipDetector
             int maxX = Convert.ToInt16(textBox4.Text);
             int maxY = Convert.ToInt16(textBox3.Text);
 
-            if (maxX >= minX && maxY >= minY)
+            List<Relative> usefulRelatives = new List<Relative>();
+
+            foreach (var possibleRelative in _relatives)
             {
-                /*
-                 * Количества ячеек по вертикали/горизонтали в генерируемой матрице. 
-                 */
-                int quantityOfCells = -26 + minX * -4 + minY * -6 + maxX * 7 + maxY * 3;
-
-                /*
-                 * Построение матрицы возможных степеней родства.
-                 */
-                List<string>[,] relationshipsMatrix = new List<string>[quantityOfCells, quantityOfCells];
-
-                /*
-                 * Построение матрицы количества общих сантиморган.
-                 */
-                List<string> centimorgansMatrix = new List<string>();
-
-                int person = 0,
-                    relative = 0;
-
-                for (int firstRelativeX = minX;
-                    firstRelativeX <= maxX;
-                    firstRelativeX++)
+                if (possibleRelative.X >= minX && possibleRelative.X <= maxX
+                                               && possibleRelative.Y >= minY && possibleRelative.Y <= maxY)
                 {
-                    for (int firstRelativeY = minY;
-                        firstRelativeY <= maxY;
-                        firstRelativeY++)
-                    {
-                        /*
-                         * Исключение повторов степеней родства, 
-                         * занимающих более одной вертикали.
-                         */
-                        if (!(firstRelativeY > 0 && (firstRelativeX > 0 && firstRelativeX <= firstRelativeY)))
-                        {
-                            for (int secondRelativeX = minX;
-                                secondRelativeX <= maxX;
-                                secondRelativeX++)
-                            {
-                                for (int secondRelativeY = minY;
-                                    secondRelativeY <= maxY;
-                                    secondRelativeY++)
-                                {
-                                    /*
-                                     * Исключение повторов степеней родства, 
-                                     * занимающих более одной вертикали.
-                                     */
-                                    if (!(secondRelativeY > 0 && (secondRelativeX > 0 && secondRelativeX <= secondRelativeY)))
-                                    {
-                                        int numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(firstRelativeX,
-                                            firstRelativeY,
-                                            secondRelativeX,
-                                            secondRelativeY);
-
-                                        int jStartResult = numberOfGenerationOfMrca - firstRelativeY,
-                                            jEndResult = numberOfGenerationOfMrca - secondRelativeY;
-
-                                        /*
-                                         * Определение основной степени родства.
-                                         */
-                                        relationshipsMatrix[person, relative] = new List<string>
-                                        {
-                                            _relationshipSelector.DetectRelationship(jStartResult, jEndResult,
-                                                _relatives)
-                                        };
-
-                                        /*
-                                         * Обработка расклада, когда первичная и вторичная личность находятся в одной вертикали.
-                                         * и между ними возможны различные степени родства.
-                                         */
-                                        if (firstRelativeX == secondRelativeX)
-                                        {
-                                            if (!((firstRelativeX == 0 && firstRelativeY >= 0) ||
-                                                  (secondRelativeX == 0 && secondRelativeY >= 0)))
-                                            {
-                                                int j0New = firstRelativeY,
-                                                    j1New = secondRelativeY;
-
-                                                while (j0New < firstRelativeX && j1New < secondRelativeX)
-                                                {
-                                                    numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(firstRelativeX,
-                                                        ++j0New,
-                                                        secondRelativeX,
-                                                        ++j1New);
-
-                                                    relationshipsMatrix[person, relative].Add(
-                                                        _relationshipSelector.DetectRelationship(
-                                                            numberOfGenerationOfMrca - firstRelativeY,
-                                                            numberOfGenerationOfMrca - secondRelativeY,
-                                                            _relatives));
-                                                }
-                                            }
-                                        }
-
-                                        /*
-                                         * Обработка расклада, когда между первичной и вторичной личностями может не быть родства.
-                                         */
-                                        if (((firstRelativeX > 1) && (secondRelativeX > 1)) ||
-                                            ((firstRelativeY > 0) && (secondRelativeY > 0)) ||
-                                            ((firstRelativeY > 0) && (secondRelativeX > 1) || (secondRelativeY > 0) && (firstRelativeX > 1)))
-                                        {
-                                            relationshipsMatrix[person, relative].Add("0.");
-                                        }
-
-                                        relative++;
-                                    }
-                                }
-                            }
-
-                            /*
-                             * Определение ожидаемого количества общих сантиморган с каждой из степеней родства.
-                             */
-                            foreach (var rel in _relatives)
-                            {
-                                if (rel.X.Equals(firstRelativeX) && rel.Y.Equals(firstRelativeY))
-                                {
-                                    centimorgansMatrix.Add(rel.CommonCm.ToString());
-                                }
-                            }
-
-                            person++;
-                            relative = 0;
-                        }
-                    }
+                    usefulRelatives.Add(possibleRelative);
                 }
-
-                _fileSaver.SaveToFile("relationshipsSquare.csv", relationshipsMatrix);
-                _fileSaver.SaveToFile("centimorgansSquare.csv", centimorgansMatrix);
-
-                /*
-                 * Построение матрицы максимального числа предков каждого вида.
-                 */
-                List<List<string>> maxCountMatrix = new List<List<string>>();
-
-                foreach (var rel in _relatives)
-                {
-                    if (rel.X.Equals(0) && rel.Y > 0)
-                    {
-                        maxCountMatrix.Add(new List<string>
-                        {
-                            rel.RelationNumber.ToString(),
-                            Math.Pow(2, rel.Y).ToString()
-                        });
-                    }
-                }
-
-                _fileSaver.SaveToFile("maxCountSquare.csv", maxCountMatrix);
             }
-            else
-            {
-                MessageBox.Show("Конечные значения X и Y должны превышать их начальные значения!",
-                    "Ошибка начальных/конечных значений",
-                    MessageBoxButtons.OK);
-            }
+
+            BuildMatrices(usefulRelatives);
         }
 
         private void GenerateDiagonal(object sender, EventArgs e)
@@ -281,6 +140,11 @@ namespace FamilyRelationshipDetector
                 }
             }
 
+            BuildMatrices(usefulRelatives);
+        }
+
+        private void BuildMatrices(List<Relative> usefulRelatives)
+        {
             /*
              * Построение матрицы допустимых степеней родства.
              * Построение матрицы примерного количества общих сантиморган.
@@ -288,8 +152,7 @@ namespace FamilyRelationshipDetector
             List<string>[,] relationshipsMatrix = new List<string>[usefulRelatives.Count, usefulRelatives.Count];
             List<string> centimorgansMatrix = new List<string>();
 
-            int person = 0,
-                relative = 0;
+            int person = 0, relative = 0;
 
             foreach (var firstRelative in usefulRelatives)
             {
@@ -306,7 +169,8 @@ namespace FamilyRelationshipDetector
                      */
                     relationshipsMatrix[person, relative] = new List<string>
                     {
-                        _relationshipSelector.DetectRelationship(numberOfGenerationsBetweenMrcaAndFirstRelative, numberOfGenerationsBetweenMrcaAndSecondRelative, _relatives)
+                        _relationshipSelector.DetectRelationship(numberOfGenerationsBetweenMrcaAndFirstRelative,
+                            numberOfGenerationsBetweenMrcaAndSecondRelative, _relatives)
                     };
 
                     /*
@@ -324,11 +188,11 @@ namespace FamilyRelationshipDetector
                             while (j0New < firstRelative.X && j1New < secondRelative.X)
                             {
                                 numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(firstRelative.X, ++j0New,
-                                    secondRelative.X,++j1New);
+                                    secondRelative.X, ++j1New);
 
                                 relationshipsMatrix[person, relative].Add(
-                                    _relationshipSelector.DetectRelationship(numberOfGenerationOfMrca - firstRelative.Y, 
-                                        numberOfGenerationOfMrca - secondRelative.Y, 
+                                    _relationshipSelector.DetectRelationship(numberOfGenerationOfMrca - firstRelative.Y,
+                                        numberOfGenerationOfMrca - secondRelative.Y,
                                         _relatives));
                             }
                         }
@@ -339,7 +203,8 @@ namespace FamilyRelationshipDetector
                      */
                     if (((firstRelative.X > 1) && (secondRelative.X > 1)) ||
                         ((firstRelative.Y > 0) && (secondRelative.Y > 0)) ||
-                        ((firstRelative.Y > 0) && (secondRelative.X > 1) || (secondRelative.Y > 0) && (firstRelative.X > 1)))
+                        ((firstRelative.Y > 0) && (secondRelative.X > 1) ||
+                         (secondRelative.Y > 0) && (firstRelative.X > 1)))
                     {
                         relationshipsMatrix[person, relative].Add("0.");
                     }
@@ -362,9 +227,9 @@ namespace FamilyRelationshipDetector
                 relative = 0;
             }
 
-            _fileSaver.SaveToFile("relationshipsDiagonal.csv", relationshipsMatrix);
-            _fileSaver.SaveToFile("centimorgansDiagonal.csv", centimorgansMatrix);
-            
+            _fileSaver.SaveToFile("relationships.csv", relationshipsMatrix);
+            _fileSaver.SaveToFile("centimorgans.csv", centimorgansMatrix);
+
             /*
              * Построение матрицы максимального числа предков каждого вида.
              */
@@ -382,7 +247,7 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            _fileSaver.SaveToFile("maxCountDiagonal.csv", maxCountMatrix);
+            _fileSaver.SaveToFile("maxCount.csv", maxCountMatrix);
         }
 
         private void Calculate(object sender, EventArgs e)
