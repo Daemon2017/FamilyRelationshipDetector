@@ -40,6 +40,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.button12 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -50,6 +51,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.button60 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -156,6 +159,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label15);
+            this.panel1.Controls.Add(this.textBox5);
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.label14);
             this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.textBox3);
@@ -182,10 +188,20 @@
             this.panel1.Size = new System.Drawing.Size(200, 711);
             this.panel1.TabIndex = 51;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(100, 611);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 100);
+            this.button1.TabIndex = 54;
+            this.button1.Text = "Построить диагональ";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.GenerateDiagonal);
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(76, 543);
+            this.label14.Location = new System.Drawing.Point(65, 543);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(41, 13);
             this.label14.TabIndex = 53;
@@ -202,7 +218,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(79, 585);
+            this.textBox3.Location = new System.Drawing.Point(68, 585);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(30, 20);
             this.textBox3.TabIndex = 51;
@@ -210,11 +226,11 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(79, 559);
+            this.textBox4.Location = new System.Drawing.Point(68, 559);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(30, 20);
             this.textBox4.TabIndex = 50;
-            this.textBox4.Text = "6";
+            this.textBox4.Text = "3";
             // 
             // textBox2
             // 
@@ -252,14 +268,13 @@
             // 
             // button60
             // 
-            this.button60.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.button60.Location = new System.Drawing.Point(0, 611);
             this.button60.Name = "button60";
-            this.button60.Size = new System.Drawing.Size(200, 100);
+            this.button60.Size = new System.Drawing.Size(100, 100);
             this.button60.TabIndex = 45;
-            this.button60.Text = "Генерировать";
+            this.button60.Text = "Построить квадрат";
             this.button60.UseVisualStyleBackColor = true;
-            this.button60.Click += new System.EventHandler(this.Generate);
+            this.button60.Click += new System.EventHandler(this.GenerateSquare);
             // 
             // panel2
             // 
@@ -271,6 +286,23 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1059, 711);
             this.panel2.TabIndex = 78;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(104, 559);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(30, 20);
+            this.textBox5.TabIndex = 55;
+            this.textBox5.Text = "5";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(101, 543);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(52, 13);
+            this.label15.TabIndex = 56;
+            this.label15.Text = "Кластер:";
             // 
             // Form1
             // 
@@ -314,6 +346,9 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label15;
     }
 }
 
