@@ -233,13 +233,13 @@ namespace FamilyRelationshipDetector
             /*
              * Построение матрицы максимального числа предков каждого вида.
              */
-            List<List<string>> maxCountMatrix = new List<List<string>>();
+            List<List<string>> ancestorsMatrix = new List<List<string>>();
 
             foreach (var rel in _relatives)
             {
                 if (rel.X.Equals(0) && rel.Y > 0)
                 {
-                    maxCountMatrix.Add(new List<string>
+                    ancestorsMatrix.Add(new List<string>
                     {
                         rel.RelationNumber.ToString(),
                         Math.Pow(2, rel.Y).ToString()
@@ -247,7 +247,22 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            _fileSaver.SaveToFile("maxCount.csv", maxCountMatrix);
+            _fileSaver.SaveToFile("ancestorsMatrix.csv", ancestorsMatrix);
+
+            /*
+             * Построение матрицы максимального числа предков каждого вида.
+             */
+            List<string> descendantsMatrix = new List<string>();
+
+            foreach (var rel in _relatives)
+            {
+                if (rel.X.Equals(0) && rel.Y < 0)
+                {
+                    descendantsMatrix.Add(rel.RelationNumber.ToString());
+                }
+            }
+
+            _fileSaver.SaveToFile("descendantsMatrix.csv", descendantsMatrix);
         }
 
         private void Calculate(object sender, EventArgs e)
