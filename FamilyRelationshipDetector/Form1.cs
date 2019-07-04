@@ -256,7 +256,7 @@ namespace FamilyRelationshipDetector
 
             foreach (var rel in _relatives)
             {
-                if ((rel.X.Equals(0) || rel.X.Equals(1)) && rel.Y < 0)
+                if ((rel.X.Equals(0) && rel.Y < 0) || (rel.X.Equals(1) && rel.Y <= 0))
                 {
                     siblindantsMatrix.Add(rel.RelationNumber.ToString());
                 }
