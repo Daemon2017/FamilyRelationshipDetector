@@ -66,7 +66,7 @@ namespace FamilyRelationshipDetector
             /*
              * Поиск наибольшей горизонтали.
              */
-            int maxHorizontal = horizonatal.Concat(new[] {0}).Max();
+            int maxHorizontal = horizonatal.Concat(new[] { 0 }).Max();
 
             for (int i = 0;
                 i < numberOfRows;
@@ -90,15 +90,15 @@ namespace FamilyRelationshipDetector
         {
             if (e.Button == MouseButtons.Left)
             {
-                _nullPersonsX = ((Relative) sender).X;
-                _nullPersonsY = ((Relative) sender).Y;
-                label2.Text = ((Relative) sender).RelationName;
+                _nullPersonsX = ((Relative)sender).X;
+                _nullPersonsY = ((Relative)sender).Y;
+                label2.Text = ((Relative)sender).RelationName;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                _firstPersonsX = ((Relative) sender).X;
-                _firstPersonsY = ((Relative) sender).Y;
-                label4.Text = ((Relative) sender).RelationName;
+                _firstPersonsX = ((Relative)sender).X;
+                _firstPersonsY = ((Relative)sender).Y;
+                label4.Text = ((Relative)sender).RelationName;
             }
         }
 
@@ -250,19 +250,19 @@ namespace FamilyRelationshipDetector
             _fileSaver.SaveToFile("ancestorsMatrix.csv", ancestorsMatrix);
 
             /*
-             * Построение матрицы максимального числа предков каждого вида.
+             * Построение списка потомков пробанда, его сиблингов и их потомков
              */
-            List<string> descendantsMatrix = new List<string>();
+            List<string> siblindantsMatrix = new List<string>();
 
             foreach (var rel in _relatives)
             {
-                if (rel.X.Equals(0) && rel.Y < 0)
+                if ((rel.X.Equals(0) || rel.X.Equals(1)) && rel.Y < 0)
                 {
-                    descendantsMatrix.Add(rel.RelationNumber.ToString());
+                    siblindantsMatrix.Add(rel.RelationNumber.ToString());
                 }
             }
 
-            _fileSaver.SaveToFile("descendantsMatrix.csv", descendantsMatrix);
+            _fileSaver.SaveToFile("siblindantsMatrix.csv", siblindantsMatrix);
         }
 
         private void Calculate(object sender, EventArgs e)
