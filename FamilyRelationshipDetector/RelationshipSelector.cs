@@ -4,7 +4,7 @@ namespace FamilyRelationshipDetector
 {
     public class RelationshipSelector
     {
-        public string FindTypeOfRelationship(int x, int y, List<Relative> relatives)
+        public string FindTypeOfRelationship(int x, int y, List<RelativeUI> relatives)
         {
             string foundRelationship = "";
 
@@ -21,11 +21,18 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            return foundRelationship;
+            if (foundRelationship.Equals("1. [0;0] Пробанд") || string.IsNullOrEmpty(foundRelationship))
+            {
+                return null;
+            }
+            else
+            {
+                return foundRelationship;
+            }
         }
 
         public string DetectRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson,
-            List<Relative> relatives)
+            List<RelativeUI> relatives)
         {
             string typeOfRelationship;
 
@@ -38,7 +45,8 @@ namespace FamilyRelationshipDetector
             }
             else
             {
-                typeOfRelationship = FindTypeOfRelationship(distanceBetweenMrcaAndNullPerson,
+                typeOfRelationship = FindTypeOfRelationship(
+                    distanceBetweenMrcaAndNullPerson,
                     distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson,
                     relatives);
             }

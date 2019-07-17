@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -25,7 +26,7 @@ namespace FamilyRelationshipDetector
             _firstPersonsX,
             _firstPersonsY;
 
-        private readonly List<Relative> _relatives = new List<Relative>();
+        private readonly List<RelativeUI> _relativesUI = new List<RelativeUI>();
 
         public void LoadFromFile(object sender, EventArgs e)
         {
@@ -56,9 +57,7 @@ namespace FamilyRelationshipDetector
             /*
              * Выявление всех возможных горизонталей.
              */
-            for (int i = 0;
-                i < numberOfRows;
-                i++)
+            for (int i = 0; i < numberOfRows; i++)
             {
                 horizonatal[i] = Convert.ToInt16(relativesMatrix[i, 2]);
             }
@@ -68,11 +67,9 @@ namespace FamilyRelationshipDetector
              */
             int maxHorizontal = horizonatal.Concat(new[] { 0 }).Max();
 
-            for (int i = 0;
-                i < numberOfRows;
-                i++)
+            for (int i = 0; i < numberOfRows; i++)
             {
-                Relative newRelative = new Relative(Convert.ToInt16(relativesMatrix[i, 0]),
+                RelativeUI newRelative = new RelativeUI(Convert.ToInt16(relativesMatrix[i, 0]),
                     Convert.ToInt16(relativesMatrix[i, 1]),
                     Convert.ToInt16(relativesMatrix[i, 2]),
                     relativesMatrix[i, 3],
@@ -81,7 +78,7 @@ namespace FamilyRelationshipDetector
                     Convert.ToDouble(relativesMatrix[i, 6]),
                     maxHorizontal);
                 newRelative.MouseDown += RelativeButton_MouseDown;
-                _relatives.Add(newRelative);
+                _relativesUI.Add(newRelative);
                 panel2.Controls.Add(newRelative);
             }
         }
@@ -90,15 +87,15 @@ namespace FamilyRelationshipDetector
         {
             if (e.Button == MouseButtons.Left)
             {
-                _nullPersonsX = ((Relative)sender).X;
-                _nullPersonsY = ((Relative)sender).Y;
-                label2.Text = ((Relative)sender).RelationName;
+                _nullPersonsX = ((RelativeUI)sender).X;
+                _nullPersonsY = ((RelativeUI)sender).Y;
+                label2.Text = ((RelativeUI)sender).RelationName;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                _firstPersonsX = ((Relative)sender).X;
-                _firstPersonsY = ((Relative)sender).Y;
-                label4.Text = ((Relative)sender).RelationName;
+                _firstPersonsX = ((RelativeUI)sender).X;
+                _firstPersonsY = ((RelativeUI)sender).Y;
+                label4.Text = ((RelativeUI)sender).RelationName;
             }
         }
 
@@ -109,9 +106,9 @@ namespace FamilyRelationshipDetector
             int maxX = Convert.ToInt16(textBox4.Text);
             int maxY = Convert.ToInt16(textBox3.Text);
 
-            List<Relative> usefulRelatives = new List<Relative>();
+            List<RelativeUI> usefulRelatives = new List<RelativeUI>();
 
-            foreach (var possibleRelative in _relatives)
+            foreach (var possibleRelative in _relativesUI)
             {
                 if (possibleRelative.X >= minX && possibleRelative.X <= maxX
                                                && possibleRelative.Y >= minY && possibleRelative.Y <= maxY)
@@ -130,9 +127,9 @@ namespace FamilyRelationshipDetector
             /*
              * Составление списка X;Y, входящих в кластер.
              */
-            List<Relative> usefulRelatives = new List<Relative>();
+            List<RelativeUI> usefulRelatives = new List<RelativeUI>();
 
-            foreach (var possibleRelative in _relatives)
+            foreach (var possibleRelative in _relativesUI)
             {
                 if (possibleRelative.ClusterNumber <= clusterNumber)
                 {
@@ -143,7 +140,7 @@ namespace FamilyRelationshipDetector
             BuildMatrices(usefulRelatives);
         }
 
-        private void BuildMatrices(List<Relative> usefulRelatives)
+        private void BuildMatrices(List<RelativeUI> usefulRelatives)
         {
             /*
              * Построение матрицы допустимых степеней родства.
@@ -156,8 +153,12 @@ namespace FamilyRelationshipDetector
 
             foreach (var firstRelative in usefulRelatives)
             {
+                Dictionary<int, List<string>> PossibleRelationships = new Dictionary<int, List<string>>();
+
                 foreach (var secondRelative in usefulRelatives)
                 {
+                    relationshipsMatrix[person, relative] = new List<string>();
+
                     int numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(firstRelative.X, firstRelative.Y,
                         secondRelative.X, secondRelative.Y);
 
@@ -167,11 +168,16 @@ namespace FamilyRelationshipDetector
                     /*
                      * Определение основной степени родства.
                      */
-                    relationshipsMatrix[person, relative] = new List<string>
+                    string detectedMainRelationhip = _relationshipSelector.DetectRelationship(
+                        numberOfGenerationsBetweenMrcaAndFirstRelative,
+                        numberOfGenerationsBetweenMrcaAndSecondRelative,
+                        _relativesUI);
+
+                    if (detectedMainRelationhip != null)
                     {
-                        _relationshipSelector.DetectRelationship(numberOfGenerationsBetweenMrcaAndFirstRelative,
-                            numberOfGenerationsBetweenMrcaAndSecondRelative, _relatives)
-                    };
+                        relationshipsMatrix[person, relative].Add(
+                            detectedMainRelationhip.Substring(0, detectedMainRelationhip.IndexOf(".", StringComparison.Ordinal)));
+                    }
 
                     /*
                      * Определение дополнительных степеней родства, которые могут возникать от того, что 1-я и 2-я личности
@@ -190,10 +196,16 @@ namespace FamilyRelationshipDetector
                                 numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(firstRelative.X, ++j0New,
                                     secondRelative.X, ++j1New);
 
-                                relationshipsMatrix[person, relative].Add(
-                                    _relationshipSelector.DetectRelationship(numberOfGenerationOfMrca - firstRelative.Y,
-                                        numberOfGenerationOfMrca - secondRelative.Y,
-                                        _relatives));
+                                string detectedSecondaryRelationhip = _relationshipSelector.DetectRelationship(
+                                    numberOfGenerationOfMrca - firstRelative.Y,
+                                    numberOfGenerationOfMrca - secondRelative.Y,
+                                    _relativesUI);
+
+                                if (detectedSecondaryRelationhip != null)
+                                {
+                                    relationshipsMatrix[person, relative].Add(
+                                        detectedSecondaryRelationhip.Substring(0, detectedSecondaryRelationhip.IndexOf(".", StringComparison.Ordinal)));
+                                }
                             }
                         }
                     }
@@ -206,11 +218,14 @@ namespace FamilyRelationshipDetector
                         ((firstRelative.Y > 0) && (secondRelative.X > 1) ||
                          (secondRelative.Y > 0) && (firstRelative.X > 1)))
                     {
-                        relationshipsMatrix[person, relative].Add("0.");
+                        relationshipsMatrix[person, relative].Add("0");
                     }
 
+                    PossibleRelationships.Add(secondRelative.RelationNumber, relationshipsMatrix[person, relative]);
                     relative++;
                 }
+
+                firstRelative.PossibleRelationships = PossibleRelationships;
 
                 /*
                  * Определение ожидаемого количества общих сантиморган с каждой из степеней родства.
@@ -227,15 +242,15 @@ namespace FamilyRelationshipDetector
                 relative = 0;
             }
 
-            _fileSaver.SaveToFile("relationships.csv", relationshipsMatrix);
-            _fileSaver.SaveToFile("centimorgans.csv", centimorgansMatrix);
+            //_fileSaver.SaveToFile("relationships.csv", relationshipsMatrix);
+            //_fileSaver.SaveToFile("centimorgans.csv", centimorgansMatrix);
 
             /*
              * Построение матрицы максимального числа предков каждого вида.
              */
             List<List<string>> ancestorsMatrix = new List<List<string>>();
 
-            foreach (var rel in _relatives)
+            foreach (var rel in _relativesUI)
             {
                 if (rel.X.Equals(0) && rel.Y > 0)
                 {
@@ -244,25 +259,48 @@ namespace FamilyRelationshipDetector
                         rel.RelationNumber.ToString(),
                         Math.Pow(2, rel.Y).ToString()
                     });
+
+                    rel.Ancestor = true;
+                    rel.MaxCount = (int)Math.Pow(2, rel.Y);
                 }
             }
 
-            _fileSaver.SaveToFile("ancestorsMatrix.csv", ancestorsMatrix);
+            //_fileSaver.SaveToFile("ancestorsMatrix.csv", ancestorsMatrix);
 
             /*
              * Построение списка потомков пробанда, его сиблингов и их потомков
              */
             List<string> siblindantsMatrix = new List<string>();
 
-            foreach (var rel in _relatives)
+            foreach (var rel in _relativesUI)
             {
                 if ((rel.X.Equals(0) && rel.Y < 0) || (rel.X.Equals(1) && rel.Y <= 0))
                 {
                     siblindantsMatrix.Add(rel.RelationNumber.ToString());
+
+                    rel.Siblindant = true;
                 }
             }
 
-            _fileSaver.SaveToFile("siblindantsMatrix.csv", siblindantsMatrix);
+            //_fileSaver.SaveToFile("siblindantsMatrix.csv", siblindantsMatrix);
+
+            List<Relative> _relatives = new List<Relative>();
+
+            foreach (var rel in usefulRelatives)
+            {
+                Relative newRel = new Relative(
+                    rel.RelationNumber,
+                    rel.Y,
+                    rel.RelationName,
+                    rel.CommonCm,
+                    rel.Ancestor,
+                    rel.Siblindant,
+                    rel.MaxCount,
+                    rel.PossibleRelationships);
+                _relatives.Add(newRel);
+            }
+
+            File.WriteAllText("relatives.json", JsonConvert.SerializeObject(_relatives));
         }
 
         private void Calculate(object sender, EventArgs e)
@@ -279,7 +317,7 @@ namespace FamilyRelationshipDetector
             label8.Text = y1Result.ToString();
 
             label10.Text = _relationshipSelector.DetectRelationship(y0Result,
-                y1Result, _relatives);
+                y1Result, _relativesUI);
 
             if (_nullPersonsX == _firstPersonsX)
             {
@@ -298,7 +336,7 @@ namespace FamilyRelationshipDetector
 
                         label10.Text += "\n" + _relationshipSelector.DetectRelationship(yMrca - _nullPersonsY,
                                             yMrca - _firstPersonsY,
-                                            _relatives);
+                                            _relativesUI);
                     }
                 }
             }
