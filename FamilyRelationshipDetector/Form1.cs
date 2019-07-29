@@ -151,6 +151,7 @@ namespace FamilyRelationshipDetector
              */
             List<string>[,] relationshipsMatrix = new List<string>[usefulRelatives.Count, usefulRelatives.Count];
             List<string> centimorgansMatrix = new List<string>();
+            List<string> yMatrix = new List<string>();
 
             int person = 0, relative = 0;
 
@@ -223,12 +224,21 @@ namespace FamilyRelationshipDetector
                     }
                 }
 
+                foreach (var usefulRelative in usefulRelatives)
+                {
+                    if (usefulRelative.X.Equals(firstRelative.X) && usefulRelative.Y.Equals(firstRelative.Y))
+                    {
+                        yMatrix.Add(usefulRelative.Y.ToString());
+                    }
+                }
+
                 person++;
                 relative = 0;
             }
 
             _fileSaver.SaveToFile("relationships.csv", relationshipsMatrix);
             _fileSaver.SaveToFile("centimorgans.csv", centimorgansMatrix);
+            _fileSaver.SaveToFile("ys.csv", yMatrix);
 
             /*
              * Построение матрицы максимального числа предков каждого вида.
