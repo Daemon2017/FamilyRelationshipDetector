@@ -4,7 +4,7 @@ namespace FamilyRelationshipDetector
 {
     public class RelationshipSelector
     {
-        public string FindTypeOfRelationship(int x, int y, List<Relative> relatives)
+        public string GetTypeOfRelationship(int x, int y, List<Relative> relatives)
         {
             string foundRelationship = "";
 
@@ -34,11 +34,11 @@ namespace FamilyRelationshipDetector
              */
             if (0 == distanceBetweenMrcaAndFirstPerson)
             {
-                typeOfRelationship = FindTypeOfRelationship(0, distanceBetweenMrcaAndNullPerson, relatives);
+                typeOfRelationship = GetTypeOfRelationship(0, distanceBetweenMrcaAndNullPerson, relatives);
             }
             else
             {
-                typeOfRelationship = FindTypeOfRelationship(distanceBetweenMrcaAndNullPerson,
+                typeOfRelationship = GetTypeOfRelationship(distanceBetweenMrcaAndNullPerson,
                     distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson,
                     relatives);
             }

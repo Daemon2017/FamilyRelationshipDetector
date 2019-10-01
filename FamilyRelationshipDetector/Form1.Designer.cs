@@ -155,7 +155,7 @@
             this.button12.TabIndex = 44;
             this.button12.Text = "Посчитать";
             this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.Calculate);
+            this.button12.Click += new System.EventHandler(this.CalculateButton_Click);
             // 
             // panel1
             // 
@@ -196,7 +196,7 @@
             this.button1.TabIndex = 54;
             this.button1.Text = "Построить диагональ";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.GenerateDiagonal);
+            this.button1.Click += new System.EventHandler(this.GenerateDiagonalButton_Click);
             // 
             // label14
             // 
@@ -274,7 +274,7 @@
             this.button60.TabIndex = 45;
             this.button60.Text = "Построить квадрат";
             this.button60.UseVisualStyleBackColor = true;
-            this.button60.Click += new System.EventHandler(this.GenerateSquare);
+            this.button60.Click += new System.EventHandler(this.GenerateSquareButton_Click);
             // 
             // panel2
             // 

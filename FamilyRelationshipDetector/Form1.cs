@@ -102,7 +102,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        private void GenerateSquare(object sender, EventArgs e)
+        private void GenerateSquareButton_Click(object sender, EventArgs e)
         {
             int minX = Convert.ToInt16(textBox1.Text);
             int minY = Convert.ToInt16(textBox2.Text);
@@ -120,10 +120,10 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            BuildMatrices(usefulRelatives);
+            GetMatrices(usefulRelatives);
         }
 
-        private void GenerateDiagonal(object sender, EventArgs e)
+        private void GenerateDiagonalButton_Click(object sender, EventArgs e)
         {
             int clusterNumber = Convert.ToInt16(textBox5.Text);
 
@@ -140,10 +140,10 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            BuildMatrices(usefulRelatives);
+            GetMatrices(usefulRelatives);
         }
 
-        private void BuildMatrices(List<Relative> usefulRelatives)
+        private void GetMatrices(List<Relative> usefulRelatives)
         {
             /*
              * Построение матрицы допустимых степеней родства.
@@ -278,7 +278,7 @@ namespace FamilyRelationshipDetector
             _fileSaver.SaveToFile("siblindantsMatrix.csv", siblindantsMatrix);
         }
 
-        private void Calculate(object sender, EventArgs e)
+        private void CalculateButton_Click(object sender, EventArgs e)
         {
             int yMrca = _mrcaSelector.SelectMrca(_nullPersonsX,
                 _nullPersonsY,
@@ -294,25 +294,21 @@ namespace FamilyRelationshipDetector
             label10.Text = _relationshipSelector.DetectRelationship(y0Result,
                 y1Result, _relatives);
 
-            if (_nullPersonsX == _firstPersonsX)
+            if (_nullPersonsX == _firstPersonsX &&
+                !((_nullPersonsX == 0 && _nullPersonsY >= 0) || (_firstPersonsX == 0 && _firstPersonsY >= 0)))
             {
-                if (!((_nullPersonsX == 0 && _nullPersonsY >= 0) ||
-                      (_firstPersonsX == 0 && _firstPersonsY >= 0)))
+                int y0New = _nullPersonsY,
+                    y1New = _firstPersonsY;
+
+                while (y0New < _nullPersonsX &&
+                    y1New < _firstPersonsX)
                 {
-                    int y0New = _nullPersonsY,
-                        y1New = _firstPersonsY;
+                    yMrca = _mrcaSelector.SelectMrca(_nullPersonsX, ++y0New, _firstPersonsX, ++y1New);
 
-                    while (y0New < _nullPersonsX && y1New < _firstPersonsX)
-                    {
-                        yMrca = _mrcaSelector.SelectMrca(_nullPersonsX,
-                            ++y0New,
-                            _firstPersonsX,
-                            ++y1New);
-
-                        label10.Text += "\n" + _relationshipSelector.DetectRelationship(yMrca - _nullPersonsY,
-                                            yMrca - _firstPersonsY,
-                                            _relatives);
-                    }
+                    label10.Text += "\n" + _relationshipSelector.DetectRelationship(
+                        yMrca - _nullPersonsY,
+                        yMrca - _firstPersonsY,
+                        _relatives);
                 }
             }
 
