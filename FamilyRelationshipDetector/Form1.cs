@@ -113,8 +113,8 @@ namespace FamilyRelationshipDetector
 
             foreach (var possibleRelative in _relatives)
             {
-                if (possibleRelative.X >= minX && possibleRelative.X <= maxX
-                                               && possibleRelative.Y >= minY && possibleRelative.Y <= maxY)
+                if (possibleRelative.X >= minX && possibleRelative.X <= maxX &&
+                    possibleRelative.Y >= minY && possibleRelative.Y <= maxY)
                 {
                     usefulRelatives.Add(possibleRelative);
                 }
