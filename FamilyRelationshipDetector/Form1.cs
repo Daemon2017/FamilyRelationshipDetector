@@ -19,13 +19,9 @@ namespace FamilyRelationshipDetector
         private readonly FileSaver _fileSaver = new FileSaver();
         private readonly RelationshipSelector _relationshipSelector = new RelationshipSelector();
         private readonly MrcaSelector _mrcaSelector = new MrcaSelector();
+        private readonly List<Relative> _relativesList = new List<Relative>();
 
-        private int _nullPersonsX,
-            _nullPersonsY,
-            _firstPersonsX,
-            _firstPersonsY;
-
-        private readonly List<Relative> _relatives = new List<Relative>();
+        private Relative _zeroRelative, _firstRelative;
 
         public void LoadFromFile(object sender, EventArgs e)
         {
@@ -56,9 +52,7 @@ namespace FamilyRelationshipDetector
             /*
              * Выявление всех возможных горизонталей.
              */
-            for (int i = 0;
-                i < numberOfRows;
-                i++)
+            for (int i = 0; i < numberOfRows; i++)
             {
                 horizonatal[i] = Convert.ToInt16(relativesMatrix[i, 2]);
             }
@@ -68,11 +62,10 @@ namespace FamilyRelationshipDetector
              */
             int maxHorizontal = horizonatal.Concat(new[] { 0 }).Max();
 
-            for (int i = 0;
-                i < numberOfRows;
-                i++)
+            for (int i = 0; i < numberOfRows; i++)
             {
-                Relative newRelative = new Relative(Convert.ToInt16(relativesMatrix[i, 0]),
+                Relative newRelative = new Relative(
+                    Convert.ToInt16(relativesMatrix[i, 0]),
                     Convert.ToInt16(relativesMatrix[i, 1]),
                     Convert.ToInt16(relativesMatrix[i, 2]),
                     relativesMatrix[i, 3],
@@ -81,7 +74,7 @@ namespace FamilyRelationshipDetector
                     Convert.ToDouble(relativesMatrix[i, 6]),
                     maxHorizontal);
                 newRelative.MouseDown += RelativeButton_MouseDown;
-                _relatives.Add(newRelative);
+                _relativesList.Add(newRelative);
                 panel2.Controls.Add(newRelative);
             }
         }
@@ -90,14 +83,12 @@ namespace FamilyRelationshipDetector
         {
             if (e.Button == MouseButtons.Left)
             {
-                _nullPersonsX = ((Relative)sender).X;
-                _nullPersonsY = ((Relative)sender).Y;
+                _zeroRelative = (Relative)sender;
                 label2.Text = ((Relative)sender).RelationName;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                _firstPersonsX = ((Relative)sender).X;
-                _firstPersonsY = ((Relative)sender).Y;
+                _firstRelative = (Relative)sender;
                 label4.Text = ((Relative)sender).RelationName;
             }
         }
@@ -111,7 +102,7 @@ namespace FamilyRelationshipDetector
 
             List<Relative> usefulRelatives = new List<Relative>();
 
-            foreach (var possibleRelative in _relatives)
+            foreach (var possibleRelative in _relativesList)
             {
                 if (possibleRelative.X >= minX && possibleRelative.X <= maxX &&
                     possibleRelative.Y >= minY && possibleRelative.Y <= maxY)
@@ -132,7 +123,7 @@ namespace FamilyRelationshipDetector
              */
             List<Relative> usefulRelatives = new List<Relative>();
 
-            foreach (var possibleRelative in _relatives)
+            foreach (var possibleRelative in _relativesList)
             {
                 if (possibleRelative.ClusterNumber <= clusterNumber)
                 {
@@ -156,57 +147,65 @@ namespace FamilyRelationshipDetector
 
             int person = 0, relative = 0;
 
-            foreach (var firstRelative in usefulRelatives)
+            foreach (var zeroRelative in usefulRelatives)
             {
-                foreach (var secondRelative in usefulRelatives)
+                foreach (var firstRelative in usefulRelatives)
                 {
-                    int numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(firstRelative.X, firstRelative.Y,
-                        secondRelative.X, secondRelative.Y);
+                    int numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(zeroRelative, firstRelative);
 
-                    int numberOfGenerationsBetweenMrcaAndFirstRelative = numberOfGenerationOfMrca - firstRelative.Y,
-                        numberOfGenerationsBetweenMrcaAndSecondRelative = numberOfGenerationOfMrca - secondRelative.Y;
+                    int numberOfGenerationsBetweenMrcaAndFirstRelative = numberOfGenerationOfMrca - zeroRelative.Y,
+                        numberOfGenerationsBetweenMrcaAndSecondRelative = numberOfGenerationOfMrca - firstRelative.Y;
 
                     /*
                      * Определение основной степени родства.
                      */
                     relationshipsMatrix[person, relative] = new List<string>
                     {
-                        _relationshipSelector.DetectRelationship(numberOfGenerationsBetweenMrcaAndFirstRelative,
-                            numberOfGenerationsBetweenMrcaAndSecondRelative, _relatives)
+                        _relationshipSelector.DetectRelationship(
+                            numberOfGenerationsBetweenMrcaAndFirstRelative,
+                            numberOfGenerationsBetweenMrcaAndSecondRelative,
+                            _relativesList)
                     };
 
                     /*
                      * Определение дополнительных степеней родства, которые могут возникать от того, что 1-я и 2-я личности
                      * находятся в одной вертикали.
                      */
-                    if (firstRelative.X == secondRelative.X)
+                    if (zeroRelative.X == firstRelative.X &&
+                        !((zeroRelative.X == 0 && zeroRelative.Y >= 0) || (firstRelative.X == 0 && firstRelative.Y >= 0)))
                     {
-                        if (!((firstRelative.X == 0 && firstRelative.Y >= 0) ||
-                              (secondRelative.X == 0 && secondRelative.Y >= 0)))
+                        int j0New = zeroRelative.Y,
+                            j1New = firstRelative.Y;
+
+                        while (j0New < zeroRelative.X && j1New < firstRelative.X)
                         {
-                            int j0New = firstRelative.Y,
-                                j1New = secondRelative.Y;
+                            int zeroY = ++j0New;
+                            int firstY = ++j1New;
 
-                            while (j0New < firstRelative.X && j1New < secondRelative.X)
+                            try
                             {
-                                numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(firstRelative.X, ++j0New,
-                                    secondRelative.X, ++j1New);
-
-                                relationshipsMatrix[person, relative].Add(
-                                    _relationshipSelector.DetectRelationship(numberOfGenerationOfMrca - firstRelative.Y,
-                                        numberOfGenerationOfMrca - secondRelative.Y,
-                                        _relatives));
+                                numberOfGenerationOfMrca = _mrcaSelector.SelectMrca(
+                                    _relativesList.Where(rel => rel.X == zeroRelative.X && rel.Y == zeroY).Single(),
+                                    _relativesList.Where(rel => rel.X == firstRelative.X && rel.Y == firstY).Single());
                             }
+                            catch (InvalidOperationException)
+                            {
+
+                            }
+
+                            relationshipsMatrix[person, relative].Add(_relationshipSelector.DetectRelationship(
+                                    numberOfGenerationOfMrca - zeroRelative.Y,
+                                    numberOfGenerationOfMrca - firstRelative.Y,
+                                    _relativesList));
                         }
                     }
 
                     /*
                      * Определение возможности отсутствия родства между 1-й и 2-й личностями. 
                      */
-                    if (((firstRelative.X > 1) && (secondRelative.X > 1)) ||
-                        ((firstRelative.Y > 0) && (secondRelative.Y > 0)) ||
-                        ((firstRelative.Y > 0) && (secondRelative.X > 1) ||
-                         (secondRelative.Y > 0) && (firstRelative.X > 1)))
+                    if (((zeroRelative.X > 1) && (firstRelative.X > 1)) ||
+                        ((zeroRelative.Y > 0) && (firstRelative.Y > 0)) ||
+                        ((zeroRelative.Y > 0) && (firstRelative.X > 1) || (firstRelative.Y > 0) && (zeroRelative.X > 1)))
                     {
                         relationshipsMatrix[person, relative].Add("0.");
                     }
@@ -219,7 +218,7 @@ namespace FamilyRelationshipDetector
                  */
                 foreach (var usefulRelative in usefulRelatives)
                 {
-                    if (usefulRelative.X.Equals(firstRelative.X) && usefulRelative.Y.Equals(firstRelative.Y))
+                    if (usefulRelative.X.Equals(zeroRelative.X) && usefulRelative.Y.Equals(zeroRelative.Y))
                     {
                         centimorgansMatrix.Add(usefulRelative.CommonCm.ToString());
                     }
@@ -227,7 +226,7 @@ namespace FamilyRelationshipDetector
 
                 foreach (var usefulRelative in usefulRelatives)
                 {
-                    if (usefulRelative.X.Equals(firstRelative.X) && usefulRelative.Y.Equals(firstRelative.Y))
+                    if (usefulRelative.X.Equals(zeroRelative.X) && usefulRelative.Y.Equals(zeroRelative.Y))
                     {
                         yMatrix.Add(usefulRelative.Y.ToString());
                         xMatrix.Add(usefulRelative.X.ToString());
@@ -248,7 +247,7 @@ namespace FamilyRelationshipDetector
              */
             List<List<string>> ancestorsMatrix = new List<List<string>>();
 
-            foreach (var rel in _relatives)
+            foreach (var rel in _relativesList)
             {
                 if (rel.X.Equals(0) && rel.Y > 0)
                 {
@@ -267,7 +266,7 @@ namespace FamilyRelationshipDetector
              */
             List<string> siblindantsMatrix = new List<string>();
 
-            foreach (var rel in _relatives)
+            foreach (var rel in _relativesList)
             {
                 if ((rel.X.Equals(0) && rel.Y < 0) || (rel.X.Equals(1) && rel.Y <= 0))
                 {
@@ -280,49 +279,58 @@ namespace FamilyRelationshipDetector
 
         private void CalculateButton_Click(object sender, EventArgs e)
         {
-            int yMrca = _mrcaSelector.SelectMrca(_nullPersonsX,
-                _nullPersonsY,
-                _firstPersonsX,
-                _firstPersonsY);
-
-            int y0Result = yMrca - _nullPersonsY,
-                y1Result = yMrca - _firstPersonsY;
-
-            label7.Text = y0Result.ToString();
-            label8.Text = y1Result.ToString();
-
-            label10.Text = _relationshipSelector.DetectRelationship(y0Result,
-                y1Result, _relatives);
-
-            if (_nullPersonsX == _firstPersonsX &&
-                !((_nullPersonsX == 0 && _nullPersonsY >= 0) || (_firstPersonsX == 0 && _firstPersonsY >= 0)))
+            if (_zeroRelative != null && _firstRelative != null)
             {
-                int y0New = _nullPersonsY,
-                    y1New = _firstPersonsY;
+                int yMrca = _mrcaSelector.SelectMrca(_zeroRelative, _firstRelative);
 
-                while (y0New < _nullPersonsX &&
-                    y1New < _firstPersonsX)
+                int y0Result = yMrca - _zeroRelative.Y,
+                    y1Result = yMrca - _firstRelative.Y;
+
+                label7.Text = y0Result.ToString();
+                label8.Text = y1Result.ToString();
+
+                label10.Text = _relationshipSelector.DetectRelationship(y0Result,
+                    y1Result, _relativesList);
+
+                if (_zeroRelative.X == _firstRelative.X && !((_zeroRelative.X == 0 && _zeroRelative.Y >= 0) || (_firstRelative.X == 0 && _firstRelative.Y >= 0)))
                 {
-                    yMrca = _mrcaSelector.SelectMrca(_nullPersonsX, ++y0New, _firstPersonsX, ++y1New);
+                    int y0New = _zeroRelative.Y,
+                        y1New = _firstRelative.Y;
 
-                    label10.Text += "\n" + _relationshipSelector.DetectRelationship(
-                        yMrca - _nullPersonsY,
-                        yMrca - _firstPersonsY,
-                        _relatives);
+                    while (y0New < _zeroRelative.X && y1New < _firstRelative.X)
+                    {
+                        int zeroY = ++y0New;
+                        int firstY = ++y1New;
+
+                        try
+                        {
+                            yMrca = _mrcaSelector.SelectMrca(
+                                _relativesList.Where(rel => rel.X == _zeroRelative.X && rel.Y == zeroY).Single(),
+                                _relativesList.Where(rel => rel.X == _firstRelative.X && rel.Y == firstY).Single());
+                        }
+                        catch (InvalidOperationException)
+                        {
+
+                        }
+
+                        label10.Text += "\n" + _relationshipSelector.DetectRelationship(
+                            yMrca - _zeroRelative.Y,
+                            yMrca - _firstRelative.Y,
+                            _relativesList);
+                    }
                 }
-            }
 
-            if (((_nullPersonsX > 1) && (_firstPersonsX > 1)) ||
-                ((_nullPersonsY > 0) && (_firstPersonsY > 0)) ||
-                ((_nullPersonsY > 0) && (_firstPersonsX > 1) || (_firstPersonsY > 0) && (_nullPersonsX > 1)))
-            {
-                label10.Text += "\nРодства нет.";
-            }
+                if (((_zeroRelative.X > 1) && (_firstRelative.X > 1)) ||
+                    ((_zeroRelative.Y > 0) && (_firstRelative.Y > 0)) ||
+                    ((_zeroRelative.Y > 0) && (_firstRelative.X > 1) || (_firstRelative.Y > 0) && (_zeroRelative.X > 1)))
+                {
+                    label10.Text += "\nРодства нет.";
+                }
 
-            if ((0 > y0Result) ||
-                (0 > y1Result))
-            {
-                label10.Text = "Ошибка!";
+                if ((0 > y0Result) || (0 > y1Result))
+                {
+                    label10.Text = "Ошибка!";
+                }
             }
         }
     }

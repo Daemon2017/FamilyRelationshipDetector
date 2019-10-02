@@ -2,51 +2,51 @@
 {
     public class MrcaSelector
     {
-        public int SelectMrca(int startX, int startY, int endX, int endY)
+        public int SelectMrca(Relative start, Relative end)
         {
             int numberOfGenerationOfMrca = 0;
 
             /*
              * Определение количества поколений до БОП.
              */
-            if (startX > endX)
+            if (start.X > end.X)
             {
-                if (0 == endX)
+                if (0 == end.X)
                 {
-                    if (0 < startX && startX < endY)
+                    if (0 < start.X && start.X < end.Y)
                     {
-                        numberOfGenerationOfMrca = endY;
+                        numberOfGenerationOfMrca = end.Y;
                     }
                     else
                     {
-                        numberOfGenerationOfMrca = startX;
+                        numberOfGenerationOfMrca = start.X;
                     }
                 }
                 else
                 {
-                    numberOfGenerationOfMrca = startX;
+                    numberOfGenerationOfMrca = start.X;
                 }
             }
-            else if (startX == endX)
+            else if (start.X == end.X)
             {
-                numberOfGenerationOfMrca = startY >= endY ? startY : endY;
+                numberOfGenerationOfMrca = start.Y >= end.Y ? start.Y : end.Y;
             }
-            else if (startX < endX)
+            else if (start.X < end.X)
             {
-                if (0 == startX)
+                if (0 == start.X)
                 {
-                    if (0 < endX && endX < startY)
+                    if (0 < end.X && end.X < start.Y)
                     {
-                        numberOfGenerationOfMrca = startY;
+                        numberOfGenerationOfMrca = start.Y;
                     }
                     else
                     {
-                        numberOfGenerationOfMrca = endX;
+                        numberOfGenerationOfMrca = end.X;
                     }
                 }
                 else
                 {
-                    numberOfGenerationOfMrca = endX;
+                    numberOfGenerationOfMrca = end.X;
                 }
             }
 
