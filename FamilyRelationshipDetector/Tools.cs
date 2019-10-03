@@ -59,78 +59,55 @@ namespace FamilyRelationshipDetector
             return numberOfGenerationOfMRCA;
         }
 
-        public string GetTypeOfRelationship(int x, int y, List<Relative> relatives)
-        {
-            string foundRelationship = "";
-
-            /*
-             * Поиск степени родства, имеющей соответствующие координаты по X и Y.
-             */
-            foreach (var relative in relatives)
-            {
-                if (relative.X == x &&
-                    relative.Y == y)
-                {
-                    foundRelationship = relative.RelationNumber + ". [" + relative.X + ";" + relative.Y + "] " +
-                                        relative.RelationName;
-                }
-            }
-
-            return foundRelationship;
-        }
-
-        public string GetRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson,
+        public Relative GetRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson,
             List<Relative> relatives)
         {
-            string typeOfRelationship;
-
             /*
              * Определение степени родства между парой персон по данным о расстоянии от каждого из них до БОП.
              */
             if (0 == distanceBetweenMrcaAndFirstPerson)
             {
-                typeOfRelationship = GetTypeOfRelationship(0, distanceBetweenMrcaAndNullPerson, relatives);
+                return relatives.Where(rel =>
+                rel.X == 0 &&
+                rel.Y == distanceBetweenMrcaAndNullPerson).Single();
             }
             else
             {
-                typeOfRelationship = GetTypeOfRelationship(distanceBetweenMrcaAndNullPerson,
-                    distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson,
-                    relatives);
+                return relatives.Where(rel =>
+                rel.X == distanceBetweenMrcaAndNullPerson &&
+                rel.Y == distanceBetweenMrcaAndNullPerson - distanceBetweenMrcaAndFirstPerson).Single();
             }
-
-            return typeOfRelationship;
         }
 
-        public List<string> GetPossibleRelationshipsList(int yMrca, int y0Result, int y1Result,
+        public List<Relative> GetPossibleRelationshipsList(int yMrca, int y0Result, int y1Result,
             Relative _zeroRelative, Relative _firstRelative, List<Relative> _relativesList)
         {
-            List<string> possibleRelationshipsList = new List<string>
+            List<Relative> possibleRelationshipsList = new List<Relative>
             {
                 GetRelationship(y0Result, y1Result, _relativesList)
             };
 
             if (_zeroRelative.X == _firstRelative.X && !((_zeroRelative.X == 0 && _zeroRelative.Y >= 0) || (_firstRelative.X == 0 && _firstRelative.Y >= 0)))
             {
-                int y0New = _zeroRelative.Y,
-                    y1New = _firstRelative.Y;
+                int y0New = _zeroRelative.Y;
+                int y1New = _firstRelative.Y;
 
                 while (y0New < _zeroRelative.X && y1New < _firstRelative.X)
                 {
-                    int zeroY = ++y0New;
-                    int firstY = ++y1New;
-
                     try
                     {
+                        int zeroY = ++y0New;
+                        int firstY = ++y1New;
+
                         yMrca = GetNumberOfGenerationOfMRCA(
                             _relativesList.Where(rel => rel.X == _zeroRelative.X && rel.Y == zeroY).Single(),
                             _relativesList.Where(rel => rel.X == _firstRelative.X && rel.Y == firstY).Single());
+                        possibleRelationshipsList.Add(GetRelationship(yMrca - _zeroRelative.Y, yMrca - _firstRelative.Y, _relativesList));
                     }
                     catch (InvalidOperationException)
                     {
 
                     }
-
-                    possibleRelationshipsList.Add("\n" + GetRelationship(yMrca - _zeroRelative.Y, yMrca - _firstRelative.Y, _relativesList));
                 }
             }
 
@@ -138,12 +115,12 @@ namespace FamilyRelationshipDetector
                 ((_zeroRelative.Y > 0) && (_firstRelative.Y > 0)) ||
                 ((_zeroRelative.Y > 0) && (_firstRelative.X > 1) || (_firstRelative.Y > 0) && (_zeroRelative.X > 1)))
             {
-                possibleRelationshipsList.Add("\nРодства нет.");
+                possibleRelationshipsList.Add(_relativesList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
             }
 
             if ((0 > y0Result) || (0 > y1Result))
             {
-                possibleRelationshipsList.Add("Ошибка!");
+                return null;
             }
 
             return possibleRelationshipsList;
@@ -151,11 +128,13 @@ namespace FamilyRelationshipDetector
 
         public void SaveMatricesToFiles(List<Relative> usefulRelatives, List<Relative> _relativesList)
         {
+            usefulRelatives.Remove(_relativesList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
+
             /*
              * Построение матрицы допустимых степеней родства.
              * Построение матрицы примерного количества общих сантиморган.
              */
-            List<string>[,] relationshipsMatrix = new List<string>[usefulRelatives.Count, usefulRelatives.Count];
+            List<Relative>[,] relationshipsMatrix = new List<Relative>[usefulRelatives.Count, usefulRelatives.Count];
             List<string> centimorgansMatrix = new List<string>();
             List<string> xMatrix = new List<string>();
             List<string> yMatrix = new List<string>();
@@ -174,7 +153,7 @@ namespace FamilyRelationshipDetector
                     /*
                      * Определение основной степени родства.
                      */
-                    relationshipsMatrix[person, relative] = new List<string>
+                    relationshipsMatrix[person, relative] = new List<Relative>
                     {
                         GetRelationship(
                             numberOfGenerationsBetweenMrcaAndFirstRelative,
@@ -222,7 +201,7 @@ namespace FamilyRelationshipDetector
                         ((zeroRelative.Y > 0) && (firstRelative.Y > 0)) ||
                         ((zeroRelative.Y > 0) && (firstRelative.X > 1) || (firstRelative.Y > 0) && (zeroRelative.X > 1)))
                     {
-                        relationshipsMatrix[person, relative].Add("0.");
+                        relationshipsMatrix[person, relative].Add(_relativesList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
                     }
 
                     relative++;

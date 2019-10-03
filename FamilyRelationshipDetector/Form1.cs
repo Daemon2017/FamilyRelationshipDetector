@@ -71,9 +71,13 @@ namespace FamilyRelationshipDetector
                     Convert.ToInt16(relativesMatrix[i, 5]),
                     Convert.ToDouble(relativesMatrix[i, 6]),
                     maxHorizontal);
-                newRelative.MouseDown += RelativeButton_MouseDown;
+
+                if (newRelative.RelationNumber != 0)
+                {
+                    newRelative.MouseDown += RelativeButton_MouseDown;
+                    panel2.Controls.Add(newRelative);
+                }
                 _relativesList.Add(newRelative);
-                panel2.Controls.Add(newRelative);
             }
         }
 
@@ -140,11 +144,19 @@ namespace FamilyRelationshipDetector
 
                 int y0Result = yMrca - _zeroRelative.Y;
                 int y1Result = yMrca - _firstRelative.Y;
-                List<string> possibleRelationshipsList = _tools.GetPossibleRelationshipsList(yMrca, y0Result, y1Result, _zeroRelative, _firstRelative, _relativesList);
+                List<Relative> possibleRelationshipsList = _tools.GetPossibleRelationshipsList(yMrca, y0Result, y1Result, _zeroRelative, _firstRelative, _relativesList);
 
                 label7.Text = y0Result.ToString();
                 label8.Text = y1Result.ToString();
-                label10.Text = string.Join(" ", possibleRelationshipsList.ToArray());
+
+                string possibleRelationshipsListText = "";
+                foreach (Relative possibleRelationship in possibleRelationshipsList)
+                {
+                    possibleRelationshipsListText += string.Format(
+                        "{0}. [{1};{2}] {3} \n",
+                        possibleRelationship.RelationNumber, possibleRelationship.X, possibleRelationship.Y, possibleRelationship.RelationName);
+                }
+                label10.Text = possibleRelationshipsListText;
             }
         }
     }

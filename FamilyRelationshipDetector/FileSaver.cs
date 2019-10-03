@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace FamilyRelationshipDetector
@@ -28,7 +27,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        public void SaveToFile(string outputFileName, List<string>[,] dataArray)
+        public void SaveToFile(string outputFileName, List<Relative>[,] dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(outputFileName))
             {
@@ -40,9 +39,9 @@ namespace FamilyRelationshipDetector
                     {
                         foreach (var cell in dataArray[line, column])
                         {
-                            if (!string.IsNullOrEmpty(cell))
+                            if (cell != null)
                             {
-                                content += cell.Substring(0, cell.IndexOf(".", StringComparison.Ordinal)) + ";";
+                                content += cell.RelationNumber + ";";
                             }
                         }
 
