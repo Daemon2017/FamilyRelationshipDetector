@@ -314,7 +314,7 @@
             this.Name = "Form1";
             this.Text = "FamilyRelationshipDetector v2018.6";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.LoadFromFile);
+            this.Load += new System.EventHandler(this.GetConfig_OnLoad);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

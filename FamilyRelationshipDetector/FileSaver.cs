@@ -32,15 +32,11 @@ namespace FamilyRelationshipDetector
         {
             using (StreamWriter outfile = new StreamWriter(outputFileName))
             {
-                for (int line = 0;
-                    line < dataArray.GetLength(0);
-                    line++)
+                for (int line = 0; line < dataArray.GetLength(0); line++)
                 {
                     string content = "";
 
-                    for (int column = 0;
-                        column < dataArray.GetLength(1);
-                        column++)
+                    for (int column = 0; column < dataArray.GetLength(1); column++)
                     {
                         foreach (var cell in dataArray[line, column])
                         {
