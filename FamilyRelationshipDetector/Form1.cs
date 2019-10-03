@@ -109,7 +109,7 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            _tools.GetMatrices(usefulRelatives, _relativesList);
+            _tools.SaveMatricesToFiles(usefulRelatives, _relativesList);
         }
 
         private void GenerateDiagonalButton_Click(object sender, EventArgs e)
@@ -129,14 +129,14 @@ namespace FamilyRelationshipDetector
                 }
             }
 
-            _tools.GetMatrices(usefulRelatives, _relativesList);
+            _tools.SaveMatricesToFiles(usefulRelatives, _relativesList);
         }
 
         private void CalculateButton_Click(object sender, EventArgs e)
         {
             if (_zeroRelative != null && _firstRelative != null)
             {
-                int yMrca = _tools.SelectMrca(_zeroRelative, _firstRelative);
+                int yMrca = _tools.GetNumberOfGenerationOfMRCA(_zeroRelative, _firstRelative);
 
                 int y0Result = yMrca - _zeroRelative.Y;
                 int y1Result = yMrca - _firstRelative.Y;
@@ -144,7 +144,7 @@ namespace FamilyRelationshipDetector
 
                 label7.Text = y0Result.ToString();
                 label8.Text = y1Result.ToString();
-                label10.Text = string.Join(", ", possibleRelationshipsList.ToArray());
+                label10.Text = string.Join(" ", possibleRelationshipsList.ToArray());
             }
         }
     }

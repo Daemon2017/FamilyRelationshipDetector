@@ -8,9 +8,9 @@ namespace FamilyRelationshipDetector
     {
         private readonly FileSaver _fileSaver = new FileSaver();
 
-        public int SelectMrca(Relative start, Relative end)
+        public int GetNumberOfGenerationOfMRCA(Relative start, Relative end)
         {
-            int numberOfGenerationOfMrca = 0;
+            int numberOfGenerationOfMRCA = 0;
 
             /*
              * Определение количества поколений до БОП.
@@ -21,21 +21,21 @@ namespace FamilyRelationshipDetector
                 {
                     if (0 < start.X && start.X < end.Y)
                     {
-                        numberOfGenerationOfMrca = end.Y;
+                        numberOfGenerationOfMRCA = end.Y;
                     }
                     else
                     {
-                        numberOfGenerationOfMrca = start.X;
+                        numberOfGenerationOfMRCA = start.X;
                     }
                 }
                 else
                 {
-                    numberOfGenerationOfMrca = start.X;
+                    numberOfGenerationOfMRCA = start.X;
                 }
             }
             else if (start.X == end.X)
             {
-                numberOfGenerationOfMrca = start.Y >= end.Y ? start.Y : end.Y;
+                numberOfGenerationOfMRCA = start.Y >= end.Y ? start.Y : end.Y;
             }
             else if (start.X < end.X)
             {
@@ -43,20 +43,20 @@ namespace FamilyRelationshipDetector
                 {
                     if (0 < end.X && end.X < start.Y)
                     {
-                        numberOfGenerationOfMrca = start.Y;
+                        numberOfGenerationOfMRCA = start.Y;
                     }
                     else
                     {
-                        numberOfGenerationOfMrca = end.X;
+                        numberOfGenerationOfMRCA = end.X;
                     }
                 }
                 else
                 {
-                    numberOfGenerationOfMrca = end.X;
+                    numberOfGenerationOfMRCA = end.X;
                 }
             }
 
-            return numberOfGenerationOfMrca;
+            return numberOfGenerationOfMRCA;
         }
 
         public string GetTypeOfRelationship(int x, int y, List<Relative> relatives)
@@ -79,7 +79,7 @@ namespace FamilyRelationshipDetector
             return foundRelationship;
         }
 
-        public string DetectRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson,
+        public string GetRelationship(int distanceBetweenMrcaAndNullPerson, int distanceBetweenMrcaAndFirstPerson,
             List<Relative> relatives)
         {
             string typeOfRelationship;
@@ -106,7 +106,7 @@ namespace FamilyRelationshipDetector
         {
             List<string> possibleRelationshipsList = new List<string>
             {
-                DetectRelationship(y0Result, y1Result, _relativesList)
+                GetRelationship(y0Result, y1Result, _relativesList)
             };
 
             if (_zeroRelative.X == _firstRelative.X && !((_zeroRelative.X == 0 && _zeroRelative.Y >= 0) || (_firstRelative.X == 0 && _firstRelative.Y >= 0)))
@@ -121,7 +121,7 @@ namespace FamilyRelationshipDetector
 
                     try
                     {
-                        yMrca = SelectMrca(
+                        yMrca = GetNumberOfGenerationOfMRCA(
                             _relativesList.Where(rel => rel.X == _zeroRelative.X && rel.Y == zeroY).Single(),
                             _relativesList.Where(rel => rel.X == _firstRelative.X && rel.Y == firstY).Single());
                     }
@@ -130,7 +130,7 @@ namespace FamilyRelationshipDetector
 
                     }
 
-                    possibleRelationshipsList.Add("\n" + DetectRelationship(yMrca - _zeroRelative.Y, yMrca - _firstRelative.Y, _relativesList));
+                    possibleRelationshipsList.Add("\n" + GetRelationship(yMrca - _zeroRelative.Y, yMrca - _firstRelative.Y, _relativesList));
                 }
             }
 
@@ -149,7 +149,7 @@ namespace FamilyRelationshipDetector
             return possibleRelationshipsList;
         }
 
-        public void GetMatrices(List<Relative> usefulRelatives, List<Relative> _relativesList)
+        public void SaveMatricesToFiles(List<Relative> usefulRelatives, List<Relative> _relativesList)
         {
             /*
              * Построение матрицы допустимых степеней родства.
@@ -166,7 +166,7 @@ namespace FamilyRelationshipDetector
             {
                 foreach (var firstRelative in usefulRelatives)
                 {
-                    int numberOfGenerationOfMrca = SelectMrca(zeroRelative, firstRelative);
+                    int numberOfGenerationOfMrca = GetNumberOfGenerationOfMRCA(zeroRelative, firstRelative);
 
                     int numberOfGenerationsBetweenMrcaAndFirstRelative = numberOfGenerationOfMrca - zeroRelative.Y,
                         numberOfGenerationsBetweenMrcaAndSecondRelative = numberOfGenerationOfMrca - firstRelative.Y;
@@ -176,7 +176,7 @@ namespace FamilyRelationshipDetector
                      */
                     relationshipsMatrix[person, relative] = new List<string>
                     {
-                        DetectRelationship(
+                        GetRelationship(
                             numberOfGenerationsBetweenMrcaAndFirstRelative,
                             numberOfGenerationsBetweenMrcaAndSecondRelative,
                             _relativesList)
@@ -199,7 +199,7 @@ namespace FamilyRelationshipDetector
 
                             try
                             {
-                                numberOfGenerationOfMrca = SelectMrca(
+                                numberOfGenerationOfMrca = GetNumberOfGenerationOfMRCA(
                                     _relativesList.Where(rel => rel.X == zeroRelative.X && rel.Y == zeroY).Single(),
                                     _relativesList.Where(rel => rel.X == firstRelative.X && rel.Y == firstY).Single());
                             }
@@ -208,7 +208,7 @@ namespace FamilyRelationshipDetector
 
                             }
 
-                            relationshipsMatrix[person, relative].Add(DetectRelationship(
+                            relationshipsMatrix[person, relative].Add(GetRelationship(
                                     numberOfGenerationOfMrca - zeroRelative.Y,
                                     numberOfGenerationOfMrca - firstRelative.Y,
                                     _relativesList));
