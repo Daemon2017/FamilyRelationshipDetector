@@ -79,9 +79,14 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        public List<Relative> GetPossibleRelationshipsList(int yOfMrca, int numberOfGenerationsBetweenMrcaAndZeroRelative, int numberOfGenerationsBetweenMrcaAndFirstRelative,
-            Relative _zeroRelative, Relative _firstRelative, List<Relative> _relativesList)
+        public List<Relative> GetPossibleRelationshipsList(int yOfMrca, 
+            int numberOfGenerationsBetweenMrcaAndZeroRelative, int numberOfGenerationsBetweenMrcaAndFirstRelative,
+            Relative _zeroRelative, Relative _firstRelative, 
+            List<Relative> _relativesList)
         {
+            /*
+             * Определение основной степени родства.
+             */
             List<Relative> possibleRelationshipsList = new List<Relative>
             {
                 GetRelationship(
@@ -90,6 +95,10 @@ namespace FamilyRelationshipDetector
                     _relativesList)
             };
 
+            /*
+             * Определение дополнительных степеней родства, которые могут возникать от того, что 1-я и 2-я личности
+             * находятся в одной вертикали.
+             */
             if (_zeroRelative.X == _firstRelative.X &&
                 !((_zeroRelative.X == 0 && _zeroRelative.Y >= 0) || (_firstRelative.X == 0 && _firstRelative.Y >= 0)))
             {
@@ -113,6 +122,9 @@ namespace FamilyRelationshipDetector
                 }
             }
 
+            /*
+             * Определение возможности отсутствия родства между 1-й и 2-й личностями. 
+             */
             if (((_zeroRelative.X > 1) && (_firstRelative.X > 1)) ||
                 ((_zeroRelative.Y > 0) && (_firstRelative.Y > 0)) ||
                 ((_zeroRelative.Y > 0) && (_firstRelative.X > 1) || (_firstRelative.Y > 0) && (_zeroRelative.X > 1)))
@@ -147,53 +159,11 @@ namespace FamilyRelationshipDetector
                     int numberOfGenerationsBetweenMrcaAndZeroRelative = yOfMrca - zeroRelative.Y,
                         numberOfGenerationsBetweenMrcaAndFirstRelative = yOfMrca - firstRelative.Y;
 
-                    /*
-                     * Определение основной степени родства.
-                     */
-                    relationshipsMatrix[person, relative] = new List<Relative>
-                    {
-                        GetRelationship(
-                            numberOfGenerationsBetweenMrcaAndZeroRelative,
-                            numberOfGenerationsBetweenMrcaAndFirstRelative,
-                            _relativesList)
-                    };
-
-                    /*
-                     * Определение дополнительных степеней родства, которые могут возникать от того, что 1-я и 2-я личности
-                     * находятся в одной вертикали.
-                     */
-                    if (zeroRelative.X == firstRelative.X &&
-                        !((zeroRelative.X == 0 && zeroRelative.Y >= 0) || (firstRelative.X == 0 && firstRelative.Y >= 0)))
-                    {
-                        int j0New = zeroRelative.Y,
-                            j1New = firstRelative.Y;
-
-                        while (j0New < zeroRelative.X && j1New < firstRelative.X)
-                        {
-                            try
-                            {
-                                yOfMrca = GetYOfMRCA(zeroRelative.X, ++j0New, firstRelative.X, ++j1New);
-                                relationshipsMatrix[person, relative].Add(GetRelationship(
-                                    yOfMrca - zeroRelative.Y,
-                                    yOfMrca - firstRelative.Y,
-                                    _relativesList));
-                            }
-                            catch (InvalidOperationException)
-                            {
-
-                            }
-                        }
-                    }
-
-                    /*
-                     * Определение возможности отсутствия родства между 1-й и 2-й личностями. 
-                     */
-                    if (((zeroRelative.X > 1) && (firstRelative.X > 1)) ||
-                        ((zeroRelative.Y > 0) && (firstRelative.Y > 0)) ||
-                        ((zeroRelative.Y > 0) && (firstRelative.X > 1) || (firstRelative.Y > 0) && (zeroRelative.X > 1)))
-                    {
-                        relationshipsMatrix[person, relative].Add(_relativesList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
-                    }
+                    relationshipsMatrix[person, relative] = GetPossibleRelationshipsList(
+                        yOfMrca,
+                        numberOfGenerationsBetweenMrcaAndZeroRelative, numberOfGenerationsBetweenMrcaAndFirstRelative,
+                        zeroRelative, firstRelative,
+                        _relativesList);
 
                     relative++;
                 }
