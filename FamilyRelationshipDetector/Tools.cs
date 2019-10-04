@@ -8,51 +8,51 @@ namespace FamilyRelationshipDetector
     {
         private readonly FileSaver _fileSaver = new FileSaver();
 
-        public int GetNumberOfGenerationOfMRCA(Relative start, Relative end)
+        public int GetNumberOfGenerationOfMRCA(int startX, int startY, int endX, int endY)
         {
             int numberOfGenerationOfMRCA = 0;
 
             /*
              * Определение количества поколений до БОП.
              */
-            if (start.X > end.X)
+            if (startX > endX)
             {
-                if (0 == end.X)
+                if (0 == endX)
                 {
-                    if (0 < start.X && start.X < end.Y)
+                    if (0 < startX && startX < endY)
                     {
-                        numberOfGenerationOfMRCA = end.Y;
+                        numberOfGenerationOfMRCA = endY;
                     }
                     else
                     {
-                        numberOfGenerationOfMRCA = start.X;
+                        numberOfGenerationOfMRCA = startX;
                     }
                 }
                 else
                 {
-                    numberOfGenerationOfMRCA = start.X;
+                    numberOfGenerationOfMRCA = startX;
                 }
             }
-            else if (start.X == end.X)
+            else if (startX == endX)
             {
-                numberOfGenerationOfMRCA = start.Y >= end.Y ? start.Y : end.Y;
+                numberOfGenerationOfMRCA = startY >= endY ? startY : endY;
             }
-            else if (start.X < end.X)
+            else if (startX < endX)
             {
-                if (0 == start.X)
+                if (0 == startX)
                 {
-                    if (0 < end.X && end.X < start.Y)
+                    if (0 < endX && endX < startY)
                     {
-                        numberOfGenerationOfMRCA = start.Y;
+                        numberOfGenerationOfMRCA = startY;
                     }
                     else
                     {
-                        numberOfGenerationOfMRCA = end.X;
+                        numberOfGenerationOfMRCA = endX;
                     }
                 }
                 else
                 {
-                    numberOfGenerationOfMRCA = end.X;
+                    numberOfGenerationOfMRCA = endX;
                 }
             }
 
@@ -96,12 +96,7 @@ namespace FamilyRelationshipDetector
                 {
                     try
                     {
-                        int zeroY = ++y0New;
-                        int firstY = ++y1New;
-
-                        yMrca = GetNumberOfGenerationOfMRCA(
-                            _relativesList.Where(rel => rel.X == _zeroRelative.X && rel.Y == zeroY).Single(),
-                            _relativesList.Where(rel => rel.X == _firstRelative.X && rel.Y == firstY).Single());
+                        yMrca = GetNumberOfGenerationOfMRCA(_zeroRelative.X, ++y0New, _firstRelative.X, ++y1New);
                         possibleRelationshipsList.Add(GetRelationship(yMrca - _zeroRelative.Y, yMrca - _firstRelative.Y, _relativesList));
                     }
                     catch (InvalidOperationException)
@@ -145,7 +140,7 @@ namespace FamilyRelationshipDetector
             {
                 foreach (var firstRelative in usefulRelatives)
                 {
-                    int numberOfGenerationOfMrca = GetNumberOfGenerationOfMRCA(zeroRelative, firstRelative);
+                    int numberOfGenerationOfMrca = GetNumberOfGenerationOfMRCA(zeroRelative.X, zeroRelative.Y, firstRelative.X, firstRelative.Y);
 
                     int numberOfGenerationsBetweenMrcaAndFirstRelative = numberOfGenerationOfMrca - zeroRelative.Y,
                         numberOfGenerationsBetweenMrcaAndSecondRelative = numberOfGenerationOfMrca - firstRelative.Y;
@@ -173,14 +168,9 @@ namespace FamilyRelationshipDetector
 
                         while (j0New < zeroRelative.X && j1New < firstRelative.X)
                         {
-                            int zeroY = ++j0New;
-                            int firstY = ++j1New;
-
                             try
                             {
-                                numberOfGenerationOfMrca = GetNumberOfGenerationOfMRCA(
-                                    _relativesList.Where(rel => rel.X == zeroRelative.X && rel.Y == zeroY).Single(),
-                                    _relativesList.Where(rel => rel.X == firstRelative.X && rel.Y == firstY).Single());
+                                numberOfGenerationOfMrca = GetNumberOfGenerationOfMRCA(zeroRelative.X, ++j0New, firstRelative.X, ++j1New);
                             }
                             catch (InvalidOperationException)
                             {

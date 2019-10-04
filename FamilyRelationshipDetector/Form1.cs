@@ -140,7 +140,7 @@ namespace FamilyRelationshipDetector
         {
             if (_zeroRelative != null && _firstRelative != null)
             {
-                int yMrca = _tools.GetNumberOfGenerationOfMRCA(_zeroRelative, _firstRelative);
+                int yMrca = _tools.GetNumberOfGenerationOfMRCA(_zeroRelative.X, _zeroRelative.Y, _firstRelative.X, _firstRelative.Y);
 
                 int y0Result = yMrca - _zeroRelative.Y;
                 int y1Result = yMrca - _firstRelative.Y;
