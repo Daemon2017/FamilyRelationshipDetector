@@ -144,7 +144,10 @@ namespace FamilyRelationshipDetector
 
                 int y0Result = yMrca - _zeroRelative.Y;
                 int y1Result = yMrca - _firstRelative.Y;
-                List<RelationshipDegree> possibleRelationshipDegreesList = _tools.GetPossibleRelationshipsList(yMrca, y0Result, y1Result, _zeroRelative, _firstRelative, _relationshipDegreeList);
+                List<RelationshipDegree> possibleRelationshipDegreesList = _tools.GetPossibleRelationshipsList(yMrca, 
+                    y0Result, y1Result, 
+                    _zeroRelative, _firstRelative, 
+                    _relationshipDegreeList);
 
                 label7.Text = y0Result.ToString();
                 label8.Text = y1Result.ToString();
