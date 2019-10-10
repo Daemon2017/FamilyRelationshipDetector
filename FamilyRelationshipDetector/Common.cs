@@ -57,61 +57,61 @@ namespace FamilyRelationshipDetector
             return yOfMRCA;
         }
 
-        public Relative GetRelationship(int distanceBetweenMrcaAndZeroPerson, int distanceBetweenMrcaAndFirstPerson,
-            List<Relative> relatives)
+        public RelationshipDegree GetRelationship(int distanceBetweenMrcaAndZeroPerson, int distanceBetweenMrcaAndFirstPerson,
+            List<RelationshipDegree> relationshipDegreesList)
         {
             /*
              * Определение степени родства между парой персон по данным о расстоянии от каждого из них до БОП.
              */
             if (0 == distanceBetweenMrcaAndFirstPerson)
             {
-                return relatives.Where(rel =>
+                return relationshipDegreesList.Where(rel =>
                 rel.X == 0 &&
                 rel.Y == distanceBetweenMrcaAndZeroPerson).Single();
             }
             else
             {
-                return relatives.Where(rel =>
+                return relationshipDegreesList.Where(rel =>
                 rel.X == distanceBetweenMrcaAndZeroPerson &&
                 rel.Y == distanceBetweenMrcaAndZeroPerson - distanceBetweenMrcaAndFirstPerson).Single();
             }
         }
 
-        public List<Relative> GetPossibleRelationshipsList(int yOfMrca,
+        public List<RelationshipDegree> GetPossibleRelationshipsList(int yOfMrca,
             int numberOfGenerationsBetweenMrcaAndZeroRelative, int numberOfGenerationsBetweenMrcaAndFirstRelative,
-            Relative _zeroRelative, Relative _firstRelative,
-            List<Relative> _relativesList)
+            RelationshipDegree _zeroRelationshipDegree, RelationshipDegree _firstRelationshipDegree,
+            List<RelationshipDegree> _relationshipDegreesList)
         {
             /*
              * Определение основной степени родства.
              */
-            List<Relative> possibleRelationshipsList = new List<Relative>
+            List<RelationshipDegree> possibleRelationshipDegreesList = new List<RelationshipDegree>
             {
                 GetRelationship(
                     numberOfGenerationsBetweenMrcaAndZeroRelative,
                     numberOfGenerationsBetweenMrcaAndFirstRelative,
-                    _relativesList)
+                    _relationshipDegreesList)
             };
 
             /*
              * Определение дополнительных степеней родства, которые могут возникать от того, что 1-я и 2-я личности
              * находятся в одной вертикали.
              */
-            if (_zeroRelative.X == _firstRelative.X &&
-                !((_zeroRelative.X == 0 && _zeroRelative.Y >= 0) || (_firstRelative.X == 0 && _firstRelative.Y >= 0)))
+            if (_zeroRelationshipDegree.X == _firstRelationshipDegree.X &&
+                !((_zeroRelationshipDegree.X == 0 && _zeroRelationshipDegree.Y >= 0) || (_firstRelationshipDegree.X == 0 && _firstRelationshipDegree.Y >= 0)))
             {
-                int y0New = _zeroRelative.Y;
-                int y1New = _firstRelative.Y;
+                int y0New = _zeroRelationshipDegree.Y;
+                int y1New = _firstRelationshipDegree.Y;
 
-                while (y0New < _zeroRelative.X && y1New < _firstRelative.X)
+                while (y0New < _zeroRelationshipDegree.X && y1New < _firstRelationshipDegree.X)
                 {
                     try
                     {
-                        yOfMrca = GetYOfMRCA(_zeroRelative.X, ++y0New, _firstRelative.X, ++y1New);
-                        possibleRelationshipsList.Add(GetRelationship(
-                            yOfMrca - _zeroRelative.Y,
-                            yOfMrca - _firstRelative.Y,
-                            _relativesList));
+                        yOfMrca = GetYOfMRCA(_zeroRelationshipDegree.X, ++y0New, _firstRelationshipDegree.X, ++y1New);
+                        possibleRelationshipDegreesList.Add(GetRelationship(
+                            yOfMrca - _zeroRelationshipDegree.Y,
+                            yOfMrca - _firstRelationshipDegree.Y,
+                            _relationshipDegreesList));
                     }
                     catch (InvalidOperationException)
                     {
@@ -123,14 +123,14 @@ namespace FamilyRelationshipDetector
             /*
              * Определение возможности отсутствия родства между 1-й и 2-й личностями. 
              */
-            if (((_zeroRelative.X > 1) && (_firstRelative.X > 1)) ||
-                ((_zeroRelative.Y > 0) && (_firstRelative.Y > 0)) ||
-                ((_zeroRelative.Y > 0) && (_firstRelative.X > 1) || (_firstRelative.Y > 0) && (_zeroRelative.X > 1)))
+            if (((_zeroRelationshipDegree.X > 1) && (_firstRelationshipDegree.X > 1)) ||
+                ((_zeroRelationshipDegree.Y > 0) && (_firstRelationshipDegree.Y > 0)) ||
+                ((_zeroRelationshipDegree.Y > 0) && (_firstRelationshipDegree.X > 1) || (_firstRelationshipDegree.Y > 0) && (_zeroRelationshipDegree.X > 1)))
             {
-                possibleRelationshipsList.Add(_relativesList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
+                possibleRelationshipDegreesList.Add(_relationshipDegreesList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
             }
 
-            return possibleRelationshipsList;
+            return possibleRelationshipDegreesList;
         }
     }
 }

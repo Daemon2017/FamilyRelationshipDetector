@@ -56,7 +56,7 @@
     <Compile Include="Tools.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Relative.cs">
+    <Compile Include="RelationshipDegree.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="Form1.resx">

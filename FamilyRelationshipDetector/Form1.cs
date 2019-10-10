@@ -17,9 +17,9 @@ namespace FamilyRelationshipDetector
         }
 
         private readonly Tools _tools = new Tools();
-        private readonly List<Relative> _relativesList = new List<Relative>();
+        private readonly List<RelationshipDegree> _relationshipDegreeList = new List<RelationshipDegree>();
 
-        private Relative _zeroRelative, _firstRelative;
+        private RelationshipDegree _zeroRelative, _firstRelative;
 
         public void GetConfig_OnLoad(object sender, EventArgs e)
         {
@@ -62,7 +62,7 @@ namespace FamilyRelationshipDetector
 
             for (int i = 0; i < numberOfRows; i++)
             {
-                Relative newRelative = new Relative(
+                RelationshipDegree newRelationshipDegree = new RelationshipDegree(
                     Convert.ToInt16(relativesMatrix[i, 0]),
                     Convert.ToInt16(relativesMatrix[i, 1]),
                     Convert.ToInt16(relativesMatrix[i, 2]),
@@ -72,12 +72,12 @@ namespace FamilyRelationshipDetector
                     Convert.ToDouble(relativesMatrix[i, 6]),
                     maxHorizontal);
 
-                if (newRelative.RelationNumber != 0)
+                if (newRelationshipDegree.RelationNumber != 0)
                 {
-                    newRelative.MouseDown += RelativeButton_MouseDown;
-                    panel2.Controls.Add(newRelative);
+                    newRelationshipDegree.MouseDown += RelativeButton_MouseDown;
+                    panel2.Controls.Add(newRelationshipDegree);
                 }
-                _relativesList.Add(newRelative);
+                _relationshipDegreeList.Add(newRelationshipDegree);
             }
         }
 
@@ -85,13 +85,13 @@ namespace FamilyRelationshipDetector
         {
             if (e.Button == MouseButtons.Left)
             {
-                _zeroRelative = (Relative)sender;
-                label2.Text = ((Relative)sender).RelationName;
+                _zeroRelative = (RelationshipDegree)sender;
+                label2.Text = ((RelationshipDegree)sender).RelationName;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                _firstRelative = (Relative)sender;
-                label4.Text = ((Relative)sender).RelationName;
+                _firstRelative = (RelationshipDegree)sender;
+                label4.Text = ((RelationshipDegree)sender).RelationName;
             }
         }
 
@@ -102,18 +102,18 @@ namespace FamilyRelationshipDetector
             int maxX = Convert.ToInt16(textBox4.Text);
             int maxY = Convert.ToInt16(textBox3.Text);
 
-            List<Relative> usefulRelatives = new List<Relative>();
+            List<RelationshipDegree> usefulRelationshipDegreesList = new List<RelationshipDegree>();
 
-            foreach (var possibleRelative in _relativesList)
+            foreach (var possibleRelative in _relationshipDegreeList)
             {
                 if (possibleRelative.X >= minX && possibleRelative.X <= maxX &&
                     possibleRelative.Y >= minY && possibleRelative.Y <= maxY)
                 {
-                    usefulRelatives.Add(possibleRelative);
+                    usefulRelationshipDegreesList.Add(possibleRelative);
                 }
             }
 
-            _tools.SaveMatricesToFiles(usefulRelatives, _relativesList);
+            _tools.SaveMatricesToFiles(usefulRelationshipDegreesList, _relationshipDegreeList);
         }
 
         private void GenerateDiagonalButton_Click(object sender, EventArgs e)
@@ -123,17 +123,17 @@ namespace FamilyRelationshipDetector
             /*
              * Составление списка X;Y, входящих в кластер.
              */
-            List<Relative> usefulRelatives = new List<Relative>();
+            List<RelationshipDegree> usefulRelationshipDegreesList = new List<RelationshipDegree>();
 
-            foreach (var possibleRelative in _relativesList)
+            foreach (var possibleRelative in _relationshipDegreeList)
             {
                 if (possibleRelative.ClusterNumber <= clusterNumber)
                 {
-                    usefulRelatives.Add(possibleRelative);
+                    usefulRelationshipDegreesList.Add(possibleRelative);
                 }
             }
 
-            _tools.SaveMatricesToFiles(usefulRelatives, _relativesList);
+            _tools.SaveMatricesToFiles(usefulRelationshipDegreesList, _relationshipDegreeList);
         }
 
         private void CalculateButton_Click(object sender, EventArgs e)
@@ -144,17 +144,17 @@ namespace FamilyRelationshipDetector
 
                 int y0Result = yMrca - _zeroRelative.Y;
                 int y1Result = yMrca - _firstRelative.Y;
-                List<Relative> possibleRelationshipsList = _tools.GetPossibleRelationshipsList(yMrca, y0Result, y1Result, _zeroRelative, _firstRelative, _relativesList);
+                List<RelationshipDegree> possibleRelationshipDegreesList = _tools.GetPossibleRelationshipsList(yMrca, y0Result, y1Result, _zeroRelative, _firstRelative, _relationshipDegreeList);
 
                 label7.Text = y0Result.ToString();
                 label8.Text = y1Result.ToString();
 
                 string possibleRelationshipsListText = "";
-                foreach (Relative possibleRelationship in possibleRelationshipsList)
+                foreach (RelationshipDegree possibleRelationshipDegree in possibleRelationshipDegreesList)
                 {
                     possibleRelationshipsListText += string.Format(
                         "{0}. [{1};{2}] {3} \n",
-                        possibleRelationship.RelationNumber, possibleRelationship.X, possibleRelationship.Y, possibleRelationship.RelationName);
+                        possibleRelationshipDegree.RelationNumber, possibleRelationshipDegree.X, possibleRelationshipDegree.Y, possibleRelationshipDegree.RelationName);
                 }
                 label10.Text = possibleRelationshipsListText;
             }

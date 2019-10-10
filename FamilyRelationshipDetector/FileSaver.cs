@@ -27,7 +27,7 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        public void SaveToFile(string outputFileName, List<Relative>[,] dataArray)
+        public void SaveToFile(string outputFileName, List<RelationshipDegree>[,] dataArray)
         {
             using (StreamWriter outfile = new StreamWriter(outputFileName))
             {

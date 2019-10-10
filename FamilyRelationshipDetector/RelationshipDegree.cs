@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace FamilyRelationshipDetector
 {
-    public class Relative : Button
+    public class RelationshipDegree : Button
     {
         public int RelationNumber { get; set; }
         public int X { get; set; }
@@ -13,7 +13,7 @@ namespace FamilyRelationshipDetector
         public int ClusterNumber { get; set; }
         public double CommonCm { get; set; }
 
-        public Relative(int relationNumber, int x, int y, string relationName, int widthMultiplier, int clusterNumber,
+        public RelationshipDegree(int relationNumber, int x, int y, string relationName, int widthMultiplier, int clusterNumber,
             double commonCm, int maxHorizontal)
         {
             RelationNumber = relationNumber;
