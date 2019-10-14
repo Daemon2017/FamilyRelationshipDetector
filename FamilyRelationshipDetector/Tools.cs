@@ -92,17 +92,17 @@ namespace FamilyRelationshipDetector
             /*
              * Построение списка потомков пробанда, его сиблингов и их потомков
              */
-            List<string> siblindantsMatrix = new List<string>();
+            List<string> descendantsMatrix = new List<string>();
 
             foreach (var rel in _relationshipDegreesList)
             {
-                if ((rel.X.Equals(0) && rel.Y < 0) || (rel.X.Equals(1) && rel.Y <= 0))
+                if (rel.X.Equals(0) && rel.Y < 0)
                 {
-                    siblindantsMatrix.Add(rel.RelationNumber.ToString());
+                    descendantsMatrix.Add(rel.RelationNumber.ToString());
                 }
             }
 
-            _fileSaver.SaveToFile("siblindantsMatrix.csv", siblindantsMatrix);
+            _fileSaver.SaveToFile("descendantsMatrix.csv", descendantsMatrix);
         }
     }
 }
