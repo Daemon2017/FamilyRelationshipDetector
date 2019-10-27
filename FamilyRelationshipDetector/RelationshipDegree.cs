@@ -92,6 +92,9 @@ namespace FamilyRelationshipDetector
                 case 19:
                     BackColor = Color.LightSkyBlue;
                     break;
+                case 20:
+                    BackColor = Color.LightSlateGray;
+                    break;
             }
         }
     }
