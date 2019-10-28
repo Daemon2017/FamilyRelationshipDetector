@@ -98,6 +98,12 @@ namespace FamilyRelationshipDetector
                 case 21:
                     BackColor = Color.LightSteelBlue;
                     break;
+                case 22:
+                    BackColor = Color.LightYellow;
+                    break;
+                case 23:
+                    BackColor = Color.Lime;
+                    break;
             }
         }
     }
