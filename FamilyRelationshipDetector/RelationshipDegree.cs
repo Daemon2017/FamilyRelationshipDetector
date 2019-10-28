@@ -104,6 +104,9 @@ namespace FamilyRelationshipDetector
                 case 23:
                     BackColor = Color.Lime;
                     break;
+                case 24:
+                    BackColor = Color.Fuchsia;
+                    break;
             }
         }
     }
