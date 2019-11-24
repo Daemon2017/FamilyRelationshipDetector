@@ -57,8 +57,8 @@ namespace FamilyRelationshipDetector
             return yOfMRCA;
         }
 
-        public RelationshipDegree GetRelationship(int distanceBetweenMrcaAndZeroPerson, int distanceBetweenMrcaAndFirstPerson,
-            List<RelationshipDegree> relationshipDegreesList)
+        public RelationshipDegreeUI GetRelationship(int distanceBetweenMrcaAndZeroPerson, int distanceBetweenMrcaAndFirstPerson,
+            List<RelationshipDegreeUI> relationshipDegreesList)
         {
             /*
              * Определение степени родства между парой персон по данным о расстоянии от каждого из них до БОП.
@@ -77,15 +77,15 @@ namespace FamilyRelationshipDetector
             }
         }
 
-        public List<RelationshipDegree> GetPossibleRelationshipsList(int yOfMrca,
+        public List<RelationshipDegreeUI> GetPossibleRelationshipsList(int yOfMrca,
             int numberOfGenerationsBetweenMrcaAndZeroRelative, int numberOfGenerationsBetweenMrcaAndFirstRelative,
-            RelationshipDegree _zeroRelationshipDegree, RelationshipDegree _firstRelationshipDegree,
-            List<RelationshipDegree> _relationshipDegreesList)
+            RelationshipDegreeUI _zeroRelationshipDegree, RelationshipDegreeUI _firstRelationshipDegree,
+            List<RelationshipDegreeUI> _relationshipDegreesList)
         {
             /*
              * Определение основной степени родства.
              */
-            List<RelationshipDegree> possibleRelationshipDegreesList = new List<RelationshipDegree>
+            List<RelationshipDegreeUI> possibleRelationshipDegreesList = new List<RelationshipDegreeUI>
             {
                 GetRelationship(
                     numberOfGenerationsBetweenMrcaAndZeroRelative,

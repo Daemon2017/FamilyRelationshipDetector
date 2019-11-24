@@ -1,108 +1,89 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace FamilyRelationshipDetector
 {
     public partial class Tools
     {
-        private readonly FileSaver _fileSaver = new FileSaver();
-
-        public void SaveMatricesToFiles(List<RelationshipDegree> usefulRelationshipDegreesList, List<RelationshipDegree> _relationshipDegreesList)
+        public void SaveMatricesToFiles(List<RelationshipDegreeUI> usefulRelationshipDegreesUIList, List<RelationshipDegreeUI> _relationshipDegreesUIList)
         {
-            usefulRelationshipDegreesList.Remove(_relationshipDegreesList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
+            usefulRelationshipDegreesUIList.Remove(_relationshipDegreesUIList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
 
             /*
-             * Построение матрицы допустимых степеней родства.
-             * Построение матрицы примерного количества общих сантиморган.
+             * Построение словаря "степень родства предка : максимальное количество представителей"
              */
-            List<RelationshipDegree>[,] relationshipDegreesMatrix = new List<RelationshipDegree>[usefulRelationshipDegreesList.Count, usefulRelationshipDegreesList.Count];
-            List<string> centimorgansMatrix = new List<string>();
-            List<string> xMatrix = new List<string>();
-            List<string> yMatrix = new List<string>();
-
-            int person = 0, relative = 0;
-
-            foreach (var zeroRelative in usefulRelationshipDegreesList)
-            {
-                foreach (var firstRelative in usefulRelationshipDegreesList)
-                {
-                    int yOfMrca = GetYOfMRCA(zeroRelative.X, zeroRelative.Y, firstRelative.X, firstRelative.Y);
-
-                    int numberOfGenerationsBetweenMrcaAndZeroRelative = yOfMrca - zeroRelative.Y,
-                        numberOfGenerationsBetweenMrcaAndFirstRelative = yOfMrca - firstRelative.Y;
-
-                    relationshipDegreesMatrix[person, relative] = GetPossibleRelationshipsList(
-                        yOfMrca,
-                        numberOfGenerationsBetweenMrcaAndZeroRelative, numberOfGenerationsBetweenMrcaAndFirstRelative,
-                        zeroRelative, firstRelative,
-                        _relationshipDegreesList);
-
-                    relative++;
-                }
-
-                /*
-                 * Определение ожидаемого количества общих сантиморган с каждой из степеней родства.
-                 */
-                foreach (var usefulRelative in usefulRelationshipDegreesList)
-                {
-                    if (usefulRelative.X.Equals(zeroRelative.X) && usefulRelative.Y.Equals(zeroRelative.Y))
-                    {
-                        centimorgansMatrix.Add(usefulRelative.CommonCm.ToString());
-                    }
-                }
-
-                foreach (var usefulRelative in usefulRelationshipDegreesList)
-                {
-                    if (usefulRelative.X.Equals(zeroRelative.X) && usefulRelative.Y.Equals(zeroRelative.Y))
-                    {
-                        yMatrix.Add(usefulRelative.Y.ToString());
-                        xMatrix.Add(usefulRelative.X.ToString());
-                    }
-                }
-
-                person++;
-                relative = 0;
-            }
-
-            _fileSaver.SaveToFile("relationships.csv", relationshipDegreesMatrix);
-            _fileSaver.SaveToFile("centimorgans.csv", centimorgansMatrix);
-            _fileSaver.SaveToFile("ys.csv", yMatrix);
-            _fileSaver.SaveToFile("xs.csv", xMatrix);
-
-            /*
-             * Построение матрицы максимального числа предков каждого вида.
-             */
-            List<List<string>> ancestorsMatrix = new List<List<string>>();
-
-            foreach (var rel in _relationshipDegreesList)
+            Dictionary<int, int> ancestorsMaxCountDictionary = new Dictionary<int, int>();
+            foreach (var rel in _relationshipDegreesUIList)
             {
                 if (rel.X.Equals(0) && rel.Y > 0)
                 {
-                    ancestorsMatrix.Add(new List<string>
-                    {
-                        rel.RelationNumber.ToString(),
-                        Math.Pow(2, rel.Y).ToString()
-                    });
+                    ancestorsMaxCountDictionary.Add(rel.RelationshipDegreeNumber, (int)Math.Pow(2, rel.Y));
                 }
             }
 
-            _fileSaver.SaveToFile("ancestorsMatrix.csv", ancestorsMatrix);
-
             /*
-             * Построение списка потомков пробанда, его сиблингов и их потомков
+             * Построение списка потомков пробанда
              */
-            List<string> descendantsMatrix = new List<string>();
-
-            foreach (var rel in _relationshipDegreesList)
+            List<string> descendantsList = new List<string>();
+            foreach (var rel in _relationshipDegreesUIList)
             {
                 if (rel.X.Equals(0) && rel.Y < 0)
                 {
-                    descendantsMatrix.Add(rel.RelationNumber.ToString());
+                    descendantsList.Add(rel.RelationshipDegreeNumber.ToString());
                 }
             }
 
-            _fileSaver.SaveToFile("descendantsMatrix.csv", descendantsMatrix);
+            /*
+             * Построение JSON'а с основными сведениями о каждой степени родства
+             */
+            List<RelationshipDegree> usefulRelationDegreesList = new List<RelationshipDegree>();
+            foreach (RelationshipDegreeUI usefulRelationshipDegreesUI in usefulRelationshipDegreesUIList)
+            {
+                int relationshipMaxCount = 0;
+                if (ancestorsMaxCountDictionary.ContainsKey(usefulRelationshipDegreesUI.RelationshipDegreeNumber))
+                {
+                    relationshipMaxCount = ancestorsMaxCountDictionary[usefulRelationshipDegreesUI.RelationshipDegreeNumber];
+                }
+                else
+                {
+                    relationshipMaxCount = int.MaxValue;
+                }
+
+                Dictionary<int, List<string>> possibleRelationships = new Dictionary<int, List<string>>();
+                foreach (var usefulRelationshipDegree in usefulRelationshipDegreesUIList)
+                {
+                    int yOfMrca = GetYOfMRCA(usefulRelationshipDegreesUI.X, usefulRelationshipDegreesUI.Y, usefulRelationshipDegree.X, usefulRelationshipDegree.Y);
+
+                    int numberOfGenerationsBetweenMrcaAndZeroRelative = yOfMrca - usefulRelationshipDegreesUI.Y,
+                        numberOfGenerationsBetweenMrcaAndFirstRelative = yOfMrca - usefulRelationshipDegree.Y;
+
+                    possibleRelationships.Add(usefulRelationshipDegree.RelationshipDegreeNumber,
+                                              GetPossibleRelationshipsList(yOfMrca,
+                                                                           numberOfGenerationsBetweenMrcaAndZeroRelative,
+                                                                           numberOfGenerationsBetweenMrcaAndFirstRelative,
+                                                                           usefulRelationshipDegreesUI,
+                                                                           usefulRelationshipDegree,
+                                                                           _relationshipDegreesUIList).Select(x => x.RelationshipDegreeNumber.ToString()).ToList());
+                }
+
+                RelationshipDegree relationshipDegree = new RelationshipDegree(
+                    usefulRelationshipDegreesUI.RelationshipDegreeNumber,
+                    usefulRelationshipDegreesUI.X,
+                    usefulRelationshipDegreesUI.Y,
+                    usefulRelationshipDegreesUI.RelationName,
+                    usefulRelationshipDegreesUI.ClusterNumber,
+                    usefulRelationshipDegreesUI.CommonCm,
+                    ancestorsMaxCountDictionary.ContainsKey(usefulRelationshipDegreesUI.RelationshipDegreeNumber),
+                    descendantsList.Contains(usefulRelationshipDegreesUI.RelationshipDegreeNumber.ToString()),
+                    relationshipMaxCount,
+                    possibleRelationships);
+                usefulRelationDegreesList.Add(relationshipDegree);
+            }
+
+            File.WriteAllText("relatives.json", JsonConvert.SerializeObject(usefulRelationDegreesList));
         }
     }
 }

@@ -17,9 +17,9 @@ namespace FamilyRelationshipDetector
         }
 
         private readonly Tools _tools = new Tools();
-        private readonly List<RelationshipDegree> _relationshipDegreeList = new List<RelationshipDegree>();
+        private readonly List<RelationshipDegreeUI> _relationshipDegreeList = new List<RelationshipDegreeUI>();
 
-        private RelationshipDegree _zeroRelative, _firstRelative;
+        private RelationshipDegreeUI _zeroRelative, _firstRelative;
 
         public void GetConfig_OnLoad(object sender, EventArgs e)
         {
@@ -62,7 +62,7 @@ namespace FamilyRelationshipDetector
 
             for (int i = 0; i < numberOfRows; i++)
             {
-                RelationshipDegree newRelationshipDegree = new RelationshipDegree(
+                RelationshipDegreeUI newRelationshipDegree = new RelationshipDegreeUI(
                     Convert.ToInt16(relativesMatrix[i, 0]),
                     Convert.ToInt16(relativesMatrix[i, 1]),
                     Convert.ToInt16(relativesMatrix[i, 2]),
@@ -72,7 +72,7 @@ namespace FamilyRelationshipDetector
                     Convert.ToDouble(relativesMatrix[i, 6]),
                     maxHorizontal);
 
-                if (newRelationshipDegree.RelationNumber != 0)
+                if (newRelationshipDegree.RelationshipDegreeNumber != 0)
                 {
                     newRelationshipDegree.MouseDown += RelativeButton_MouseDown;
                     panel2.Controls.Add(newRelationshipDegree);
@@ -85,13 +85,13 @@ namespace FamilyRelationshipDetector
         {
             if (e.Button == MouseButtons.Left)
             {
-                _zeroRelative = (RelationshipDegree)sender;
-                label2.Text = ((RelationshipDegree)sender).RelationName;
+                _zeroRelative = (RelationshipDegreeUI)sender;
+                label2.Text = ((RelationshipDegreeUI)sender).RelationName;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                _firstRelative = (RelationshipDegree)sender;
-                label4.Text = ((RelationshipDegree)sender).RelationName;
+                _firstRelative = (RelationshipDegreeUI)sender;
+                label4.Text = ((RelationshipDegreeUI)sender).RelationName;
             }
         }
 
@@ -102,7 +102,7 @@ namespace FamilyRelationshipDetector
             int maxX = Convert.ToInt16(textBox4.Text);
             int maxY = Convert.ToInt16(textBox3.Text);
 
-            List<RelationshipDegree> usefulRelationshipDegreesList = new List<RelationshipDegree>();
+            List<RelationshipDegreeUI> usefulRelationshipDegreesList = new List<RelationshipDegreeUI>();
 
             foreach (var possibleRelative in _relationshipDegreeList)
             {
@@ -123,7 +123,7 @@ namespace FamilyRelationshipDetector
             /*
              * Составление списка X;Y, входящих в кластер.
              */
-            List<RelationshipDegree> usefulRelationshipDegreesList = new List<RelationshipDegree>();
+            List<RelationshipDegreeUI> usefulRelationshipDegreesList = new List<RelationshipDegreeUI>();
 
             foreach (var possibleRelative in _relationshipDegreeList)
             {
@@ -144,7 +144,7 @@ namespace FamilyRelationshipDetector
 
                 int y0Result = yMrca - _zeroRelative.Y;
                 int y1Result = yMrca - _firstRelative.Y;
-                List<RelationshipDegree> possibleRelationshipDegreesList = _tools.GetPossibleRelationshipsList(yMrca, 
+                List<RelationshipDegreeUI> possibleRelationshipDegreesList = _tools.GetPossibleRelationshipsList(yMrca, 
                     y0Result, y1Result, 
                     _zeroRelative, _firstRelative, 
                     _relationshipDegreeList);
@@ -153,11 +153,14 @@ namespace FamilyRelationshipDetector
                 label8.Text = y1Result.ToString();
 
                 string possibleRelationshipsListText = "";
-                foreach (RelationshipDegree possibleRelationshipDegree in possibleRelationshipDegreesList)
+                foreach (RelationshipDegreeUI possibleRelationshipDegree in possibleRelationshipDegreesList)
                 {
                     possibleRelationshipsListText += string.Format(
                         "{0}. [{1};{2}] {3} \n",
-                        possibleRelationshipDegree.RelationNumber, possibleRelationshipDegree.X, possibleRelationshipDegree.Y, possibleRelationshipDegree.RelationName);
+                        possibleRelationshipDegree.RelationshipDegreeNumber, 
+                        possibleRelationshipDegree.X, 
+                        possibleRelationshipDegree.Y, 
+                        possibleRelationshipDegree.RelationName);
                 }
                 label10.Text = possibleRelationshipsListText;
             }

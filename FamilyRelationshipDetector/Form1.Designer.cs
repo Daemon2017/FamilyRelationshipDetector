@@ -40,6 +40,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.button12 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -51,8 +53,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.button60 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -188,6 +188,23 @@
             this.panel1.Size = new System.Drawing.Size(200, 711);
             this.panel1.TabIndex = 51;
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(101, 543);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(52, 13);
+            this.label15.TabIndex = 56;
+            this.label15.Text = "Кластер:";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(104, 559);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(30, 20);
+            this.textBox5.TabIndex = 55;
+            this.textBox5.Text = "5";
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(100, 611);
@@ -287,23 +304,6 @@
             this.panel2.Size = new System.Drawing.Size(1059, 711);
             this.panel2.TabIndex = 78;
             // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(104, 559);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(30, 20);
-            this.textBox5.TabIndex = 55;
-            this.textBox5.Text = "5";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(101, 543);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(52, 13);
-            this.label15.TabIndex = 56;
-            this.label15.Text = "Кластер:";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -312,7 +312,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
-            this.Text = "FamilyRelationshipDetector v2018.6";
+            this.Text = "FamilyRelationshipDetector v2019.11";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.GetConfig_OnLoad);
             this.panel1.ResumeLayout(false);
