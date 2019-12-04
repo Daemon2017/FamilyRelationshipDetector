@@ -8,9 +8,38 @@ namespace FamilyRelationshipDetector
 {
     public partial class Tools
     {
+        private readonly FileSaver _fileSaver = new FileSaver();
+
         public void SaveMatricesToFiles(List<RelationshipDegreeUI> usefulRelationshipDegreesUIList, List<RelationshipDegreeUI> _relationshipDegreesUIList)
         {
             usefulRelationshipDegreesUIList.Remove(_relationshipDegreesUIList.Where(rel => rel.X == -1 && rel.Y == -1).Single());
+
+            List<RelationshipDegreeUI>[,] relationshipDegreesMatrix =
+                new List<RelationshipDegreeUI>[usefulRelationshipDegreesUIList.Count, usefulRelationshipDegreesUIList.Count];
+
+            int person = 0, relative = 0;
+
+            foreach (var zeroRelative in usefulRelationshipDegreesUIList)
+            {
+                foreach (var firstRelative in usefulRelationshipDegreesUIList)
+                {
+                    int yOfMrca = GetYOfMRCA(zeroRelative.X, zeroRelative.Y, firstRelative.X, firstRelative.Y);
+
+                    int numberOfGenerationsBetweenMrcaAndZeroRelative = yOfMrca - zeroRelative.Y,
+                        numberOfGenerationsBetweenMrcaAndFirstRelative = yOfMrca - firstRelative.Y;
+
+                    relationshipDegreesMatrix[person, relative] = GetPossibleRelationshipsList(
+                        yOfMrca,
+                        numberOfGenerationsBetweenMrcaAndZeroRelative, numberOfGenerationsBetweenMrcaAndFirstRelative,
+                        zeroRelative, firstRelative,
+                        _relationshipDegreesUIList);
+
+                    relative++;
+                }
+
+                person++;
+                relative = 0;
+            }
 
             /*
              * Построение словаря "степень родства предка : максимальное количество представителей"
@@ -22,6 +51,17 @@ namespace FamilyRelationshipDetector
                 {
                     ancestorsMaxCountDictionary.Add(rel.RelationshipDegreeNumber, (int)Math.Pow(2, rel.Y));
                 }
+            }
+
+            List<List<string>> ancestorsMatrix = new List<List<string>>();
+            foreach (var ancestor in ancestorsMaxCountDictionary)
+            {
+                List<string> list = new List<string>
+                {
+                    ancestor.Key.ToString(),
+                    ancestor.Value.ToString()
+                };
+                ancestorsMatrix.Add(list);
             }
 
             /*
@@ -39,9 +79,9 @@ namespace FamilyRelationshipDetector
             /*
              * Построение JSON'а с основными сведениями о каждой степени родства
              */
-            List<RelationshipDegree> usefulRelationDegreesList = new List<RelationshipDegree>();
-
-            usefulRelationDegreesList.Add(new RelationshipDegree(
+            List<RelationshipDegree> usefulRelationDegreesList = new List<RelationshipDegree>
+            {
+                new RelationshipDegree(
                 0,
                 -1,
                 -1,
@@ -51,7 +91,8 @@ namespace FamilyRelationshipDetector
                 false,
                 false,
                 int.MaxValue,
-                new Dictionary<int, List<string>>()));
+                new Dictionary<int, List<string>>())
+            };
 
             foreach (RelationshipDegreeUI usefulRelationshipDegreesUI in usefulRelationshipDegreesUIList)
             {
@@ -97,6 +138,9 @@ namespace FamilyRelationshipDetector
             }
 
             File.WriteAllText("relatives.json", JsonConvert.SerializeObject(usefulRelationDegreesList));
+            _fileSaver.SaveToFile("relationships.csv", relationshipDegreesMatrix);
+            _fileSaver.SaveToFile("ancestorsMatrix.csv", ancestorsMatrix);
+            _fileSaver.SaveToFile("descendantsMatrix.csv", descendantsList);
         }
     }
 }
