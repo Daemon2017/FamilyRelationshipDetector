@@ -40,6 +40,19 @@ namespace FamilyRelationshipDetector
              * Построение JSON'а с основными сведениями о каждой степени родства
              */
             List<RelationshipDegree> usefulRelationDegreesList = new List<RelationshipDegree>();
+
+            usefulRelationDegreesList.Add(new RelationshipDegree(
+                0,
+                -1,
+                -1,
+                "Нет родства",
+                0,
+                0,
+                false,
+                false,
+                int.MaxValue,
+                new Dictionary<int, List<string>>()));
+
             foreach (RelationshipDegreeUI usefulRelationshipDegreesUI in usefulRelationshipDegreesUIList)
             {
                 int relationshipMaxCount = 0;
