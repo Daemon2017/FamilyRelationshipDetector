@@ -10,11 +10,11 @@ namespace FamilyRelationshipDetector
         public int Y { get; set; }
         public string RelationName { get; set; }
         public int ClusterNumber { get; set; }
-        public double CommonCm { get; set; }
+        public float CommonCm { get; set; }
         public int WidthMultiplier { get; set; }
 
         public RelationshipDegreeUI(int relationshipDegreeNumber, int x, int y, string relationName, int widthMultiplier, int clusterNumber,
-            double commonCm, int maxHorizontal)
+            float commonCm, int maxHorizontal)
         {
             RelationshipDegreeNumber = relationshipDegreeNumber;
             X = x;

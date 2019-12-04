@@ -69,7 +69,7 @@ namespace FamilyRelationshipDetector
                     relativesMatrix[i, 3],
                     Convert.ToInt16(relativesMatrix[i, 4]),
                     Convert.ToInt16(relativesMatrix[i, 5]),
-                    Convert.ToDouble(relativesMatrix[i, 6]),
+                    Convert.ToSingle(relativesMatrix[i, 6]),
                     maxHorizontal);
 
                 if (newRelationshipDegree.RelationshipDegreeNumber != 0)
