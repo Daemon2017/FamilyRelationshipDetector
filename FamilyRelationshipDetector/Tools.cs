@@ -137,7 +137,7 @@ namespace FamilyRelationshipDetector
                 usefulRelationDegreesList.Add(relationshipDegree);
             }
 
-            File.WriteAllText("relatives.json", JsonConvert.SerializeObject(usefulRelationDegreesList));
+            File.WriteAllText("relationships.json", JsonConvert.SerializeObject(usefulRelationDegreesList));
             _fileSaver.SaveToFile("relationships.csv", relationshipDegreesMatrix);
             _fileSaver.SaveToFile("ancestorsMatrix.csv", ancestorsMatrix);
             _fileSaver.SaveToFile("descendantsMatrix.csv", descendantsList);
